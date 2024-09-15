@@ -19,6 +19,7 @@ export class AuthRouter {
         this.router.post('/login', this.authController.loginBuyer)
         this.router.post('/registerstoreadm', this.authController.createStoreAdmin)
         this.router.post('/loginstoreadm', this.authController.loginStoreAdmin)
+        this.router.patch('/verification', this.authMiddleware.verifyToken, this.authController.userVerification)
     }
 
     getRouter(): Router {

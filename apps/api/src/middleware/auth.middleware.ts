@@ -7,12 +7,12 @@ export class AuthMiddleware {
     try {
       let token = req.headers.authorization?.replace('Bearer ', '');
 
-      if (!token) throw 'Token empty';
+      if (!token) throw 'Verification Failed';
 
       const user = verify(token, process.env.SECRET_KEY!);
-
       req.user = user as User;
       
+      next()
     } catch (error) {
       responseError(res, error);
     }

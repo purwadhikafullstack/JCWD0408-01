@@ -14,6 +14,6 @@
     "types": ["./src/types/custom.d.ts"]
   },
   // "include": ["src/**/*"],
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "src/helpers/namesplitter.js"],
   "exclude": ["node_modules"]
 }

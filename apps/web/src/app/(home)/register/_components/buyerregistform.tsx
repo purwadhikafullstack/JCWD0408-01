@@ -2,29 +2,22 @@
 
 import { Input } from '@/components/inputformik';
 import { registerBuyer } from '@/libs/action/buyer';
-import { registerSChema } from '@/libs/schema';
+import { registerSchema } from '@/libs/schema';
 import { UserRegister } from '@/types/user';
 import { Form, Formik } from 'formik';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 
 export default function BuyerRegistForm() {
-  interface UserRegisterConfPass extends UserRegister {
-    confirmpassword: string;
-  }
 
-  const initialValues: UserRegisterConfPass = {
+  const initialValues: UserRegister = {
     email: '',
-    username: '',
-    password: '',
-    confirmpassword: '',
-    phone: '',
   };
 
   const onRegister = async (data: UserRegister) => {
     try {
       const res = await registerBuyer(data);
-      toast.info(res.msg);
+      toast.success(res.msg);
     } catch (error) {
       toast.error(error as string);
     }
@@ -37,10 +30,9 @@ export default function BuyerRegistForm() {
         </h2>
         <Formik
           initialValues={initialValues}
-          validationSchema={registerSChema}
+          validationSchema={registerSchema}
           onSubmit={(values, action) => {
-            const { confirmpassword, ...formData } = values;
-            onRegister(formData), action.resetForm();
+            onRegister(values), action.resetForm();
           }}
         >
           {() => (
@@ -49,26 +41,10 @@ export default function BuyerRegistForm() {
                 Email
               </label>
               <Input name="email" type="email" />
-              <label className="block text-sm font-medium text-gray-700">
-                Username
-              </label>
-              <Input name="username" type="string" />
-              <label className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <Input name="password" type="password" />
-              <label className="block text-sm font-medium text-gray-700">
-                Confirm Password
-              </label>
-              <Input name="confirmpassword" type="password" />
-              <label className="block text-sm font-medium text-gray-700">
-                Phone Number
-              </label>
-              <Input name="phone" type="string" placeholder="081233334444" />
               <div>
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105"
+                  className="w-full bg-main text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105"
                 >
                   Register
                 </button>

@@ -35,13 +35,13 @@ enum Type {
 
 model User {
   user_id    Int      @id @default(autoincrement())
-  username   String   @unique
   email      String   @unique
   password   String
   phone      String   @unique
-  first_name String?
+  first_name String
   last_name  String?
   date_ob    String?
+  avatar      String?
   role       Role
   verified   Boolean  @default(false)
   created_at DateTime @default(now())

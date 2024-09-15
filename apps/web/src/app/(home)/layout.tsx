@@ -26,14 +26,11 @@ export default function RootLayout({
         {/* <Footer /> */}
         <ToastContainer
           position="top-center"
-          autoClose={5000}
-          hideProgressBar={false}
+          autoClose={2500}
+          hideProgressBar={true}
           newestOnTop={false}
           closeOnClick
           rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
           theme="dark"
         />
       </body>

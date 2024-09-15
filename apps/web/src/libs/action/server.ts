@@ -10,7 +10,7 @@ export const createCookie = (key: string, value: string) => {
 };
 
 export const getCookie = async (key: string) => {
-  return cookies().get(key);
+  return cookies().get(key)?.value;
 };
 
 export const deleteCookie = (key: string) => {

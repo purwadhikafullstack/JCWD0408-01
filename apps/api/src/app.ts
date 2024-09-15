@@ -10,6 +10,8 @@ import express, {
 import cors from 'cors';
 import { PORT } from './config';
 import { AuthRouter } from './routers/auth.router';
+import dotenv from 'dotenv';
+import { BuyerRouter } from './routers/buyer.router';
 
 export default class App {
   private app: Express;
@@ -52,12 +54,14 @@ export default class App {
 
   private routes(): void {
     const authRouter = new AuthRouter()
+    const buyerRouter = new BuyerRouter()
 
     this.app.get('/api', (req: Request, res: Response) => {
       res.send(`Hello, Purwadhika Student API!`);
     });
 
     this.app.use('/api/auth', authRouter.getRouter())
+    this.app.use('/api/user', buyerRouter.getRouter())
   }
 
   public start(): void {

@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 
 export default function BuyerLoginForm() {
   const initialValues: UserLogin = {
-    data: '',
+    email: '',
     password: '',
   };
 
@@ -20,8 +20,7 @@ export default function BuyerLoginForm() {
       const { result, ok } = await loginBuyer(data);
       if (!ok) throw result.msg;
       createCookie('token', result.token);
-      console.log(result.token);
-      toast.info(result.msg);
+      toast.success(result.msg);
       action.resetForm();
     } catch (error) {
       toast.error(error as string);
@@ -43,18 +42,14 @@ export default function BuyerLoginForm() {
         >
           {() => (
             <Form>
-              {/* Username/Email Input */}
-
               <label className="block text-sm font-medium text-gray-700">
-                Username or Email
+                Email
               </label>
-              <Input name="data" type="string" />
-              {/* Password Input */}
+              <Input name="email" type="email" />
               <label className="block text-sm font-medium text-gray-700">
                 Password
               </label>
               <Input name="password" type="password" />
-              {/* Submit Button */}
               <div>
                 <button
                   type="submit"

@@ -14,22 +14,22 @@ export default function AccountTab() {
   const [activeTab, setActiveTab] = useState('profile');
 
   return (
-    <div className="flex flex-col lg:w-4/5 lg:ml-64 mt-20 ">
+    <div className="flex flex-col lg:w-4/5 lg:ml-64 mt-32 ">
       <div className="flex border-b border-gray-300 lg:w-2/5 px-3">
         <button
-          className={`flex-1 py-2 px-4 text-sm font-semibold text-center ${activeTab === 'profile' ? 'bg-main text-white' : 'bg-gray-200 text-black'}`}
+          className={`flex-1 py-2 px-4 text-sm font-semibold text-center ${activeTab === 'profile' ? 'bg-main text-white' : 'bg-secondary text-black'}`}
           onClick={() => setActiveTab('profile')}
         >
           Profile
         </button>
         <button
-          className={`flex-1 py-2 px-4 text-sm font-semibold text-center ${activeTab === 'addresses' ? 'bg-main text-white' : 'bg-gray-200 text-black'}`}
+          className={`flex-1 py-2 px-4 text-sm font-semibold text-center ${activeTab === 'addresses' ? 'bg-main text-white' : 'bg-secondary text-black'}`}
           onClick={() => setActiveTab('addresses')}
         >
           Addresses
         </button>
         <button
-          className={`flex-1 py-2 px-4 text-sm font-semibold text-center ${activeTab === 'changePassword' ? 'bg-main text-white' : 'bg-gray-200 text-black'}`}
+          className={`flex-1 py-2 px-4 text-sm font-semibold text-center ${activeTab === 'changePassword' ? 'bg-main text-white' : 'bg-secondary text-black'}`}
           onClick={() => setActiveTab('changePassword')}
         >
           Change Password

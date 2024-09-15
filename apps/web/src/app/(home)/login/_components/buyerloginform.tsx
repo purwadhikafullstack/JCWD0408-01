@@ -28,9 +28,9 @@ export default function BuyerLoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-blue-950 w-screen">
+    <div className="h-screen flex items-center justify-center bg-secondary w-screen">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md mx-3">
-        <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">
+        <h2 className="text-2xl font-bold text-center text-main-black mb-6">
           Login
         </h2>
         <Formik
@@ -42,18 +42,18 @@ export default function BuyerLoginForm() {
         >
           {() => (
             <Form>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-main-black">
                 Email
               </label>
               <Input name="email" type="email" />
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-main-black">
                 Password
               </label>
               <Input name="password" type="password" />
               <div>
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105"
+                  className="w-full bg-main hover:bg-main-black text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105"
                 >
                   Log In
                 </button>
@@ -61,9 +61,9 @@ export default function BuyerLoginForm() {
             </Form>
           )}
         </Formik>
-        <p className="mt-4 text-sm text-center text-gray-500">
+        <p className="mt-4 text-sm text-center text-main-black">
           Don't have an account?{' '}
-          <Link href="/register" className="text-blue-500 hover:underline">
+          <Link href="/register" className="text-main hover:underline font-bold">
             Sign Up</Link>
         </p>
       </div>

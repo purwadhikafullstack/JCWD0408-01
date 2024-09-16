@@ -1,8 +1,9 @@
 import { Buyer } from '@/types/user';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 
-export default function Profile({first_name, last_name, email, phone, date_ob} : Buyer) {
+export default function Profile({first_name, last_name, email, phone, date_ob, avatar} : Buyer) {
   return (
     <div className="flex flex-col pt-10">
       <motion.div
@@ -12,12 +13,14 @@ export default function Profile({first_name, last_name, email, phone, date_ob} :
         className="flex flex-col items-center p-4"
       >
         <div className="relative">
-          <img
-            src="/profile.jpg"
+          <Image 
+            src={`${avatar}`}
             alt="Profile"
+            width={400}
+            height={400}
             className="w-48 h-48 rounded-full object-cover border-4 border-white shadow-md"
           />
-          <button className="absolute bottom-0 right-0 bg-blue-500 p-1 rounded-full border-2 border-white">
+          <button className="absolute bottom-0 right-0 bg-main p-1 rounded-full border-2 border-white">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="white"
@@ -37,7 +40,7 @@ export default function Profile({first_name, last_name, email, phone, date_ob} :
         className="px-4 space-y-4 mt-16"
       >
         <div>
-          <span className="block text-gray-600 text-sm">Full Name</span>
+          <span className="block text-main-black text-sm">Full Name</span>
           <span className="block text-lg font-semibold">{first_name} {last_name}</span>
         </div>
         <div>

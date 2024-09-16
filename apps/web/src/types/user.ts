@@ -19,4 +19,5 @@ export interface Buyer {
     email: string
     phone: string
     date_ob: string
+    avatar: string
 }

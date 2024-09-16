@@ -94,15 +94,15 @@ export default function Navbar() {
             </button>
             </Link>
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 shadow-lg">
+              <div className="absolute right-0 mt-2 w-48 bg-secondary border border-gray-300 shadow-xl">
                 <div className="flex flex-col p-2 space-y-1">
-                  <button className="px-4 py-2 text-gray-700 hover:bg-gray-100">
+                  <button className="px-4 py-2 text-main hover:bg-main hover:text-secondary">
                     Profile
                   </button>
-                  <button className="px-4 py-2 text-gray-700 hover:bg-gray-100">
+                  <button className="px-4 py-2 text-main hover:bg-main hover:text-secondary">
                     Settings
                   </button>
-                  <button className="px-4 py-2 text-gray-700 hover:bg-gray-100">
+                  <button className="px-4 py-2 text-main hover:bg-main hover:text-secondary">
                     Logout
                   </button>
                 </div>

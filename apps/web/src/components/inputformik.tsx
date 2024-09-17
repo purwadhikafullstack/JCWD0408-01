@@ -15,7 +15,7 @@ export const Input: React.FC<InputProps> = ({ name, type, placeholder }) => {
         name={name}
         placeholder={placeholder}
         autoComplete = 'off'
-        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none mt-1"
+        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-main focus:outline-none mt-1"
       />
       <ErrorMessage
         name={name}

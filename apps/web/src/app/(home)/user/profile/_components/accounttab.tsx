@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import BuyerProfile from '../../_components/buyerprofile';
+import BuyerProfile from './buyerprofile';
 
 
 const tabVariants = {

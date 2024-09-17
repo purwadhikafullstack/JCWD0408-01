@@ -34,7 +34,7 @@ export default function BuyerProfile() {
   
   return (
     <div>
-      <Profile first_name={data!.first_name} last_name={data!.last_name} email={data!.email} phone={data!.phone} date_ob={data!.date_ob}/>
+      <Profile first_name={data!.first_name} last_name={data!.last_name} email={data!.email} phone={data!.phone} date_ob={data!.date_ob} avatar={data!.avatar}/>
     </div>
   );
 }

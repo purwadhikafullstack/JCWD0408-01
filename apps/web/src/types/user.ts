@@ -19,4 +19,9 @@ export interface Buyer {
     email: string
     phone: string
     date_ob: string
+    avatar: File
+}
+
+export interface BuyerAvatar {
+    avatar: File
 }

@@ -23,9 +23,9 @@ export default function BuyerRegistForm() {
     }
   };
   return (
-    <div className="min-h-screen flex items-center justify-center bg-blue-950 w-screen">
+    <div className="min-h-screen flex items-center justify-center bg-secondary w-screen">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md mx-3">
-        <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">
+        <h2 className="text-2xl font-bold text-center text-main-black mb-6">
           Sign Up
         </h2>
         <Formik
@@ -44,7 +44,7 @@ export default function BuyerRegistForm() {
               <div>
                 <button
                   type="submit"
-                  className="w-full bg-main text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105"
+                  className="w-full bg-main text-secondary font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105"
                 >
                   Register
                 </button>
@@ -52,9 +52,9 @@ export default function BuyerRegistForm() {
             </Form>
           )}
         </Formik>
-        <p className="mt-4 text-sm text-center text-gray-500">
+        <p className="mt-4 text-sm text-center text-main-black">
           Already have an account?{' '}
-          <Link href="/login" className="text-blue-500 hover:underline">
+          <Link href="/login" className="text-main hover:underline font-bold">
             Log in
           </Link>
         </p>

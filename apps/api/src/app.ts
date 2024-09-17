@@ -12,6 +12,7 @@ import { PORT } from './config';
 import { AuthRouter } from './routers/auth.router';
 import dotenv from 'dotenv';
 import { BuyerRouter } from './routers/buyer.router';
+import path from 'path'
 
 export default class App {
   private app: Express;
@@ -27,6 +28,7 @@ export default class App {
     this.app.use(cors());
     this.app.use(json());
     this.app.use(urlencoded({ extended: true }));
+    this.app.use('/api/public', express.static(path.join(__dirname, '../public')))
   }
 
   private handleError(): void {

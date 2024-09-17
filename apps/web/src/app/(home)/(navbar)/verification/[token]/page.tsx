@@ -41,9 +41,9 @@ export default function Verification({
   };
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center space-y-8 bg-gradient-to-br from-blue-200 to-indigo-300">
+    <div className="h-screen flex flex-col items-center justify-center space-y-8 bg-secondary">
       <motion.h1
-        className="text-3xl font-bold text-blue-800"
+        className="text-3xl font-bold text-main"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: 'easeOut' }}
@@ -52,7 +52,7 @@ export default function Verification({
       </motion.h1>
 
       <motion.div
-        className="bg-white/30 backdrop-blur-md p-8 rounded-lg shadow-lg w-full max-w-md"
+        className="bg-white backdrop-blur-md p-8 rounded-lg shadow-2xl w-full max-w-md"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
@@ -68,27 +68,27 @@ export default function Verification({
           {() => (
             <Form>
               <div className="space-y-4">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-main-black">
                 Full name
               </label>
               <Input name="first_name" type="string" placeholder='Jane Doe'/>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-main-black">
                 Password
               </label>
               <Input name="password" type="password" />
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-main-black">
                 Confirm Password
               </label>
               <Input name="confirmpassword" type="password" />
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-main-black">
                 Phone Number
               </label>
               <Input name="phone" type="string" placeholder="081233334444" />
-                <button
+              <button
                   type="submit"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded w-full transition-colors duration-300"
+                  className="w-full bg-main text-secondary font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105"
                 >
-                  Verify
+                  Continue
                 </button>
               </div>
             </Form>

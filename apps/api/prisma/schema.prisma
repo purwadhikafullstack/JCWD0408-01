@@ -41,7 +41,7 @@ model User {
   first_name String
   last_name  String?
   date_ob    String?
-  avatar      String?
+  avatar     String?
   role       Role
   verified   Boolean  @default(false)
   created_at DateTime @default(now())
@@ -53,6 +53,7 @@ model User {
   orders            Order[]
   Address           Address[]
   Voucher           Voucher[]
+  cartItems         CartItem[]
 }
 
 model Address {
@@ -97,6 +98,7 @@ model Discount {
   discount_id    Int       @id @default(autoincrement())
   store_id       Int
   product_id     Int?
+  discount_code  String    @unique
   discount_type  Type
   discount_value Int
   minimum_order  Int?
@@ -148,6 +150,7 @@ model Product {
   Discount    Discount[]
   Inventory   Inventory[]
   OrderItem   OrderItem[]
+  CartItem    CartItem[]
 }
 
 model Inventory {
@@ -195,4 +198,15 @@ model Shipping {
   created_at       DateTime       @default(now())
   updated_at       DateTime       @default(now())
   order            Order          @relation(fields: [order_id], references: [order_id])
+}
+
+model CartItem {
+  cartitem_id Int     @id @default(autoincrement())
+  user_id     Int
+  product_id  Int
+  quantity    Int
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+  user        User     @relation(fields: [user_id], references: [user_id])
+  product     Product  @relation(fields: [product_id], references: [product_id])
 }

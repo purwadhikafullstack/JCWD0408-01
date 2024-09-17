@@ -36,6 +36,7 @@
   "dependencies": {
     "@types/axios": "^0.14.0",
     "axios": "^1.7.2",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "react-modal": "^3.16.1"
   }
 }

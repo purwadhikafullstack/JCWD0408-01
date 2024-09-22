@@ -1,6 +1,6 @@
 import React from 'react';
-import CloseIcon from './CloseIcon';
 import ImageCropper from './ImageCropper';
+import CloseIcon from '../../_components/CloseIcon';
 
 interface ModalProps {
   updateAvatar: (dataUrl: string) => void;

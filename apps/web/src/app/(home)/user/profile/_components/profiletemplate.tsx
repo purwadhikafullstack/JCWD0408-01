@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Modal from './Modal';
 import { updateAvatar } from '@/libs/action/buyer';
 import CameraIcon from './CameraIcon';
+import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 
 export default function Profile({
   first_name,
@@ -15,8 +16,9 @@ export default function Profile({
   avatar,
 }: Buyer) {
   const [modalOpen, setModalOpen] = useState(false);
+  const avatarUrl = avatar ? `${avatar}` : '/defaultavatar.webp';
   return (
-    <div className="flex flex-col pt-10">
+    <div className="flex flex-col pt-10 bg-secondary h-[calc(100vh-18rem)]">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -25,10 +27,10 @@ export default function Profile({
       >
         <div className="relative">
           <Image
-            src={`${avatar}`}
+            src={avatarUrl}
             width={150}
             height={150}
-            alt="Avatar"
+            alt="avatar"
             className="w-[150px] h-[150px] rounded-full border-8 border-main"
           />
           <button

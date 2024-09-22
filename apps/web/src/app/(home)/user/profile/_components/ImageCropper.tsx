@@ -1,7 +1,7 @@
 import setCanvasPreview from "@/libs/setCanvasPreview";
 import { useRef, useState } from "react";
 import ReactCrop, { centerCrop, Crop, PixelCrop, makeAspectCrop, convertToPixelCrop } from "react-image-crop";
-import "react-image-crop/dist/ReactCrop.css"; // Ensure you have the CSS imported for styling
+import "react-image-crop/dist/ReactCrop.css"; 
 
 
 interface ImageCropperProps {

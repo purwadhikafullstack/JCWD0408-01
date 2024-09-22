@@ -30,7 +30,6 @@ export default function BuyerProfile() {
   }, []);
 
   if (loading) return <p>Loading...</p>;
-  console.log(data);
   
   return (
     <div>

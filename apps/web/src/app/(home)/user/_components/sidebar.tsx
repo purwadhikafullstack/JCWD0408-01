@@ -16,7 +16,7 @@ export default function Sidebar() {
 
   useEffect(() => {
     const handleResize = () => {
-      const isMobileSize = window.innerWidth < 768;
+      const isMobileSize = window.innerWidth < 1030;
       setIsMobile(isMobileSize);
       setIsSidebarOpen(!isMobileSize);
     };

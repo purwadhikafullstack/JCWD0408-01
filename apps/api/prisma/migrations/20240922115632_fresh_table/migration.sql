@@ -23,8 +23,12 @@ CREATE TABLE `Address` (
     `address_id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_id` INTEGER NOT NULL,
     `address` TEXT NOT NULL,
-    `longitude` DOUBLE NOT NULL,
+    `subdistrict` VARCHAR(191) NULL,
+    `city` VARCHAR(191) NULL,
+    `province` VARCHAR(191) NOT NULL,
+    `postcode` VARCHAR(191) NOT NULL,
     `latitude` DOUBLE NOT NULL,
+    `longitude` DOUBLE NOT NULL,
     `is_primary` BOOLEAN NOT NULL DEFAULT false,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -64,6 +68,7 @@ CREATE TABLE `Discount` (
     `discount_id` INTEGER NOT NULL AUTO_INCREMENT,
     `store_id` INTEGER NOT NULL,
     `product_id` INTEGER NULL,
+    `discount_code` VARCHAR(191) NOT NULL,
     `discount_type` ENUM('fixed', 'percentage') NOT NULL,
     `discount_value` INTEGER NOT NULL,
     `minimum_order` INTEGER NULL,
@@ -72,6 +77,7 @@ CREATE TABLE `Discount` (
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `userUser_id` INTEGER NULL,
 
+    UNIQUE INDEX `Discount_discount_code_key`(`discount_code`),
     PRIMARY KEY (`discount_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -165,6 +171,18 @@ CREATE TABLE `Shipping` (
     PRIMARY KEY (`shipping_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `CartItem` (
+    `cartitem_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `user_id` INTEGER NOT NULL,
+    `product_id` INTEGER NOT NULL,
+    `quantity` INTEGER NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`cartitem_id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `Address` ADD CONSTRAINT `Address_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`user_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -218,3 +236,9 @@ ALTER TABLE `OrderItem` ADD CONSTRAINT `OrderItem_product_id_fkey` FOREIGN KEY (
 
 -- AddForeignKey
 ALTER TABLE `Shipping` ADD CONSTRAINT `Shipping_order_id_fkey` FOREIGN KEY (`order_id`) REFERENCES `Order`(`order_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `CartItem` ADD CONSTRAINT `CartItem_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`user_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `CartItem` ADD CONSTRAINT `CartItem_product_id_fkey` FOREIGN KEY (`product_id`) REFERENCES `Product`(`product_id`) ON DELETE RESTRICT ON UPDATE CASCADE;

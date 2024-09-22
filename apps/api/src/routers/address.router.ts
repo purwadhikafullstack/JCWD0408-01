@@ -15,7 +15,7 @@ export class AddrRouter {
     }
 
     private initialization(): void {
-        this.router.post('/', this.authMiddleware.verifyToken ,this.addressController.createAddress)
+        this.router.post('/user', this.authMiddleware.verifyToken ,this.addressController.createAddress)
     }
 
     getRouter(): Router {

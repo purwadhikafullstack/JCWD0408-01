@@ -201,7 +201,7 @@ model Shipping {
 }
 
 model CartItem {
-  cartitem_id Int     @id @default(autoincrement())
+  cartitem_id Int      @id @default(autoincrement())
   user_id     Int
   product_id  Int
   quantity    Int

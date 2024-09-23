@@ -12,6 +12,8 @@ import { PORT } from './config';
 import { AuthRouter } from './routers/auth.router';
 import dotenv from 'dotenv';
 import { BuyerRouter } from './routers/buyer.router';
+import path from 'path'
+import { AddrRouter } from './routers/address.router';
 
 export default class App {
   private app: Express;
@@ -27,6 +29,7 @@ export default class App {
     this.app.use(cors());
     this.app.use(json());
     this.app.use(urlencoded({ extended: true }));
+    this.app.use('/api/public', express.static(path.join(__dirname, '../public')))
   }
 
   private handleError(): void {
@@ -55,6 +58,8 @@ export default class App {
   private routes(): void {
     const authRouter = new AuthRouter()
     const buyerRouter = new BuyerRouter()
+    const addressRouter = new AddrRouter()
+
 
     this.app.get('/api', (req: Request, res: Response) => {
       res.send(`Hello, Purwadhika Student API!`);
@@ -62,6 +67,7 @@ export default class App {
 
     this.app.use('/api/auth', authRouter.getRouter())
     this.app.use('/api/user', buyerRouter.getRouter())
+    this.app.use('/api/address', addressRouter.getRouter())
   }
 
   public start(): void {

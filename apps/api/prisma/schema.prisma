@@ -37,7 +37,7 @@ model User {
   user_id    Int      @id @default(autoincrement())
   email      String   @unique
   password   String
-  phone      String   @unique
+  phone      String?   @unique
   first_name String
   last_name  String?
   date_ob    String?
@@ -57,15 +57,19 @@ model User {
 }
 
 model Address {
-  address_id Int      @id @default(autoincrement())
-  user_id    Int
-  address    String   @db.Text
-  longitude  Float
-  latitude   Float
-  is_primary Boolean  @default(false)
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-  user       User     @relation(fields: [user_id], references: [user_id])
+  address_id  Int      @id @default(autoincrement())
+  user_id     Int
+  address     String   @db.Text
+  subdistrict String?
+  city        String?
+  province    String
+  postcode    String
+  latitude    Float
+  longitude   Float
+  is_primary  Boolean  @default(false)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+  user        User     @relation(fields: [user_id], references: [user_id])
 }
 
 model Referral {

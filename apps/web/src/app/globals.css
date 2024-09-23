@@ -3,7 +3,15 @@
 @tailwind utilities;
 
 .map-container {
-    width: 100%;
-    height: 100%;
-  }
-  
+  width: 100%;
+  height: 100%;
+}
+
+.custom-toast {
+  background-color: #ecf4f4 !important; /* Custom background color */
+  color: #34443c !important; /* Custom text color */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow around the toast */
+  padding: 10px;
+  font-weight: 600;
+}
+

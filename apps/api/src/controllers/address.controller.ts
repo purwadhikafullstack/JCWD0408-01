@@ -3,18 +3,59 @@ import prisma from "@/prisma";
 import { Request, Response } from "express";
 
 export class AddrController {
-    async createAddress(req: Request, res: Response) {
+    async getAllAddress(req: Request, res: Response) {
       try {
-        const newAddress = await prisma.address.create({
-          data: {...req.body, user_id: req.user.id}
+        const allAddress = await prisma.address.findMany({
+          where: {user_id: req.user.id}
         })
         
         return res.status(200).send({
-          status: 'ok',
-          newAddress
+          status: 'success',
+          allAddress
         })
       } catch (error) {
         responseError(res, error)
+      }
+    }
+
+    async createAddress(req: Request, res: Response) {
+      try {
+          const { address, city, postcode, subdistrict, province } = req.body;
+  
+          const partsToRemove = [subdistrict, city, province, postcode]
+              .filter(part => part)
+              .map(part => part.toLowerCase()); 
+  
+          const filteredAddress = address
+              .split(', ')
+              .map((part: string) => part.trim())
+              .filter((part: string) => !partsToRemove.includes(part.toLowerCase())) 
+              .join(', ');
+  
+          const newAddress = await prisma.address.create({
+              data: {
+                  ...req.body,
+                  address: filteredAddress,
+                  user_id: req.user.id,
+                  latitude: parseFloat(req.body.latitude),
+                  longitude: parseFloat(req.body.longitude)
+              }
+          });
+          
+          return res.status(200).send({
+              status: 'ok',
+              newAddress
+          });
+      } catch (error) {
+          responseError(res, error);
+      }
+  }
+  
+    async deleteAddress(req: Request, res: Response) {
+      try {
+       
+      } catch (error) {
+        
       }
     }
 }

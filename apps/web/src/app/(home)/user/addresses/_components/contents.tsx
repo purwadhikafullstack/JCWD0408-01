@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import AddrModal from './addrmodal';
 import AddrMap from './addrmap';
+import Addrlist from './addrlist';
+import AddrListTemplate from './addrlisttemplate';
 
 export default function Contents() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,7 +29,7 @@ export default function Contents() {
         </button>
       </div>
       <div className="border-b border-gray-300 mb-4"></div>
-
+      <AddrListTemplate/>
       {isModalOpen && (
         <AddrModal closeModal={handleCloseModal}>
           <AddrMap closeModal={handleCloseModal}/>

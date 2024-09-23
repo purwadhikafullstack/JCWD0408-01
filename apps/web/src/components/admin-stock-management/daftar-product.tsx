@@ -31,7 +31,7 @@ export default function DaftarProduct() {
                     </div>
                 )}
             </div>
-            <div className="flex w-24 justify-center items-center rounded-[24px] gap-5 h-10 mt-5 bg-secondary">
+            <div className="flex w-24 justify-center items-center rounded-[24px] gap-5 h-10 mt-5 ">
                 <p><GrFormPrevious size={32} className="text-main hover:text-secondary duration-300 hover:bg-main hover:rounded-full" /></p>
                 <p><GrFormNext size={32} className="text-main hover:text-secondary duration-300 hover:bg-main hover:rounded-full" /></p>
             </div>

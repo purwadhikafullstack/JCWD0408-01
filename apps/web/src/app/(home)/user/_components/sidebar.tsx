@@ -9,11 +9,6 @@ const sidebarVariants = {
   visible: { x: 0 },
 };
 
-const submenuVariants = {
-  hidden: { height: 0, opacity: 0 },
-  visible: { height: 'auto', opacity: 1 },
-};
-
 export default function Sidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
@@ -21,7 +16,7 @@ export default function Sidebar() {
 
   useEffect(() => {
     const handleResize = () => {
-      const isMobileSize = window.innerWidth < 768;
+      const isMobileSize = window.innerWidth < 1030;
       setIsMobile(isMobileSize);
       setIsSidebarOpen(!isMobileSize);
     };
@@ -38,7 +33,7 @@ export default function Sidebar() {
       {!isMobile && isSidebarOpen && (
         <motion.div
           ref={sidebarRef}
-          className="fixed top-0 left-0 bottom-0 w-64 bg-main shadow-md z-10"
+          className="fixed top-0 left-0 bottom-0 w-64 bg-secondary shadow-md z-10"
           initial="hidden"
           animate="visible"
           variants={sidebarVariants}
@@ -46,17 +41,17 @@ export default function Sidebar() {
         >
           <div className="flex flex-col items-start justify-center h-full p-4 space-y-6">
             <Link href="/user" className='z-20 w-[200px]'>
-              <div className="text-white text-lg font-bold hover:bg-white hover:text-black p-3 rounded w-full text-left flex justify-between items-center transition-colors">
+              <div className="text-main text-lg font-bold hover:bg-main hover:text-secondary p-3 rounded w-full text-left flex justify-between items-center transition-colors">
                 My Account
                 </div>
             </Link>
             <Link href="/orders" className='z-20 w-[200px]'>
-              <div className="text-white text-lg font-bold hover:bg-white hover:text-black p-3 rounded cursor-pointer text-left transition-colors">
+              <div className="text-main text-lg font-bold hover:bg-main hover:text-secondary p-3 rounded cursor-pointer text-left transition-colors">
                 My Orders
               </div>
             </Link>
             <Link href="/vouchers" className='z-20 w-[200px]'>
-              <div className="text-white text-lg font-bold hover:bg-white hover:text-black p-3 rounded cursor-pointer text-left transition-colors z-20">
+              <div className="text-main text-lg font-bold hover:bg-main hover:text-secondary p-3 rounded cursor-pointer text-left transition-colors z-20">
                 My Vouchers
               </div>
             </Link>

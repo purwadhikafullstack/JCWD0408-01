@@ -18,7 +18,7 @@ export default function Profile({
   const [modalOpen, setModalOpen] = useState(false);
   const avatarUrl = avatar ? `${avatar}` : '/defaultavatar.webp';
   return (
-    <div className="flex flex-col pt-10 bg-secondary h-[calc(100vh-18rem)]">
+    <div className="flex flex-col pt-10 bg-secondary ">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

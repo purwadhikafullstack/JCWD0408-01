@@ -117,17 +117,21 @@ model Discount {
 }
 
 model Store {
-  store_id   Int         @id @default(autoincrement())
-  store_name String      @unique
-  longitude  Float
-  latitude   Float
-  address    String      @db.Text
-  created_at DateTime    @default(now())
-  updated_at DateTime    @default(now())
-  Discount   Discount[]
-  Product    Product[]
-  Inventory  Inventory[]
-  Order      Order[]
+  store_id    Int         @id @default(autoincrement())
+  store_name  String      @unique
+  address     String
+  subdistrict String?
+  city        String?
+  province    String
+  postcode    String
+  latitude    Float
+  longitude   Float
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @default(now())
+  Discount    Discount[]
+  Product     Product[]
+  Inventory   Inventory[]
+  Order       Order[]
 }
 
 model Category {

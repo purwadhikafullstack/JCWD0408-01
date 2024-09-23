@@ -17,7 +17,7 @@ export class AuthController {
        
 
       const newBuyerData = await prisma.user.create({
-        data: {email: req.body.email, role: 'buyer', first_name: '', password: '', phone: ''}
+        data: {email: req.body.email, role: 'buyer', first_name: '', password: '', ...req.body}
       })
 
       const token = createToken({

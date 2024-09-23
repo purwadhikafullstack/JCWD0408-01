@@ -24,12 +24,12 @@ export default function RootLayout({
         {/* <Footer /> */}
         <ToastContainer
           position="top-center"
-          autoClose={2500}
+          autoClose={3000}
           hideProgressBar={true}
           newestOnTop={false}
           closeOnClick
           rtl={false}
-          theme="dark"
+          toastClassName="custom-toast"
         />
       </body>
     </html>

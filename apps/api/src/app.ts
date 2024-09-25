@@ -14,6 +14,8 @@ import dotenv from 'dotenv';
 import { BuyerRouter } from './routers/buyer.router';
 import path from 'path'
 import { AddrRouter } from './routers/address.router';
+import { StoreAdminRouter } from './routers/storeadmin.router';
+import { CategoryRouter } from './routers/category.router';
 
 export default class App {
   private app: Express;
@@ -59,6 +61,8 @@ export default class App {
     const authRouter = new AuthRouter()
     const buyerRouter = new BuyerRouter()
     const addressRouter = new AddrRouter()
+    const adminRouter = new StoreAdminRouter()
+    const categoryRouter = new CategoryRouter()
 
 
     this.app.get('/api', (req: Request, res: Response) => {
@@ -68,6 +72,8 @@ export default class App {
     this.app.use('/api/auth', authRouter.getRouter())
     this.app.use('/api/user', buyerRouter.getRouter())
     this.app.use('/api/address', addressRouter.getRouter())
+    this.app.use('/api/admin', adminRouter.getRouter())
+    this.app.use('/api/category', categoryRouter.getRouter())
   }
 
   public start(): void {

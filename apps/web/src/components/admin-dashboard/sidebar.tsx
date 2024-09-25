@@ -88,7 +88,7 @@ export default function Sidebar() {
               </div>
               </Link>
               <div className='border-[1px] border-white mt-5 w-full '></div>
-              <Link href="/admin-dashboard" className='z-20 w-[200px]'>
+              <Link href="/admin-stock-management" className='z-20 w-[200px]'>
                 <div className="text-main-black text-lg  hover:bg-main hover:text-secondary p-3 pl-5 cursor-pointer text-left transition-colors z-20">
                   Dashboard
                 </div>

@@ -36,7 +36,6 @@ export class AddrController {
               data: {
                   ...req.body,
                   address: filteredAddress,
-                  user_id: req.user.id,
                   latitude: parseFloat(req.body.latitude),
                   longitude: parseFloat(req.body.longitude)
               }

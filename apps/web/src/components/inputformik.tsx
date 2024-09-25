@@ -31,6 +31,16 @@ export interface ICreateAccBySuperAdmin {
   password: string;
   first_name: string;
   phone: string;
-  address: string;
-  role: string;
+}
+
+export interface ICreateProductBySuperAdmin {
+  name : string;
+  price : string;
+  description : string;
+  image : string;
+}
+
+export interface ICreateCategoryBySuperAdmin {
+  category_name : string;
+  description : string;
 }

@@ -48,7 +48,7 @@ export class AuthController {
       if (!validPass) throw 'Password Incorrect';
       const token = createToken({
         id: buyer.user_id,
-        role: (buyer.role = 'buyer'),
+        role: buyer.role,
       });
       return res
         .status(201)

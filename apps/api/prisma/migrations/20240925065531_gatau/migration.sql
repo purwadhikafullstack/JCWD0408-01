@@ -9,5 +9,4 @@
 ALTER TABLE `store` ADD COLUMN `city` VARCHAR(191) NULL,
     ADD COLUMN `postcode` VARCHAR(191) NOT NULL,
     ADD COLUMN `province` VARCHAR(191) NOT NULL,
-    ADD COLUMN `subdistrict` VARCHAR(191) NULL,
-    MODIFY `address` VARCHAR(191) NOT NULL;
+    ADD COLUMN `subdistrict` VARCHAR(191) NULL;

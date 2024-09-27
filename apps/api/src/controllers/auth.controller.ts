@@ -11,7 +11,7 @@ export class AuthController {
     try {
       const buyerEmail = await prisma.user.findUnique({
         where: {email: req.body.email}
-      })
+      })  
        
       if (buyerEmail) throw ("Email address has already been used");
        

@@ -47,7 +47,6 @@ export const verificationSchema = Yup.object({
     .required('Phone number is required'),
 });
 
-
 export const loginSchemaStore = Yup.object({
   email: Yup.string().email('Invalid format').required('Email is required'),
   password: Yup.string()
@@ -55,8 +54,15 @@ export const loginSchemaStore = Yup.object({
     
 });
 
-
 export const createCategorybySuperAdmin = yup.object().shape({
   category_name: yup.string().required("category name is required"),
   description: yup.string().required("description is required"),
+})
+
+export const createProductbySuperAdmin = yup.object().shape({
+  name: yup.string().required("name is required"),
+  desc: yup.string().required("description is required"),
+  price: yup.number().required("price is required"),
+  image: yup.string().required("image is required"),
+  category_id: yup.number().required("category id is required")
 })

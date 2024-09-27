@@ -94,8 +94,10 @@ CREATE TABLE `Store` (
     `longitude` DOUBLE NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `user_id` INTEGER NULL,
 
     UNIQUE INDEX `Store_store_name_key`(`store_name`),
+    UNIQUE INDEX `Store_user_id_key`(`user_id`),
     PRIMARY KEY (`store_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -213,6 +215,9 @@ ALTER TABLE `Discount` ADD CONSTRAINT `Discount_product_id_fkey` FOREIGN KEY (`p
 
 -- AddForeignKey
 ALTER TABLE `Discount` ADD CONSTRAINT `Discount_userUser_id_fkey` FOREIGN KEY (`userUser_id`) REFERENCES `User`(`user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Store` ADD CONSTRAINT `Store_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Product` ADD CONSTRAINT `Product_store_id_fkey` FOREIGN KEY (`store_id`) REFERENCES `Store`(`store_id`) ON DELETE RESTRICT ON UPDATE CASCADE;

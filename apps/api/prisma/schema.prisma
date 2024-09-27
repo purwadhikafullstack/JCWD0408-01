@@ -37,7 +37,7 @@ model User {
   user_id    Int      @id @default(autoincrement())
   email      String   @unique
   password   String
-  phone      String?   @unique
+  phone      String?  @unique
   first_name String
   last_name  String?
   date_ob    String?
@@ -49,6 +49,7 @@ model User {
 
   referralsSent     Referral[] @relation("ReferrerRelation")
   referralsReceived Referral[] @relation("ReferredRelation")
+  Store             Store?
   discounts         Discount[]
   orders            Order[]
   Address           Address[]
@@ -140,8 +141,8 @@ model Discount {
 }
 
 model Store {
-  store_id    Int         @id @default(autoincrement())
-  store_name  String      @unique
+  store_id    Int      @id @default(autoincrement())
+  store_name  String   @unique
   address     String
   subdistrict String?
   city        String?
@@ -149,12 +150,14 @@ model Store {
   postcode    String
   latitude    Float
   longitude   Float
-  created_at  DateTime    @default(now())
-  updated_at  DateTime    @default(now())
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+  user_id Int?        @unique
   Discount    Discount[]
   Product     Product[]
   Inventory   Inventory[]
   Order       Order[]
+  User        User?       @relation(fields: [user_id], references: [user_id])
 }
 
 model Category {

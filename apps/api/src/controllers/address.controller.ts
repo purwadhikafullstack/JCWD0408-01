@@ -65,6 +65,37 @@ export class AddrController {
         .filter((part: string) => !partsToRemove.includes(part.toLowerCase()))
         .join(', ');
 
+
+    async createAddress(req: Request, res: Response) {
+      try {
+          const { address, city, postcode, subdistrict, province } = req.body;
+  
+          const partsToRemove = [subdistrict, city, province, postcode]
+              .filter(part => part)
+              .map(part => part.toLowerCase()); 
+  
+          const filteredAddress = address
+              .split(', ')
+              .map((part: string) => part.trim())
+              .filter((part: string) => !partsToRemove.includes(part.toLowerCase())) 
+              .join(', ');
+  
+          const newAddress = await prisma.address.create({
+              data: {
+                  ...req.body,
+                  address: filteredAddress,
+                  latitude: parseFloat(req.body.latitude),
+                  longitude: parseFloat(req.body.longitude)
+              }
+          });
+          
+          return res.status(200).send({
+              status: 'ok',
+              newAddress
+          });
+      } catch (error) {
+          responseError(res, error);
+      }
       const updatedAddress = await prisma.address.update({
         data: {
           ...req.body,

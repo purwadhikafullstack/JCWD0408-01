@@ -54,6 +54,27 @@ model User {
   Address           Address[]
   Voucher           Voucher[]
   cartItems         CartItem[]
+  Provider          Provider[]
+  Session           Session[]
+}
+
+model Provider {
+  provider_id         Int      @id @default(autoincrement())
+  user_id             Int
+  provider_name       String
+  provider_account_id String   @unique
+  created_at          DateTime @default(now())
+  updated_at          DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [user_id])
+}
+
+model Session {
+  id           Int      @id @default(autoincrement())
+  sessionToken String   @unique
+  user_id      Int
+  expires      DateTime
+  user         User     @relation(fields: [user_id], references: [user_id])
 }
 
 model Address {
@@ -62,8 +83,10 @@ model Address {
   address     String   @db.Text
   subdistrict String?
   city        String?
-  province    String
-  postcode    String
+  city_id     String
+  province    String?
+  province_id String
+  postcode    String?
   latitude    Float
   longitude   Float
   is_primary  Boolean  @default(false)

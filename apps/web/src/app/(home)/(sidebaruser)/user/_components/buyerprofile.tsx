@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
 import { useState, useEffect } from 'react';
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
 import { Buyer } from '@/types/user';
 import Profile from './profiletemplate';
 
@@ -11,7 +11,7 @@ export default function BuyerProfile() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = Cookies.get('token')
+      const token = Cookies.get('token');
 
       const res = await fetch('http://localhost:8000/api/user/details', {
         headers: {
@@ -22,7 +22,7 @@ export default function BuyerProfile() {
       });
 
       const dat = await res.json();
-      setData(dat); 
+      setData(dat);
       setLoading(false);
     };
 
@@ -30,10 +30,17 @@ export default function BuyerProfile() {
   }, []);
 
   if (loading) return <p>Loading...</p>;
-  
+
   return (
-    <div>
-      <Profile first_name={data!.first_name} last_name={data!.last_name} email={data!.email} phone={data!.phone} date_ob={data!.date_ob} avatar={data!.avatar}/>
+    <div className="">
+      <Profile
+        first_name={data!.first_name}
+        last_name={data!.last_name}
+        email={data!.email}
+        phone={data!.phone}
+        date_ob={data!.date_ob}
+        avatar={data!.avatar}
+      />
     </div>
   );
 }

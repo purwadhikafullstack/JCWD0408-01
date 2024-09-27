@@ -15,6 +15,7 @@ module.exports = {
         "main": "#34443c",
         "secondary": "#ecf4f4",
         "accent": "#7993a0",
+        "maroon" : "#5e0e0e"
       },
     },
   },

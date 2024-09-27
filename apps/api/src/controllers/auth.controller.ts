@@ -22,7 +22,7 @@ export class AuthController {
 
       const token = createToken({
         id: newBuyerData.user_id,
-        role: (newBuyerData.role = 'buyer'),
+        role: newBuyerData.role,
       });
 
       await sendVerificationEmail(req.body.email, token)
@@ -48,7 +48,7 @@ export class AuthController {
       if (!validPass) throw 'Password Incorrect';
       const token = createToken({
         id: buyer.user_id,
-        role: (buyer.role = 'buyer'),
+        role: buyer.role,
       });
       return res
         .status(201)
@@ -150,4 +150,5 @@ export class AuthController {
       responseError(res, error);
     }
   }
-}
+
+ }

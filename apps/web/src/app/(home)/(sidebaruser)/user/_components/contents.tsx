@@ -17,7 +17,6 @@ export default function Contents() {
   const [editingAddressId, setEditingAddressId] = useState<number | null>(null);
   const [isAddingAddress, setIsAddingAddress] = useState(false);
 
-  // State for confirmation modal
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [addressIdToDelete, setAddressIdToDelete] = useState<number | null>(
     null,
@@ -35,8 +34,8 @@ export default function Contents() {
   };
 
   const handleDelete = (addressId: number) => {
-    setAddressIdToDelete(addressId); // Store the address ID to delete
-    setIsConfirmationOpen(true); // Open the confirmation modal
+    setAddressIdToDelete(addressId);
+    setIsConfirmationOpen(true);
   };
 
   const confirmDelete = async () => {
@@ -56,13 +55,12 @@ export default function Contents() {
           throw new Error('Failed to delete address');
         }
 
-        // Refetch addresses after deletion
         await fetchData();
       } catch (err: any) {
         console.error(err.message);
       } finally {
-        setIsConfirmationOpen(false); // Close the confirmation modal
-        setAddressIdToDelete(null); // Reset the ID
+        setIsConfirmationOpen(false);
+        setAddressIdToDelete(null);
       }
     }
   };
@@ -121,7 +119,7 @@ export default function Contents() {
         <h2 className="text-xl font-bold text-main">My Addresses</h2>
         <button
           className="px-4 py-2 bg-main text-white rounded-lg shadow-lg"
-          onClick={() => handleOpenModal(true)} // Set to add address
+          onClick={() => handleOpenModal(true)}
         >
           Add Address
         </button>
@@ -131,11 +129,11 @@ export default function Contents() {
         data.allAddress.map((allAddress: addressCard, idx: number) => (
           <AddrListTemplate
             key={idx}
-            {...allAddress} // Spread the address properties
-            onDelete={handleDelete} // Handle delete
+            {...allAddress}
+            onDelete={handleDelete}
             onEdit={(addressId) => {
               setEditingAddressId(addressId);
-              handleOpenModal(false); // Open the modal for editing
+              handleOpenModal(false);
             }}
           />
         ))
@@ -154,7 +152,6 @@ export default function Contents() {
         </Modal>
       )}
 
-      {/* Confirmation Modal for Deletion */}
       <ConfirmationModal
         isOpen={isConfirmationOpen}
         onClose={() => setIsConfirmationOpen(false)}

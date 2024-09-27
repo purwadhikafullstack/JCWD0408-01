@@ -23,7 +23,6 @@ export const uploader = (filePrefix: string, folderName?: string) => {
             cb: FileNameCallback
         ) => {
             const originalNameParts = file.originalname.split('.') 
-            // image1.png -> ['image1', 'png']
             const fileExtension = originalNameParts[originalNameParts.length - 1]
             const newFileName = filePrefix + Date.now() + "." + fileExtension
             cb(null, newFileName)

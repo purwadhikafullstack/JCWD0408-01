@@ -5,17 +5,25 @@ import BaskitAdmin from "@/components/admin-stock-management/baskit-admin";
 import BaskitUser from "@/components/admin-stock-management/baskit-user";
 import CategoryProduct from "@/components/admin-stock-management/category-product";
 import DaftarProduct from "@/components/admin-stock-management/daftar-product";
+import RegisterForm from "@/components/admin-stock-management/register";
 import Image from "next/image";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { SlGraph } from "react-icons/sl";
+import { FaPlus } from "react-icons/fa";
 
 export default function AdminStockManagement() {
+    const [IsModalOpen, setIsModalOpen] = useState(false);
+
+    const toggleModal = () => {
+        setIsModalOpen(!IsModalOpen);
+    };
 
     const tabs = [
-        { name: "Baskit User", content: <div className="py-5"><BaskitUser/></div> },
-        { name: "Baskit Admin", content: <div className="py-5"><BaskitAdmin/></div> },
-        { name: "Daftar Product", content: <div className="py-5"><DaftarProduct/></div> },
-        { name: "Category Product", content: <div className="py-5"><CategoryProduct/></div> },
+        { name: "Baskit User", content: <div className="py-5"><BaskitUser /></div> },
+        { name: "Baskit Admin", content: <div className="py-5"><BaskitAdmin /></div> },
+        { name: "Daftar Product", content: <div className="py-5"><DaftarProduct /></div> },
+        { name: "Category Product", content: <div className="py-5"><CategoryProduct /></div> },
     ];
 
     const [activeTab, setActiveTab] = useState(tabs[0].name);
@@ -33,6 +41,17 @@ export default function AdminStockManagement() {
                     </div>
                 </div>
                 <div className="flex flex-col pl-10 text-[20px] font-medium" >Overview</div>
+                <div className="flex gap-5 p-10">
+                    <button onClick={toggleModal} className="active:scale-95 duration-200 bg-main text-white p-2 flex rounded items-center">
+                        <FaPlus size={20} className="mr-2" />
+                        Create Store Admin
+                        </button>
+                    {IsModalOpen && (
+                        <div className="absolute lg:left-[675px] top-[250px]">
+                            <RegisterForm  toggleModal={toggleModal}/>
+                        </div>
+                    )}
+                </div>
                 <div className="p-10">
                     <div className="border-[1px] w-full mb-5"></div>
                     <div className="flex justify-center gap-10 mb-4 rounded-full">
@@ -61,7 +80,7 @@ export default function AdminStockManagement() {
                                     <p>GRAPH</p>
                                 </div>
                             </div>
-                            <div className="border-[1px] w-full border-accent"></div>
+                            <div className="border-[1px] w-full border-accent mt-10"></div>
                         </div>
                     </div>
                 </div>

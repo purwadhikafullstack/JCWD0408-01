@@ -24,14 +24,13 @@ export default function CategoryProduct() {
                 {isModalOpen && (
                     <div className="absolute bg-white border rounded-[10px] shadow-lg  right-10 duration-300">
                         <ul className="">
-                            <li className="p-2 hover:bg-secondary rounded-[6px]  duration-200 hover:text-main cursor-pointer ">Update Admin</li>
-                            <li className="p-2 hover:bg-secondary rounded-[6px]  duration-200 hover:text-main  cursor-pointer">Delete Admin</li>
+                            <li className="p-2 hover:bg-secondary rounded-[6px]  duration-200 hover:text-main  cursor-pointer">Delete Category</li>
                             <li className="p-2 hover:bg-secondary rounded-[6px]  duration-200 hover:text-main  cursor-pointer" onClick={toggleModal}>Cancel</li>
                         </ul>
                     </div>
                 )}
             </div>
-            <div className="flex w-24 justify-center items-center rounded-[24px] gap-5 h-10 mt-5 bg-secondary">
+            <div className="flex w-24 justify-center items-center rounded-[24px] gap-5 h-10 mt-5 ">
                 <p><GrFormPrevious size={32} className="text-main hover:text-secondary duration-300 hover:bg-main hover:rounded-full" /></p>
                 <p><GrFormNext size={32} className="text-main hover:text-secondary duration-300 hover:bg-main hover:rounded-full" /></p>
             </div>

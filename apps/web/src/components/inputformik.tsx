@@ -25,3 +25,12 @@ export const Input: React.FC<InputProps> = ({ name, type, placeholder }) => {
     </div>
   );
 };
+
+export interface ICreateAccBySuperAdmin {
+  email: string;
+  password: string;
+  first_name: string;
+  phone: string;
+  address: string;
+  role: string;
+}

@@ -6,7 +6,7 @@ export interface addressForm {
     postcode: string
     latitude: number
     longitude: number
-    address_id?: number; // Add address_id as an optional property
+    address_id?: number; 
 }
 
 export interface addressCard {

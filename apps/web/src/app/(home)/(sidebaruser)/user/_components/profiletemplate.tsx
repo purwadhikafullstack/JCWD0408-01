@@ -25,7 +25,6 @@ export default function Profile({
         transition={{ duration: 0.5 }}
         className="flex flex-col items-center w-full max-w-sm bg-secondary p-4 shadow-lg shadow-gray-500/50 rounded-lg space-y-4" // customized shadow
       >
-        {/* Avatar Section */}
         <div className="relative">
           <Image
             src={avatarUrl}
@@ -43,12 +42,10 @@ export default function Profile({
           </button>
         </div>
 
-        {/* Change Password Button */}
         <button className="w-full py-2 text-sm font-semibold text-white bg-main hover:bg-main-dark rounded-md transition">
           Change Password
         </button>
 
-        {/* Profile Details */}
         <div className="w-full space-y-3">
           <div className="flex flex-col">
             <span className="font-medium">Name</span>

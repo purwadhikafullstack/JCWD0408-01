@@ -7,22 +7,26 @@ import { addAddress } from '@/libs/action/address';
 import { toast } from 'react-toastify';
 import AddressInput from './addrinput';
 import SuggestionsList from './suggestionlist';
+import { addressForm } from '@/types/address';
 
-
-
-interface AddrMapProps {
+interface AddressProp {
   closeModal: () => void;
+  submitFunction: (addressData: addressForm) => Promise<void>;
 }
 
-export default function AddrMap({ closeModal }: AddrMapProps) {
+export default function AddrMap({ closeModal, submitFunction }: AddressProp) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const suggestionsRef = useRef<HTMLUListElement | null>(null);
   const [map, setMap] = useState<maplibregl.Map | null>(null);
   const [marker, setMarker] = useState<maplibregl.Marker | null>(null);
-  const [location, setLocation] = useState<{ lat: number; lon: number } | null>(null);
+  const [location, setLocation] = useState<{ lat: number; lon: number } | null>(
+    null,
+  );
   const [address, setAddress] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(
+    null,
+  );
   const [detailsData, setDetailsData] = useState<any>(null);
 
   useEffect(() => {
@@ -59,11 +63,13 @@ export default function AddrMap({ closeModal }: AddrMapProps) {
   const fetchSuggestions = async (value: string) => {
     try {
       const response = await fetch(
-        `https://us1.locationiq.com/v1/autocomplete.php?key=${process.env.ACCESS_TOKEN}&q=${encodeURIComponent(value)}&format=json&accept-language=id`
+        `https://us1.locationiq.com/v1/autocomplete.php?key=${process.env.ACCESS_TOKEN}&q=${encodeURIComponent(value)}&format=json&accept-language=id`,
       );
       const data = await response.json();
       const filteredSuggestions = Array.isArray(data)
-        ? data.filter((item: any) => item.display_name.includes('Indonesia')).map((item: any) => item.display_name)
+        ? data
+            .filter((item: any) => item.display_name.includes('Indonesia'))
+            .map((item: any) => item.display_name)
         : [];
       setSuggestions(filteredSuggestions);
     } catch {
@@ -79,7 +85,7 @@ export default function AddrMap({ closeModal }: AddrMapProps) {
 
   const handleGeocode = async (address: string) => {
     const response = await fetch(
-      `https://us1.locationiq.com/v1/search.php?key=${process.env.ACCESS_TOKEN}&q=${encodeURIComponent(address)}&format=json&accept-language=id`
+      `https://us1.locationiq.com/v1/search.php?key=${process.env.ACCESS_TOKEN}&q=${encodeURIComponent(address)}&format=json&accept-language=id`,
     );
     const data = await response.json();
     if (data && data.length > 0) {
@@ -106,7 +112,7 @@ export default function AddrMap({ closeModal }: AddrMapProps) {
   const fetchLocationDetails = async (lat: number, lon: number) => {
     try {
       const detailsResponse = await fetch(
-        `https://us1.locationiq.com/v1/reverse.php?key=${process.env.ACCESS_TOKEN}&lat=${lat}&lon=${lon}&format=json&accept-language=id`
+        `https://us1.locationiq.com/v1/reverse.php?key=${process.env.ACCESS_TOKEN}&lat=${lat}&lon=${lon}&format=json&accept-language=id`,
       );
       const detailsData = await detailsResponse.json();
       setDetailsData(detailsData);
@@ -125,7 +131,7 @@ export default function AddrMap({ closeModal }: AddrMapProps) {
         longitude: location.lon,
       };
       try {
-        await addAddress(addressData);
+        await submitFunction(addressData);
         console.log(addressData);
         toast.success('Address Added!');
         closeModal();
@@ -138,16 +144,18 @@ export default function AddrMap({ closeModal }: AddrMapProps) {
   return (
     <div className="relative">
       <AddressInput
-        address={address} 
-        onAddressChange={handleAddressChange} 
-        onSearch={handleSelectSuggestion} 
+        address={address}
+        onAddressChange={handleAddressChange}
+        onSearch={handleSelectSuggestion}
       />
-      <SuggestionsList 
-        suggestions={suggestions} 
-        suggestionsRef={suggestionsRef} 
-        onSelect={handleSelectSuggestion} 
+      <SuggestionsList
+        suggestions={suggestions}
+        suggestionsRef={suggestionsRef}
+        onSelect={handleSelectSuggestion}
       />
-      <div className="font-bold text-base pb-3">Note: Place an accurate mark</div>
+      <div className="font-bold text-base pb-3">
+        Note: Place an accurate mark
+      </div>
       <div ref={mapContainerRef} className="w-full h-96"></div>
       <div className="flex justify-center mt-4">
         <button

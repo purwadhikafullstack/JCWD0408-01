@@ -11,7 +11,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["./src/types/custom.d.ts"]
+    "types": ["./src/types/custom.d.ts", "./src/types/next-auth.d.ts"]
   },
   // "include": ["src/**/*"],
   "include": ["**/*.ts", "src/helpers/namesplitter.js", "src/controllers/address.controller.ts"],

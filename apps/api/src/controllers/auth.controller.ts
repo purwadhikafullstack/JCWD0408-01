@@ -22,7 +22,7 @@ export class AuthController {
 
       const token = createToken({
         id: newBuyerData.user_id,
-        role: (newBuyerData.role = 'buyer'),
+        role: newBuyerData.role,
       });
 
       await sendVerificationEmail(req.body.email, token)
@@ -150,4 +150,5 @@ export class AuthController {
       responseError(res, error);
     }
   }
-}
+
+ }

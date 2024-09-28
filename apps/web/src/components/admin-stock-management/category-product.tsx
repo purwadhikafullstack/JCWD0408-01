@@ -1,38 +1,71 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { IoIosMore } from "react-icons/io";
+import CategoryProductDetail from "./category-product-detail";
+import { use } from "chai";
+
+export interface CategoryData{
+    status: string,
+    allCategories: [
+        {
+            category_id: number,
+            category_name: string,
+            created_at: string,
+            description: string,
+            updated_at: string,
+        }
+    ]
+    totalPages: number,
+    currentPage: number
+}
 
 export default function CategoryProduct() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const toggleModal = () => {
-        setIsModalOpen(!isModalOpen);
-    };
+    const [data, setData] = useState<CategoryData | null>(null);
+    const [page, setPage] = useState(1);
+
+    const fetchDataCategory = async () => {
+        const res = await fetch(`http://localhost:8000/api/category?page=${page}`, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'GET',
+        });
+        const data = await res.json();
+        console.log(data)
+        setData(data)
+    }
+
+
+    useEffect(() => {
+        fetchDataCategory()
+    }, [page])
+
+    const handlePrev = () => {
+        if (page > 1) {
+            setPage(page - 1)
+        }
+    }
+
+    const handleNext = () => {
+        if (page === data?.totalPages) {
+            return 
+        }
+        setPage(page + 1)
+    }
 
     return (
         <div className="flex flex-col justify-center items-center gap-2 ">
-            <div className="flex lg:flex-row flex-wrap lg:justify-between justify-center text-[14px] items-center lg:h-10 h-60 rounded-[10px] hover:bg-secondary hover:border-secondary duration-200 border-[1px] w-full">
-                <p className="p-2 lg:pl-10 ">NAMA CATEGORY</p>
-                <p className="">created_At</p>
-                <div className="flex gap-2">
-                    <p className="">stocktotal_inventory</p>
-                    <p className="">pendapatan_bulanini</p>
-                </div>
-                <button type="button" className="" onClick={toggleModal}>
-                    <IoIosMore size={32} className="text-main hover:text-secondary duration-300 hover:bg-main hover:rounded-full md:mr-10" />
-                </button>
-                {isModalOpen && (
-                    <div className="absolute bg-white border rounded-[10px] shadow-lg  right-10 duration-300">
-                        <ul className="">
-                            <li className="p-2 hover:bg-secondary rounded-[6px]  duration-200 hover:text-main  cursor-pointer">Delete Category</li>
-                            <li className="p-2 hover:bg-secondary rounded-[6px]  duration-200 hover:text-main  cursor-pointer" onClick={toggleModal}>Cancel</li>
-                        </ul>
-                    </div>
-                )}
-            </div>
+            {
+                data?.allCategories.map((item: any, key: any) => {
+                    return (
+                        <CategoryProductDetail nama={item.category_name} created_at={item.created_at} stock={0} pendapatan={0} registered_product={item.Product.length} />
+                    )
+                })
+            }
             <div className="flex w-24 justify-center items-center rounded-[24px] gap-5 h-10 mt-5 ">
-                <p><GrFormPrevious size={32} className="text-main hover:text-secondary duration-300 hover:bg-main hover:rounded-full" /></p>
-                <p><GrFormNext size={32} className="text-main hover:text-secondary duration-300 hover:bg-main hover:rounded-full" /></p>
+                <button onClick={handlePrev}><GrFormPrevious size={32} className="text-main hover:text-secondary duration-300 hover:bg-main hover:rounded-full" /></button>
+                <button onClick={handleNext}><GrFormNext size={32} className="text-main hover:text-secondary duration-300 hover:bg-main hover:rounded-full" /></button>
             </div>
         </div>
     );

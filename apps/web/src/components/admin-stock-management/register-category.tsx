@@ -5,8 +5,11 @@ import { ErrorMessage, Field, Form, Formik, FormikHelpers, FormikProps } from 'f
 import { MdOutlineTransitEnterexit } from 'react-icons/md'
 import { createCategorybySuperAdmin } from '@/libs/schema'
 import { toast } from 'react-toastify'
+import { useRouter } from 'next/navigation'
 
 export default function RegisterCategory({ toggleModalCategory }: { toggleModalCategory: () => void }) {
+    const router = useRouter()
+
     const initialValues: ICreateCategoryBySuperAdmin = {
         category_name: "",
         description: ""
@@ -27,7 +30,7 @@ export default function RegisterCategory({ toggleModalCategory }: { toggleModalC
             console.log(ok)
             toast.success(result.msg)
             action.resetForm()
-
+            router.refresh()
         } catch (error) {
             toast.error(error as string)
         }

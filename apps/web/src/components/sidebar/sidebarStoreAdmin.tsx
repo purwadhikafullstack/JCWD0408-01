@@ -8,6 +8,9 @@ import { VscAccount } from "react-icons/vsc";
 import { AiOutlineProduct } from "react-icons/ai";
 import { RiSecurePaymentLine } from "react-icons/ri";
 import { RiDiscountPercentLine } from "react-icons/ri";
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 const sidebarVariants = {
   hidden: { x: '-100%' },
@@ -19,13 +22,16 @@ const submenuVariants = {
   visible: { height: 'auto', opacity: 1 },
 };
 
-export default function Sidebar() {
+export default function SidebarStoreAdmin() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
+  const router = useRouter()
 
-  const handleLogout = () => {
-
+  const deleteToken = () => {
+    Cookies.remove('token');
+    router.push("/login-as-store")
+    toast.success('Logout Success')
   }
 
   useEffect(() => {
@@ -41,8 +47,6 @@ export default function Sidebar() {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-
-
 
   return (
     <div>
@@ -61,11 +65,11 @@ export default function Sidebar() {
                 <Image src="/logo/baskit.svg" alt="About Us" width={500} height={100} className='' />
               </div>
 
-              <Link href="/admin-product" className='z-20 w-[200px]'>
+              <Link href="/store-list-by-store" className='z-20 w-[200px]'>
                 <div className='text-main-black text-lg  hover:bg-main hover:text-secondary p-3 w-full mt-5 pl-5  text-left flex justify-start gap-2 items-center transition-colors'>
                   <AiOutlineProduct size={28} className="text-main-black" />
                   <div className="text-[18px]">
-                    Product
+                    Store List
                   </div>
                 </div>
               </Link>
@@ -75,34 +79,28 @@ export default function Sidebar() {
                   <div className="text-[18px]">
                     Payment Proof
                   </div>
-
                 </div>
               </Link>
               <Link href="/vouchermanagement" className='z-20 w-[200px]'>
-              <div className=' text-main-black text-lg  hover:bg-main hover:text-secondary p-3 w-full pl-5  text-left flex justify-start gap-2 items-center transition-colors'>
-                <RiDiscountPercentLine size={28} className="text-main-black" />
-                <div className="text-[18px]">
-                  Disc. Management
-                </div>
+                <div className=' text-main-black text-lg  hover:bg-main hover:text-secondary p-3 w-full pl-5  text-left flex justify-start gap-2 items-center transition-colors'>
+                  <RiDiscountPercentLine size={28} className="text-main-black" />
+                  <div className="text-[18px]">
+                    Disc. Management
+                  </div>
 
-              </div>
+                </div>
               </Link>
               <div className='border-[1px] border-white mt-5 w-full '></div>
-              <Link href="/admin-stock-management" className='z-20 w-[200px]'>
-                <div className="text-main-black text-lg  hover:bg-main hover:text-secondary p-3 pl-5 cursor-pointer text-left transition-colors z-20">
-                  Dashboard
-                </div>
-              </Link>
             </div>
             <div>
-              <button className="w-64 text-main text-lg font-bold hover:bg-white hover:text-black p-3 mb-5 cursor-pointer text-center transition-colors z-20">Logout</button>
+              <button onClick={deleteToken} className="w-64 text-main text-lg font-bold hover:bg-white hover:text-black p-3 mb-5 cursor-pointer text-center transition-colors z-20">Logout</button>
             </div>
           </div>
         </motion.div>
       )}
 
       {isMobile && (
-        <nav className="fixed  bottom-0 left-0 right-0 bg-main z-50 flex justify-around items-center p-3 shadow-lg">
+        <nav className="fixed bottom-0 left-0 right-0 bg-main z-50 flex justify-around items-center p-3 shadow-lg">
           <Link href="/" className="text-white text-lg font-bold hover:text-darkgreen">
             <VscAccount size={38} />
           </Link>

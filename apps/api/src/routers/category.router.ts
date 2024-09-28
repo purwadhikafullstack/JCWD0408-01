@@ -12,7 +12,8 @@ export class CategoryRouter {
     }
 
     private initializeRouter() {
-        this.router.get('/', this.categoryRouter.getAllCategory)
+        this.router.get('/', this.categoryRouter.getAllCategoryQuery)
+        this.router.get('/all', this.categoryRouter.getAllCategory)
         this.router.post('/create', this.categoryRouter.createCategory)
         this.router.delete('/:id', this.categoryRouter.deleteCategory)
     }

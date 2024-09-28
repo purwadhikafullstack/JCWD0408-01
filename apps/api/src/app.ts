@@ -17,7 +17,9 @@ import { AddrRouter } from './routers/address.router';
 import { StoreAdminRouter } from './routers/storeadmin.router';
 import { CategoryRouter } from './routers/category.router';
 import { ProductRouter } from './routers/product.router';
+import { SuperAdminRouter } from './routers/superadmin.router';
 import { OAuthRouter } from './routers/oauth.router';
+
 
 
 export default class App {
@@ -67,7 +69,9 @@ export default class App {
     const adminRouter = new StoreAdminRouter()
     const categoryRouter = new CategoryRouter()
     const productRouter = new ProductRouter()
+    const superAdminRouter = new SuperAdminRouter()
     const oAuthRouter = new OAuthRouter()
+
 
 
     this.app.get('/api', (req: Request, res: Response) => {
@@ -81,6 +85,7 @@ export default class App {
     this.app.use('/api/admin', adminRouter.getRouter())
     this.app.use('/api/category', categoryRouter.getRouter())
     this.app.use('/api/product', productRouter.getRouter())
+    this.app.use('/api/superadmin', superAdminRouter.getRouter())
   }
 
   public start(): void {

@@ -1,6 +1,7 @@
 import { responseError } from "@/helpers/responseError";
 import prisma from "@/prisma";
 import { Request, response, Response } from "express";
+import { create } from "handlebars";
 
 const baseUrl = 'https://localhost:8000/api'
 
@@ -14,7 +15,10 @@ export class ProductController {
             const product = await prisma.product.findMany({
                 where: { store_id: +req.params.store_id },
                 skip: offset,
-                take: limit
+                take: limit,
+                include: {
+                    Inventory: true,
+                }
             });
 
             const totalProducts = await prisma.product.count({
@@ -25,7 +29,7 @@ export class ProductController {
                 status: 'ok',
                 product,
                 totalPages: Math.ceil(totalProducts / limit),
-                currentPage: page
+                currentPage: page,
             });
         } catch (error) {
             responseError(res, error);
@@ -34,31 +38,45 @@ export class ProductController {
 
     async createProduct(req: Request, res: Response) {
         try {
-
-            const store = await prisma.store.findUnique({
-                where: { store_id: +req.params.store_id }
-            });
-
-            if (!store) {
-                return res.status(404).send({
-                    status: 'error',
-                    msg: 'Store not found'
+            await prisma.$transaction(async (prisma) => {
+                const store = await prisma.store.findUnique({
+                    where: { store_id: +req.params.store_id }
                 });
-            }
 
-            let image = null
-            if (req.file) {
-                image = `${baseUrl}/public/product/${req.file?.filename}`
-            }
+                if (!store) {
+                    return res.status(404).send({
+                        status: 'error',
+                        msg: 'Store not found'
+                    });
+                }
 
-            const createProduct = await prisma.product.create({
-                data: { store_id: store.store_id, image: image, ...req.body, category_id: +req.body.category_id, price: +req.body.price }
-            });
+                let image = null;
+                if (req.file) {
+                    image = `${baseUrl}/public/product/${req.file?.filename}`;
+                }
 
-            return res.status(201).send({
-                status: 'ok',
-                msg: 'Product created successfully',
-                createProduct
+                const createProduct = await prisma.product.create({
+                    data: {               
+                        name: req.body.name,
+                        description: req.body.description,
+                        store_id: store.store_id,
+                        image: image,
+                        category_id: +req.body.category_id,
+                        price: +req.body.price,
+                        Inventory: {
+                            create: {
+                                qty: +req.body.qty,
+                                store_id: store.store_id
+                            }
+                        }
+                    }
+                });
+
+                return res.status(201).send({
+                    status: 'ok',
+                    msg: 'Product created successfully',
+                    createProduct,
+                });
             })
         } catch (error) {
             responseError(res, error);

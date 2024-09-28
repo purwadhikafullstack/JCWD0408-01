@@ -2,15 +2,9 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
-import { IoIosMore } from "react-icons/io";
 import { motion } from "framer-motion";
-import IsiComponentCart from "./isi-component-cart";
-
-interface Inventory {
-    qty: number;
-}
+import IsiComponentCart from "./isi-component-cart_storeadmin";
 
 interface Product {
     name: string;
@@ -29,12 +23,11 @@ interface Data {
     totalPages: number;
 }
 
-export default function CartListProduct() {
+export default function CartListProductByStoreAdmin() {
     const [data, setData] = useState<Data | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [page, setPage] = useState(1);
     const params = useParams()
-    console.log(params)
 
     const handlebutton = () => {
         setIsModalOpen(!isModalOpen);
@@ -54,14 +47,15 @@ export default function CartListProduct() {
     }
 
     const fetchProduct = async () => {
-        const res = await fetch(`http://localhost:8000/api/product/${params.id}?page=${page}`, {
+        const res = await fetch(`http://localhost:8000/api/product/${params.store_id}?page=${page}`, {
             headers: {
-                'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
             },
             method: 'GET',
         });
         const data = await res.json();
         console.log(data);
+        console.log(params.store_id)
         setData(data)
     }
 
@@ -72,7 +66,7 @@ export default function CartListProduct() {
     // console.log(page)
 
     return (
-        <motion.div className="flex flex-col justify-around items-center gap-5 p-10 pt-5"
+        <motion.div className="flex flex-col justify-around items-center gap-5 pt-5 w-full"
         >
             {
                 data?.product.map((item: Product) => {

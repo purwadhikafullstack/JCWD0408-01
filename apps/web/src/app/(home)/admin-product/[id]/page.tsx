@@ -1,5 +1,5 @@
 
-import Sidebar from "@/components/admin-dashboard/sidebar"
+import Sidebar from "@/components/sidebar/sidebar"
 import { VscAccount } from "react-icons/vsc"
 
 export default function DetailProduct() {

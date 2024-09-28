@@ -1,4 +1,4 @@
-import Sidebar from "@/components/admin-dashboard/sidebar";
+import Sidebar from "@/components/sidebar/sidebar";
 import Discount from "@/components/discount-management/list-discount";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,8 +31,8 @@ export default function DiscountManagementPage() {
                 </div>
                 <div className="flex flex-col px-10 text-[20px] font-medium gap-5">
                     <div className="flex items-center gap-2">
-                    <TbListDetails size={24} />
-                    <p>Details</p>
+                        <TbListDetails size={24} />
+                        <p>Details</p>
                     </div>
                     <div className="border-[1px] w-full border-accent"></div>
                     <div className="flex justify-start gap-10  ">
@@ -50,8 +50,8 @@ export default function DiscountManagementPage() {
                     </div>
                     <div className="border-[1px] w-full border-accent"></div>
                     <div className="flex items-center gap-2">
-                    <TbPencilDiscount size={24} />
-                    <p>Discount Management</p>
+                        <TbPencilDiscount size={24} />
+                        <p>Discount Management</p>
                     </div>
                     <div className="border-[1px] w-full mb-5 border-accent"></div>
                     <div className="flex gap-10 justify-evenly font-normal">
@@ -105,8 +105,8 @@ export default function DiscountManagementPage() {
                     </div>
                     <div className="border-[1px] w-full border-accent"></div>
                     <div className="flex items-center gap-2">
-                    <MdOutlineDiscount size={24} />
-                    <p>Active Discount</p>
+                        <MdOutlineDiscount size={24} />
+                        <p>Active Discount</p>
                     </div>
                     <div className="flex lg:flex-row flex-wrap font-normal text-[14px] lg:justify-between justify-center items-center lg:h-10 h-60 rounded-[10px] border-[1px] w-full">
                         <p className="p-2 lg:pl-10 ">NAMA DISCOUNTNYA</p>
@@ -152,7 +152,7 @@ export default function DiscountManagementPage() {
                     </div>
                     <div className="border-[1px] w-full border-accent"></div>
                     <div className="flex gap-2 items-center">
-                        <SlGraph  size={24}/>
+                        <SlGraph size={24} />
                         <p>Summary</p>
                     </div>
                     <div className="flex flex-col justify-around items-center gap-5  ">

@@ -14,19 +14,20 @@ import ImagePreview from './imagePreview';
 export default function CreateProduct() {
 
     const initialValues: ICreateProductBySuperAdmin = {
-
         name: "",
         description: "",
         price: "",
         image: null,
-        category_id: ""
+        category_id: "",
+        qty: ""
     }
 
     const validationSchema = yup.object().shape({
         name: yup.string().required("name is required"),
         description: yup.string().required("description is required"),
         price: yup.number().required("price is required"),
-        category_id: yup.string().required("category id is required")
+        category_id: yup.string().required("category id is required"),
+        qty: yup.number().required("qty is required")
     })
 
     const params = useParams();
@@ -41,6 +42,7 @@ export default function CreateProduct() {
             formData.append('image', data.image);
         }
         formData.append('category_id', data.category_id)
+        formData.append('qty', data.qty)
 
         try {
             const res = await fetch(`http://localhost:8000/api/product/create/${store_id}`, {
@@ -78,20 +80,21 @@ export default function CreateProduct() {
         }
     }
 
-    useEffect(() => {
-        const getCategory = async () => {
-            try {
-                const res = await axios.get(`http://localhost:8000/api/category`, {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    method: 'GET'
-                })
-                setData(res.data)
-            } catch (error) {
-                toast.error(error as string)
-            }
+    const getCategory = async () => {
+        try {
+            const res = await axios.get(`http://localhost:8000/api/category/all`, {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'GET'
+            })
+            setData(res.data)
+        } catch (error) {
+            toast.error(error as string)
         }
+    }
+
+    useEffect(() => {
         getCategory()
     }, [])
 
@@ -112,7 +115,7 @@ export default function CreateProduct() {
                     return (
                         <div>
                             <Form className='flex flex-col  items-center justify-around  p-2 gap-2 rounded-[6px] bg-secondary'>
-                                <p className='text-left w-full p-2 text-[16px]'>Product Form</p>
+                                <p className='text-left w-full p-2 text-[18px] font-bold'>Product Form</p>
                                 <div className='flex gap-2 w-full'>
                                     <div>
                                         <Field
@@ -173,6 +176,16 @@ export default function CreateProduct() {
                                             name='category_id'
                                             component='div' />
                                     </div>
+                                    <div>
+                                        <Field
+                                            name='qty'
+                                            type='number'
+                                            placeholder='qty'
+                                            className="p-4 rounded" />
+                                        <ErrorMessage
+                                            name='qty'
+                                            component='div' />
+                                    </div>
                                 </div>
                                 <div className='w-full'>
                                     <Field
@@ -184,7 +197,7 @@ export default function CreateProduct() {
                                         name='description'
                                         component='div' />
                                 </div>
-                                <button type='submit' className='p-4 bg-main w-44 text-secondary rounded-[6px] hover:bg-secondary hover:text-main'>Submit</button>
+                                <button type='submit' className='p-4 bg-main w-44 text-secondary rounded-[6px] hover:bg-secondary hover:text-main mb-4'>Submit</button>
                             </Form>
                         </div>
                     )

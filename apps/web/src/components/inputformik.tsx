@@ -39,6 +39,7 @@ export interface ICreateProductBySuperAdmin {
   description : string;
   image : File | null;
   category_id : string;
+  qty : string;
 }
 
 export interface ICreateCategoryBySuperAdmin {

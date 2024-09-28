@@ -3,12 +3,27 @@ import prisma from "@/prisma";
 import { Request, Response } from "express";
 
 export class CategoryController {
-    async getAllCategory(req: Request, res: Response) {
+    async getAllCategoryQuery(req: Request, res: Response) {
         try {
-            const allCategories = await prisma.category.findMany();
+            const { page = 1 } = req.query;
+            const limit = 5;
+            const offset = (Number(page) - 1) * limit;
+
+            const allCategories = await prisma.category.findMany({
+                include: {
+                    Product: true
+                },
+                skip: offset,
+                take: limit
+            });
+
+            const totalPages = await prisma.category.count();
+
             return res.status(200).send({
                 status: 'success',
-                allCategories
+                allCategories,
+                totalPages: Math.ceil(totalPages / limit),
+                currentPage: page
             })
         } catch (error) {
             responseError(res, error)
@@ -49,4 +64,23 @@ export class CategoryController {
             responseError(res, error)
         }
     }
+
+    async getAllCategory(req: Request, res: Response) {
+        try {
+            const allCategories = await prisma.category.findMany({
+                include: {
+                    Product: true
+                }
+            });
+
+            return res.status(200).send({
+                status: 'success',
+                allCategories,
+
+            })
+        } catch (error) {
+            responseError(res, error)
+        }
+    }
+
 }

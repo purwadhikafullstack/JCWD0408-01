@@ -1,12 +1,9 @@
 
-import { get } from "cypress/types/lodash";
-import Cookies from "js-cookie";
 import { NextRequest, NextResponse } from "next/server";
-import { deleteCookie, getCookie } from "./libs/action/server";
+import { getCookie } from "./libs/action/server";
 
-const protectedRoutesSuperAdmin = ["/admin-stock-management"]
+const protectedRoutesSuperAdmin = [/^\/admin-stock-management(\/.*)?$/, /^\/admin-stock-management\/admin-dashboard-by-super(\/.*)?$/ ]
 const loginStatus = ["/login-as-super"]
-
 
 export async function middleware(request: NextRequest) {
     const cookie = await getCookie("token");
@@ -15,9 +12,7 @@ export async function middleware(request: NextRequest) {
     console.log("cookie", cookie)
     let payload
 
-
-
-    if(protectedRoutesSuperAdmin.includes(url) ) {
+    if(protectedRoutesSuperAdmin.some((route) => route.test(url))) {
         if (!cookie) {
             return NextResponse.redirect(new URL("/login-as-super", request.url))
         }
@@ -26,7 +21,7 @@ export async function middleware(request: NextRequest) {
     if (cookie) {
         try {
             payload = JSON.parse(atob(cookie.split('.')[1]));
-            if (protectedRoutesSuperAdmin.includes(url) && payload.role !== 'super_admin') {
+            if (protectedRoutesSuperAdmin.some((route) => route.test(url)) && payload.role !== 'super_admin') {
                 return NextResponse.redirect(new URL("/login-as-super", request.url))
             }
             if (loginStatus.includes(url)) {

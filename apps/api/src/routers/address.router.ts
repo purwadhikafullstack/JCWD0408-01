@@ -18,6 +18,7 @@ export class AddrRouter {
         this.router.get('/user', this.authMiddleware.verifyToken, this.addressController.getAllAddress)
         this.router.post('/user', this.authMiddleware.verifyToken ,this.addressController.createAddress)
         this.router.patch('/user', this.authMiddleware.verifyToken, this.addressController.editAddress)
+        this.router.patch('/userdef', this.authMiddleware.verifyToken, this.addressController.setDefaultAddr)
         this.router.delete('/user', this.authMiddleware.verifyToken, this.addressController.deleteAddress)
     }
 

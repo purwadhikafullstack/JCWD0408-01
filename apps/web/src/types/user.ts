@@ -25,3 +25,12 @@ export interface Buyer {
 export interface BuyerAvatar {
     avatar: File
 }
+
+export interface Referral {
+    referral_code: string
+}
+
+export interface ResetPassword {
+    password: string
+    newPassword: string
+}

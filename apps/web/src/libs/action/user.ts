@@ -1,4 +1,13 @@
 import { UserFirstVerification } from "@/types/user";
+import Cookies from "js-cookie";
+import { navigate } from "./server";
+import { toast } from "react-toastify";
+
+export const onLogout = async () => {
+  Cookies.remove('token')
+  navigate('/')
+  toast.success("You've logged out")
+}
 
 export const verificationProcess = async (token: string, data: UserFirstVerification) => {
   const res = await fetch('http://localhost:8000/api/auth/verification', {

@@ -1,10 +1,10 @@
 import Sidebar from './_components/sidebar';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function UserLayout({ children }: { children: React.ReactNode }) {
   return (
     <div>
       <Sidebar />
-      <div className='lg:pl-[270px] lg:pt-64'>{children}</div>
+      <div className='lg:pl-[270px] py-16 lg:py-0'>{children}</div>
     </div>
   );
 }

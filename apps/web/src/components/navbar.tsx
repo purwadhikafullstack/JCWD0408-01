@@ -35,7 +35,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="w-full z-20 fixed top-0 h-24 px-4 md:px-8 flex items-center justify-between shadow-md bg-secondary">
+    <nav className="w-full z-20 fixed top-0 lg:h-24 h-16 px-4 md:px-8 flex items-center justify-between shadow-md bg-secondary">
       <div className="flex items-center w-36 lg:w-[271px]">
         <Image src={'/logo/baskit.svg'} width={270} height={100} alt=''/>
       </div>

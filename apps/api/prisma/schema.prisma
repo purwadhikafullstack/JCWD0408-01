@@ -33,11 +33,21 @@ enum Type {
   percentage
 }
 
+enum ChangeType {
+  email
+  password
+  username
+  date_ob
+  avatar
+  phone
+  name
+}
+
 model User {
   user_id    Int      @id @default(autoincrement())
   email      String   @unique
   password   String
-  phone      String   @unique
+  phone      String?  @unique
   first_name String
   last_name  String?
   date_ob    String?
@@ -49,40 +59,75 @@ model User {
 
   referralsSent     Referral[] @relation("ReferrerRelation")
   referralsReceived Referral[] @relation("ReferredRelation")
+  Store             Store?
   discounts         Discount[]
   orders            Order[]
   Address           Address[]
   Voucher           Voucher[]
   cartItems         CartItem[]
+  Provider          Provider[]
+  Session           Session[]
+}
+
+model AccountChanges {
+  change_id     Int        @id @default(autoincrement())
+  change_type   ChangeType
+  is_requesting Boolean?   @default(false)
+  changed_at    DateTime   @default(now())
+}
+
+model Provider {
+  provider_id         Int      @id @default(autoincrement())
+  user_id             Int
+  provider_name       String
+  provider_account_id String   @unique
+  created_at          DateTime @default(now())
+  updated_at          DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [user_id])
+}
+
+model Session {
+  id           Int      @id @default(autoincrement())
+  sessionToken String   @unique
+  user_id      Int
+  expires      DateTime
+  user         User     @relation(fields: [user_id], references: [user_id])
 }
 
 model Address {
-  address_id Int      @id @default(autoincrement())
-  user_id    Int
-  address    String   @db.Text
-  longitude  Float
-  latitude   Float
-  is_primary Boolean  @default(false)
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-  user       User     @relation(fields: [user_id], references: [user_id])
+  address_id  Int      @id @default(autoincrement())
+  user_id     Int
+  address     String   @db.Text
+  subdistrict String?
+  city        String?
+  city_id     String?
+  province    String?
+  province_id String?
+  postcode    String?
+  latitude    Float
+  longitude   Float
+  is_primary  Boolean  @default(false)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+  user        User     @relation(fields: [user_id], references: [user_id])
 }
 
 model Referral {
   ref_id        Int    @id @default(autoincrement())
-  referrer_id   Int
-  referred_id   Int
+  referrer_id   Int    @unique
+  referred_id   Int?
   referral_code String @unique
   reward_id     Int?
 
   referrer User     @relation("ReferrerRelation", fields: [referrer_id], references: [user_id])
-  referred User     @relation("ReferredRelation", fields: [referred_id], references: [user_id])
+  referred User?    @relation("ReferredRelation", fields: [referred_id], references: [user_id])
   reward   Voucher? @relation(fields: [reward_id], references: [voucher_id])
 }
 
 model Voucher {
   voucher_id   Int        @id @default(autoincrement())
-  voucher_code String     @unique
+  voucher_code String?    @unique
   user_id      Int
   discount_id  Int
   is_redeemed  Boolean    @default(false)
@@ -96,7 +141,7 @@ model Voucher {
 
 model Discount {
   discount_id    Int       @id @default(autoincrement())
-  store_id       Int
+  store_id       Int?
   product_id     Int?
   discount_code  String    @unique
   discount_type  Type
@@ -105,7 +150,7 @@ model Discount {
   expires_at     DateTime
   created_at     DateTime  @default(now())
   updated_at     DateTime  @default(now())
-  store          Store     @relation(fields: [store_id], references: [store_id])
+  store          Store?    @relation(fields: [store_id], references: [store_id])
   product        Product?  @relation(fields: [product_id], references: [product_id])
   Voucher        Voucher[]
   User           User?     @relation(fields: [userUser_id], references: [user_id])
@@ -113,17 +158,23 @@ model Discount {
 }
 
 model Store {
-  store_id   Int         @id @default(autoincrement())
-  store_name String      @unique
-  longitude  Float
-  latitude   Float
-  address    String      @db.Text
-  created_at DateTime    @default(now())
-  updated_at DateTime    @default(now())
-  Discount   Discount[]
-  Product    Product[]
-  Inventory  Inventory[]
-  Order      Order[]
+  store_id    Int         @id @default(autoincrement())
+  store_name  String      @unique
+  address     String
+  subdistrict String?
+  city        String?
+  province    String
+  postcode    String
+  latitude    Float
+  longitude   Float
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @default(now())
+  user_id     Int?        @unique
+  Discount    Discount[]
+  Product     Product[]
+  Inventory   Inventory[]
+  Order       Order[]
+  User        User?       @relation(fields: [user_id], references: [user_id])
 }
 
 model Category {
@@ -201,7 +252,7 @@ model Shipping {
 }
 
 model CartItem {
-  cartitem_id Int     @id @default(autoincrement())
+  cartitem_id Int      @id @default(autoincrement())
   user_id     Int
   product_id  Int
   quantity    Int

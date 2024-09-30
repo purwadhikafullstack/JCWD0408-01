@@ -25,3 +25,33 @@ export const Input: React.FC<InputProps> = ({ name, type, placeholder }) => {
     </div>
   );
 };
+
+export interface ICreateAccBySuperAdmin {
+  email: string;
+  password: string;
+  first_name: string;
+  phone: string;
+}
+
+export interface ICreateProductBySuperAdmin {
+  name : string;
+  price : string;
+  description : string;
+  image : File | null;
+  category_id : string;
+  qty : string;
+}
+
+export interface ICreateCategoryBySuperAdmin {
+  category_name : string;
+  description : string;
+}
+
+export interface CreateDiscount {
+  product_id: number;
+  discount_code: string;
+  discount_type: string;
+  discount_value: number;
+  minimum_order: null | number;
+  expires_at: string;
+}

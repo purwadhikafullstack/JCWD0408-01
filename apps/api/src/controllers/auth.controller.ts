@@ -1,6 +1,7 @@
-import { createToken, Ipayload } from '@/helpers/createToken';
+import { createLoginToken, createToken, Ipayload } from '@/helpers/createToken';
 import { hashPass } from '@/helpers/hashPassword';
-import { sendVerificationEmail, transporter } from '@/helpers/nodemailer';
+import { sendResetPassEmail, sendVerificationEmail, transporter } from '@/helpers/nodemailer';
+import { generateReferralCode } from '@/helpers/referralcode';
 import { responseError } from '@/helpers/responseError';
 import prisma from '@/prisma';
 import { compare } from 'bcrypt';
@@ -11,18 +12,18 @@ export class AuthController {
     try {
       const buyerEmail = await prisma.user.findUnique({
         where: {email: req.body.email}
-      })
+      })  
        
       if (buyerEmail) throw ("Email address has already been used");
        
 
       const newBuyerData = await prisma.user.create({
-        data: {email: req.body.email, role: 'buyer', first_name: '', password: '', phone: ''}
+        data: {email: req.body.email, role: 'buyer', first_name: '', password: '', phone: '', ...req.body}
       })
 
       const token = createToken({
         id: newBuyerData.user_id,
-        role: (newBuyerData.role = 'buyer'),
+        role: newBuyerData.role,
       });
 
       await sendVerificationEmail(req.body.email, token)
@@ -46,70 +47,13 @@ export class AuthController {
       if (!buyer) throw 'User Not Found';
       const validPass = await compare(req.body.password, buyer.password);
       if (!validPass) throw 'Password Incorrect';
-      const token = createToken({
+      const token = createLoginToken({
         id: buyer.user_id,
-        role: (buyer.role = 'buyer'),
+        role: buyer.role,
       });
       return res
         .status(201)
         .send({ status: 'ok', msg: 'Login Success', token, buyer });
-    } catch (error) {
-      responseError(res, error);
-    }
-  }
-
-  async createStoreAdmin(req: Request, res: Response) {
-    try {
-      const strAdminData = await prisma.user.findFirst({
-        where: {
-          OR: [{ first_name: req.body.first_name }, { email: req.body.email }],
-        },
-      });
-
-      if (strAdminData?.email == req.body.email)
-        throw 'email address has been used';
-
-      const password = await hashPass(req.body.password);
-
-      const newStrAdminData = await prisma.user.create({
-        data: { ...req.body, password, role: 'store_admin' },
-      });
-
-      const token = createToken({
-        id: newStrAdminData.user_id,
-        role: (newStrAdminData.role = 'store_admin'),
-      });
-
-      return res.status(201).send(newStrAdminData);
-    } catch (error) {
-      responseError(res, error);
-    }
-  }
-
-  async loginStoreAdmin(req: Request, res: Response) {
-    try {
-      const strAdmin = await prisma.user.findFirst({
-        where: {
-          OR: [{ first_name: req.body.first_name }, { email: req.body.email }],
-        },
-      });
-
-      if (!strAdmin) throw 'User Not Found';
-
-      const validPass = await compare(req.body.password, strAdmin.password);
-      if (!validPass) throw 'Password Incorrect';
-
-      const token = createToken({
-        id: strAdmin.user_id,
-        role: (strAdmin.role = 'store_admin'),
-      });
-
-      res.status(200).send({
-        status: 'ok',
-        msg: 'login success',
-        token,
-        strAdmin,
-      });
     } catch (error) {
       responseError(res, error);
     }
@@ -141,13 +85,93 @@ export class AuthController {
           verified: true,
         },
       });
-  
+
+      let refCode: string
+      let isUnique = false
+      
+      do {
+        refCode = generateReferralCode()
+
+        const currentRef = await prisma.referral.findUnique({
+          where: { referral_code: refCode }
+        })
+
+        if (!currentRef) {
+          isUnique = true
+        }
+      }
+      while (!isUnique)
+
+      await prisma.referral.create({
+        data: {
+          referrer_id: req.user.id,
+          referral_code: refCode
+        }
+      })
+      
       return res.status(200).send({
         status: 'ok',
         msg: "Your account is now active!",
       });
+  
     } catch (error) {
       responseError(res, error);
     }
   }
+
+  async changePassMail(req: Request, res: Response) {
+    try {
+      const userData = await prisma.user.findUnique({
+        where: {email: req.body.email}
+      })
+
+      if (!userData) throw "No Email Found"
+      
+      const token = createToken({
+        id: userData!.user_id,
+        role: userData!.role
+      })
+
+      await sendResetPassEmail(userData!.email, token)
+      return res.status(200).send({
+        msg: 'Please check your email'
+      })
+    } catch (error) {
+      responseError(res, error)
+    }
+  }
+
+  async changePassword(req: Request, res: Response) {
+    try {
+      const userData = await prisma.user.findUnique({
+        where: {
+          user_id: req.user.id
+        }
+      })
+      const validPass = await compare(req.body.password, userData!.password)
+      
+      if (!validPass) throw 'Password Incorrect'
+      
+      const newPassword = req.body.newPassword
+      
+      const isSamePass = await compare(newPassword, userData!.password)
+      
+      if (isSamePass) throw "Can't use similar password"
+      
+      const hashedPassword = await hashPass(newPassword)
+      
+      await prisma.user.update({
+        where: {user_id: req.user.id},
+        data: {password: hashedPassword}
+      })
+
+      return res.status(200).send({
+        status: 'ok',
+        msg: 'Password has been changed'
+      })
+    } catch (error) {
+      responseError(res, error)
+    }
+  }
+  
 }

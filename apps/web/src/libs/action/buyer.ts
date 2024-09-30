@@ -1,5 +1,6 @@
-import { BuyerAvatar, UserLogin, UserRegister } from "@/types/user";
+import { BuyerAvatar, ResetPassword, UserLogin, UserRegister } from "@/types/user";
 import Cookies from "js-cookie";
+import { json } from "stream/consumers";
 
 export const registerBuyer = async (data: UserRegister) => {
     const res = await fetch('http://localhost:8000/api/auth/register', {
@@ -44,30 +45,67 @@ const avatarUpload = async (data: BuyerAvatar) => {
 export const updateAvatar = async (dataUrl: string) => {
     const file = dataURLtoFile(dataUrl, 'cropped-image.png');
     const buyerAvatar: BuyerAvatar = { avatar: file };
-    const response = await avatarUpload(buyerAvatar);
-    // Handle the response from the API
+    await avatarUpload(buyerAvatar);
   }
   
   function dataURLtoFile(dataURL: string, fileName: string): File {
-    // Split the data URL into two parts (header and base64)
     const [header, base64String] = dataURL.split(",");
-  
-    // Extract the mime type from the header (e.g., "image/jpeg")
     const mimeType = header.match(/:(.*?);/)?.[1] || "image/jpeg";
-  
-    // Decode the base64 string to binary data
     const byteString = atob(base64String);
-  
-    // Convert binary data to array of bytes
     const byteNumbers = new Array(byteString.length);
     for (let i = 0; i < byteString.length; i++) {
       byteNumbers[i] = byteString.charCodeAt(i);
     }
     const byteArray = new Uint8Array(byteNumbers);
-  
-    // Create a Blob from the byte array and mime type
     const blob = new Blob([byteArray], { type: mimeType });
-  
-    // Convert the Blob to a File object
     return new File([blob], fileName, { type: mimeType });
+  }
+
+  export const reqChangePass = async (data: UserRegister) => {
+    const token = Cookies.get('token')
+    const res = await fetch('http://localhost:8000/api/auth/reqchangepass', {
+        headers: {
+            'Content-Type' : 'application/json',
+            Authorization : `Bearer ${token}`
+        },
+        method: 'POST',
+        body: JSON.stringify(data)
+    })
+    return res.json()
+  }
+
+  export const changePass = async (token: string ,data: ResetPassword) => {
+    const res = await fetch('http://localhost:8000/api/auth/resetpassword', {
+        headers: {
+            'Content-Type' : 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        method: 'PATCH',
+        body: JSON.stringify(data)
+    })
+    return res.json()
+  }
+
+  export const changeEmail = async (data: UserRegister) => {
+    const token = Cookies.get('token')
+    const res = await fetch('http://localhost:8000/api/user/changemail', {
+        headers: {
+            'Content-Type' : 'application/json',
+            Authorization : `Bearer ${token}`
+        },
+        method: 'POST',
+        body: JSON.stringify(data)
+    })
+    return res.json()
+  }
+
+  export const reverifyEmail = async (token: string) => {
+    const res = await fetch(`http://localhost:8000/api/user/reverify/${token}`, {
+        headers: {
+            'Content-Type' : 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        method: 'PATCH',
+    })
+    return res.json()
   }

@@ -1,6 +1,6 @@
 'use client'
 
-import Sidebar from "@/components/admin-dashboard/sidebar"
+import Sidebar from "@/components/sidebar/sidebar"
 import { VscAccount } from "react-icons/vsc";
 import { useState } from "react";
 import { IoMdAdd } from "react-icons/io";
@@ -64,7 +64,7 @@ export default function AdminDashboard() {
                     <div className="border-[1px] w-full"></div>
                 </div>
                 <motion.div className="flex flex-col pl-10  text-[20px] font-medium" >Product List</motion.div>
-                    <CartListProduct />
+                <CartListProduct />
                 <div className="flex flex-col px-10  text-[20px] font-medium" >Performance</div>
                 <div className="flex flex-col justify-around items-center gap-5 p-10 pt-5 ">
                     <div className="flex flex-row justify-center items-center h-96 rounded-[10px] border-[1px] w-full">

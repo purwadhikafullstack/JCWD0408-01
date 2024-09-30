@@ -39,9 +39,19 @@ export interface ICreateProductBySuperAdmin {
   description : string;
   image : File | null;
   category_id : string;
+  qty : string;
 }
 
 export interface ICreateCategoryBySuperAdmin {
   category_name : string;
   description : string;
+}
+
+export interface CreateDiscount {
+  product_id: number;
+  discount_code: string;
+  discount_type: string;
+  discount_value: number;
+  minimum_order: null | number;
+  expires_at: string;
 }

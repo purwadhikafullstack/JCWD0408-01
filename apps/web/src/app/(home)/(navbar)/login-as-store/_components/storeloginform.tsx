@@ -17,7 +17,7 @@ export interface StoreLogin {
   password: string;
 }
 
-export default function StoreLoginForm() {
+export default function StoreLoginFormStore() {
   const router = useRouter();
 
   const initialValues: StoreLogin = {
@@ -26,14 +26,12 @@ export default function StoreLoginForm() {
   };
 
   const onLogin = async (data: StoreLogin, action: FormikHelpers<UserLogin>) => {
-
-
     try {
       const { result, ok } = await loginBuyer(data);
       if (!ok) throw result.msg;
       createCookie('token', result.token);
       toast.success(result.msg);
-      router.push('/admin-dashboard');
+      router.push('/store-list-by-store');
       action.resetForm();
       router.refresh();
     } catch (error) {

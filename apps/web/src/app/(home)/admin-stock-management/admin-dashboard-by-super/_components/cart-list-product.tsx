@@ -6,12 +6,22 @@ import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { IoIosMore } from "react-icons/io";
 import { motion } from "framer-motion";
+import IsiComponentCart from "./isi-component-cart";
+
+interface Inventory {
+    qty: number;
+}
 
 interface Product {
     name: string;
     price: number;
     description: string;
     product_id: number;
+    Inventory: [
+        {
+            qty: number;
+        }
+    ];
 }
 
 interface Data {
@@ -31,7 +41,7 @@ export default function CartListProduct() {
     }
 
     const handleNext = () => {
-        if (page  === data?.totalPages) {
+        if (page === data?.totalPages) {
             return;
         }
         setPage(page + 1)
@@ -65,36 +75,11 @@ export default function CartListProduct() {
         <motion.div className="flex flex-col justify-around items-center gap-5 p-10 pt-5"
         >
             {
-                data?.product.map((item: any) => {
+                data?.product.map((item: Product) => {
                     return (
                         <div className="flex lg:flex-row flex-wrap lg:justify-between justify-center items-center lg:h-10 h-60 rounded-[10px] border-[1px] w-full">
-                <motion.p className="p-2 lg:pl-10  w-[300px]"
-                initial={{ opacity: 0 , translateX: -10}}
-                animate={{ opacity: 1, translateX: 0}}
-                >{item.name}</motion.p>
-                <div className="flex md:gap-20 gap-10 ">
-                    <div className="flex  items-center md:pl-10 pl-6 gap-2">STOCK : 100 </div>
-                    <div className="flex flex-wrap items-center gap-2">
-                        <p>LAST UPDATE :</p>
-                        <div>NAIK</div>
-                        <div><FaAngleUp size={32} className="text-main " /></div>
-                        <div>TURUN</div>
-                        <div><FaAngleDown size={32} className="text-red-900 " /></div>
-                    </div>
-                </div>
-                <button onClick={handlebutton}><IoIosMore size={32} className="text-main hover:text-secondary duration-300 hover:bg-main hover:rounded-full md:mr-10" /></button>
-                {
-                    isModalOpen && (
-                        <div className="absolute  bg-white border rounded-[10px] shadow-lg  right-10 duration-300">
-                            <ul className="">
-                                <li className="p-2 hover:bg-main rounded-[6px]  duration-200 hover:text-secondary cursor-pointer ">Update product</li>
-                                <li className="p-2 hover:bg-main rounded-[6px]  duration-200 hover:text-secondary  cursor-pointer">Delete product</li>
-                                <li className="p-2 hover:bg-main rounded-[6px]  duration-200 hover:text-secondary  cursor-pointer" onClick={handlebutton}>Cancel</li>
-                            </ul>
+                            <IsiComponentCart name={item?.name} stock={item.Inventory[0]?.qty} />
                         </div>
-                    )
-                }
-            </div>
                     )
                 })
             }

@@ -59,4 +59,24 @@ export class StoreAdminController {
             responseError(res, error)
         }
     }
+
+    async getAdminAuthorizeStore(req : Request, res : Response){
+        try {
+
+            const userLogin = await prisma.user.findUnique({
+                where: { user_id: req.user.id }
+            })
+
+            const store = await prisma.store.findMany({
+                where: { user_id: userLogin?.user_id }
+            })
+
+            return res.status(200).send({
+                status: 'success',
+                store
+            })
+        } catch (error) {
+            responseError(res, error)
+        }
+    }
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import Sidebar from "@/components/admin-dashboard/sidebar";
+import Sidebar from "@/components/sidebar/sidebar";
 import BaskitAdmin from "@/components/admin-stock-management/baskit-admin";
 import BaskitUser from "@/components/admin-stock-management/baskit-user";
 import CategoryProduct from "@/components/admin-stock-management/category-product";

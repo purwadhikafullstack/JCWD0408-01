@@ -58,12 +58,20 @@ export const createCategorybySuperAdmin = yup.object().shape({
 });
 
 export const createProductbySuperAdmin = yup.object().shape({
-  name: yup.string().required('name is required'),
-  desc: yup.string().required('description is required'),
-  price: yup.number().required('price is required'),
-  image: yup.string().required('image is required'),
-  category_id: yup.number().required('category id is required'),
-});
+  name: yup.string().required("name is required"),
+  desc: yup.string().required("description is required"),
+  price: yup.number().required("price is required"),
+  image: yup.string().required("image is required"),
+  category_id: yup.number().required("category id is required")
+})
+
+export const validationSchemaDiscount = Yup.object({
+  product_id: yup.number().required('Required'),
+  discount_code: yup.string().required('Required'),
+  discount_type: yup.string().required('Required'),
+  discount_value: yup.number().required('Required'),
+  expires_at: yup.string().required('Required')
+})
 
 export const resetPasswordSchema = yup.object({
   password: Yup.string()

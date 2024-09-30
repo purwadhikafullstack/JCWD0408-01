@@ -6,8 +6,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { VscAccount } from "react-icons/vsc";
 import { AiOutlineProduct } from "react-icons/ai";
-import { RiSecurePaymentLine } from "react-icons/ri";
-import { RiDiscountPercentLine } from "react-icons/ri";
+import { RiDiscountPercentLine, RiSecurePaymentLine } from "react-icons/ri";
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 const sidebarVariants = {
   hidden: { x: '-100%' },
@@ -23,9 +25,12 @@ export default function Sidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
+  const router = useRouter()
 
-  const handleLogout = () => {
-
+  const deleteToken = () => {
+    Cookies.remove('token');
+    router.push("/login-as-super")
+    toast.success('Logout Success')
   }
 
   useEffect(() => {
@@ -41,8 +46,6 @@ export default function Sidebar() {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-
-
 
   return (
     <div>
@@ -61,31 +64,30 @@ export default function Sidebar() {
                 <Image src="/logo/baskit.svg" alt="About Us" width={500} height={100} className='' />
               </div>
 
-              <Link href="/admin-product" className='z-20 w-[200px]'>
+              <Link href="/admin-stock-management/store-list-by-super" className='z-20 w-[200px]'>
                 <div className='text-main-black text-lg  hover:bg-main hover:text-secondary p-3 w-full mt-5 pl-5  text-left flex justify-start gap-2 items-center transition-colors'>
                   <AiOutlineProduct size={28} className="text-main-black" />
                   <div className="text-[18px]">
-                    Product
+                    Store List
                   </div>
                 </div>
               </Link>
-              <Link href="/paymentproof" className='z-20 w-[200px]'>
+              <Link href="/" className='z-20 w-[200px]'>
                 <div className='text-main-black text-lg  hover:bg-main hover:text-secondary p-3 w-full pl-5  text-left flex justify-start gap-2 items-center transition-colors'>
                   <RiSecurePaymentLine size={28} className="text-main-black" />
                   <div className="text-[18px]">
-                    Payment Proof
+                    Assign Store Admin
+                  </div>
+                </div>
+              </Link>
+              <Link href="/" className='z-20 w-[200px]'>
+                <div className=' text-main-black text-lg  hover:bg-main hover:text-secondary p-3 w-full pl-5  text-left flex justify-start gap-2 items-center transition-colors'>
+                  <RiDiscountPercentLine size={28} className="text-main-black" />
+                  <div className="text-[18px]">
+                    Disc. Management
                   </div>
 
                 </div>
-              </Link>
-              <Link href="/vouchermanagement" className='z-20 w-[200px]'>
-              <div className=' text-main-black text-lg  hover:bg-main hover:text-secondary p-3 w-full pl-5  text-left flex justify-start gap-2 items-center transition-colors'>
-                <RiDiscountPercentLine size={28} className="text-main-black" />
-                <div className="text-[18px]">
-                  Disc. Management
-                </div>
-
-              </div>
               </Link>
               <div className='border-[1px] border-white mt-5 w-full '></div>
               <Link href="/admin-stock-management" className='z-20 w-[200px]'>
@@ -95,7 +97,7 @@ export default function Sidebar() {
               </Link>
             </div>
             <div>
-              <button className="w-64 text-main text-lg font-bold hover:bg-white hover:text-black p-3 mb-5 cursor-pointer text-center transition-colors z-20">Logout</button>
+              <button onClick={deleteToken} className="w-64 text-main text-lg font-bold hover:bg-white hover:text-black p-3 mb-5 cursor-pointer text-center transition-colors z-20">Logout</button>
             </div>
           </div>
         </motion.div>

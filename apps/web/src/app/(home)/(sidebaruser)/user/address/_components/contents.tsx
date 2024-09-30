@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import AddrMap from '../../../_components/addrmap';
+import AddrMap from '../../../../_components/addrmap';
 import Cookies from 'js-cookie';
 import AddrListTemplate from './addrlisttemplate';
 import { addressCard, addressForm } from '@/types/address';
-import { addAddress, editAddress } from '@/libs/action/address';
+import { addAddress, deleteAddress, editAddress, getAddrList, setDefaultAddr } from '@/libs/action/address';
 import Modal from '@/app/(home)/_components/modal';
 import ConfirmationModal from '@/app/(home)/_components/confirmationmodal';
+import { toast } from 'react-toastify';
 
 export default function Contents() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,6 +22,12 @@ export default function Contents() {
   const [addressIdToDelete, setAddressIdToDelete] = useState<number | null>(
     null,
   );
+
+  const [isSetDefaultConfirmationOpen, setIsSetDefaultConfirmationOpen] =
+    useState(false);
+  const [addressIdToSetDefault, setAddressIdToSetDefault] = useState<
+    number | null
+  >(null);
 
   const handleOpenModal = (isAdding: boolean) => {
     setIsModalOpen(true);
@@ -38,24 +45,40 @@ export default function Contents() {
     setIsConfirmationOpen(true);
   };
 
+  const handleSetDefault = (addressId: number) => {
+    setAddressIdToSetDefault(addressId);
+    setIsSetDefaultConfirmationOpen(true);
+  };
+
+  const confirmSetDefault = async () => {
+    if (addressIdToSetDefault !== null) {
+      try {
+        const res = await setDefaultAddr(addressIdToSetDefault)
+
+        if (!res.ok) {
+          throw new Error('Failed to delete address');
+        }
+        await fetchData();
+        toast.success('The address has been set to default')
+      } catch (err: any) {
+        console.error('Failed to set default address:', err.message);
+      } finally {
+        setIsSetDefaultConfirmationOpen(false);
+        setAddressIdToSetDefault(null);
+      }
+    }
+  };
+
   const confirmDelete = async () => {
     if (addressIdToDelete !== null) {
-      const token = Cookies.get('token');
       try {
-        const res = await fetch('http://localhost:8000/api/address/user', {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          method: 'DELETE',
-          body: JSON.stringify({ address_id: addressIdToDelete }),
-        });
-
+        const res = await deleteAddress(addressIdToDelete)
         if (!res.ok) {
           throw new Error('Failed to delete address');
         }
 
         await fetchData();
+        toast.success('The address has been deleted')
       } catch (err: any) {
         console.error(err.message);
       } finally {
@@ -66,20 +89,12 @@ export default function Contents() {
   };
 
   const fetchData = async () => {
-    const token = Cookies.get('token');
     try {
-      const res = await fetch('http://localhost:8000/api/address/user', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        method: 'GET',
-      });
+      const res = await getAddrList()
 
       if (!res.ok) {
         throw new Error('Failed to fetch user details');
       }
-
       const dat = await res.json();
       setData(dat);
     } catch (err: any) {
@@ -96,6 +111,7 @@ export default function Contents() {
       try {
         await editAddress({ ...data, address_id: editingAddressId });
         await fetchData();
+        toast.success('The address has been edited')
         handleCloseModal();
       } catch (err) {
         console.error('Failed to update address:', err);
@@ -107,6 +123,7 @@ export default function Contents() {
     try {
       await addAddress(data);
       await fetchData();
+      toast.success('New address has been added')
       handleCloseModal();
     } catch (err) {
       console.error('Failed to add address:', err);
@@ -114,7 +131,7 @@ export default function Contents() {
   };
 
   return (
-    <div className="p-5">
+    <div className="p-5 lg:mx-20">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-main">My Addresses</h2>
         <button
@@ -135,6 +152,7 @@ export default function Contents() {
               setEditingAddressId(addressId);
               handleOpenModal(false);
             }}
+            onSetDefault={handleSetDefault}
           />
         ))
       ) : (
@@ -152,12 +170,24 @@ export default function Contents() {
         </Modal>
       )}
 
-      <ConfirmationModal
-        isOpen={isConfirmationOpen}
-        onClose={() => setIsConfirmationOpen(false)}
-        onConfirm={confirmDelete}
-        message="Are you sure you want to delete this address?"
-      />
+      {isConfirmationOpen && (
+        <ConfirmationModal
+          isOpen={isConfirmationOpen}
+          onClose={() => setIsConfirmationOpen(false)}
+          onConfirm={confirmDelete}
+          header="Confirm deletion"
+          message="Are you sure you want to delete this address?"
+        />
+      )}
+      {isSetDefaultConfirmationOpen && (
+        <ConfirmationModal
+          isOpen={isSetDefaultConfirmationOpen}
+          onClose={() => setIsSetDefaultConfirmationOpen(false)}
+          onConfirm={confirmSetDefault}
+          header="Default address"
+          message="Use this address as your default address?"
+        />
+      )}
     </div>
   );
 }

@@ -19,14 +19,40 @@ CREATE TABLE `User` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Provider` (
+    `provider_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `user_id` INTEGER NOT NULL,
+    `provider_name` VARCHAR(191) NOT NULL,
+    `provider_account_id` VARCHAR(191) NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    UNIQUE INDEX `Provider_provider_account_id_key`(`provider_account_id`),
+    PRIMARY KEY (`provider_id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Session` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `sessionToken` VARCHAR(191) NOT NULL,
+    `user_id` INTEGER NOT NULL,
+    `expires` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `Session_sessionToken_key`(`sessionToken`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Address` (
     `address_id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_id` INTEGER NOT NULL,
     `address` TEXT NOT NULL,
     `subdistrict` VARCHAR(191) NULL,
     `city` VARCHAR(191) NULL,
-    `province` VARCHAR(191) NOT NULL,
-    `postcode` VARCHAR(191) NOT NULL,
+    `city_id` VARCHAR(191) NULL,
+    `province` VARCHAR(191) NULL,
+    `province_id` VARCHAR(191) NULL,
+    `postcode` VARCHAR(191) NULL,
     `latitude` DOUBLE NOT NULL,
     `longitude` DOUBLE NOT NULL,
     `is_primary` BOOLEAN NOT NULL DEFAULT false,
@@ -40,10 +66,11 @@ CREATE TABLE `Address` (
 CREATE TABLE `Referral` (
     `ref_id` INTEGER NOT NULL AUTO_INCREMENT,
     `referrer_id` INTEGER NOT NULL,
-    `referred_id` INTEGER NOT NULL,
+    `referred_id` INTEGER NULL,
     `referral_code` VARCHAR(191) NOT NULL,
     `reward_id` INTEGER NULL,
 
+    UNIQUE INDEX `Referral_referrer_id_key`(`referrer_id`),
     UNIQUE INDEX `Referral_referral_code_key`(`referral_code`),
     PRIMARY KEY (`ref_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -51,7 +78,7 @@ CREATE TABLE `Referral` (
 -- CreateTable
 CREATE TABLE `Voucher` (
     `voucher_id` INTEGER NOT NULL AUTO_INCREMENT,
-    `voucher_code` VARCHAR(191) NOT NULL,
+    `voucher_code` VARCHAR(191) NULL,
     `user_id` INTEGER NOT NULL,
     `discount_id` INTEGER NOT NULL,
     `is_redeemed` BOOLEAN NOT NULL DEFAULT false,
@@ -66,7 +93,7 @@ CREATE TABLE `Voucher` (
 -- CreateTable
 CREATE TABLE `Discount` (
     `discount_id` INTEGER NOT NULL AUTO_INCREMENT,
-    `store_id` INTEGER NOT NULL,
+    `store_id` INTEGER NULL,
     `product_id` INTEGER NULL,
     `discount_code` VARCHAR(191) NOT NULL,
     `discount_type` ENUM('fixed', 'percentage') NOT NULL,
@@ -190,13 +217,19 @@ CREATE TABLE `CartItem` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
+ALTER TABLE `Provider` ADD CONSTRAINT `Provider_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`user_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Session` ADD CONSTRAINT `Session_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`user_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `Address` ADD CONSTRAINT `Address_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`user_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Referral` ADD CONSTRAINT `Referral_referrer_id_fkey` FOREIGN KEY (`referrer_id`) REFERENCES `User`(`user_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Referral` ADD CONSTRAINT `Referral_referred_id_fkey` FOREIGN KEY (`referred_id`) REFERENCES `User`(`user_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Referral` ADD CONSTRAINT `Referral_referred_id_fkey` FOREIGN KEY (`referred_id`) REFERENCES `User`(`user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Referral` ADD CONSTRAINT `Referral_reward_id_fkey` FOREIGN KEY (`reward_id`) REFERENCES `Voucher`(`voucher_id`) ON DELETE SET NULL ON UPDATE CASCADE;
@@ -208,7 +241,7 @@ ALTER TABLE `Voucher` ADD CONSTRAINT `Voucher_user_id_fkey` FOREIGN KEY (`user_i
 ALTER TABLE `Voucher` ADD CONSTRAINT `Voucher_discount_id_fkey` FOREIGN KEY (`discount_id`) REFERENCES `Discount`(`discount_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Discount` ADD CONSTRAINT `Discount_store_id_fkey` FOREIGN KEY (`store_id`) REFERENCES `Store`(`store_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Discount` ADD CONSTRAINT `Discount_store_id_fkey` FOREIGN KEY (`store_id`) REFERENCES `Store`(`store_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Discount` ADD CONSTRAINT `Discount_product_id_fkey` FOREIGN KEY (`product_id`) REFERENCES `Product`(`product_id`) ON DELETE SET NULL ON UPDATE CASCADE;

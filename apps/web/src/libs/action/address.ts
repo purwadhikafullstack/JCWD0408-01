@@ -12,7 +12,7 @@ export const getAddrList = async () => {
         method: 'GET',
     })
 
-    return res.json()
+    return res
 }
 
 export const addAddress = async (data: addressForm) => {
@@ -43,7 +43,7 @@ export const editAddress = async (data: addressForm) => {
     return res.json()
 }
 
-export const deleteAddress = async (address_id: string) => {
+export const deleteAddress = async (address_id: number) => {
     const token = Cookies.get('token')
     const res = await fetch('http://localhost:8000/api/address/user', {
         headers: {
@@ -54,6 +54,19 @@ export const deleteAddress = async (address_id: string) => {
         body: JSON.stringify({address_id})
     })
 
-    return res.json()
+    return res
 }
 
+export const setDefaultAddr = async (address_id: number) => {
+    const token = Cookies.get('token')
+    const res = await fetch('http://localhost:8000/api/address/userdef', {
+        headers: {
+            'Content-Type' : 'application/json',
+            Authorization : `Bearer ${token}`
+        },
+        method: 'PATCH',
+        body: JSON.stringify({address_id})
+    })
+
+    return res
+}

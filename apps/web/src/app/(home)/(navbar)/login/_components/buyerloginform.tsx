@@ -66,6 +66,11 @@ export default function BuyerLoginForm() {
           <Link href="/register" className="text-main hover:underline font-bold">
             Sign Up</Link>
         </p>
+        <p className="text-sm text-center text-main-black">
+          Forgot password?{' '}
+          <Link href="/register" className="text-main hover:underline font-bold">
+            Click here</Link>
+        </p>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
-import { BuyerAvatar, UserLogin, UserRegister } from "@/types/user";
+import { BuyerAvatar, ResetPassword, UserLogin, UserRegister } from "@/types/user";
 import Cookies from "js-cookie";
+import { json } from "stream/consumers";
 
 export const registerBuyer = async (data: UserRegister) => {
     const res = await fetch('http://localhost:8000/api/auth/register', {
@@ -58,4 +59,53 @@ export const updateAvatar = async (dataUrl: string) => {
     const byteArray = new Uint8Array(byteNumbers);
     const blob = new Blob([byteArray], { type: mimeType });
     return new File([blob], fileName, { type: mimeType });
+  }
+
+  export const reqChangePass = async (data: UserRegister) => {
+    const token = Cookies.get('token')
+    const res = await fetch('http://localhost:8000/api/auth/reqchangepass', {
+        headers: {
+            'Content-Type' : 'application/json',
+            Authorization : `Bearer ${token}`
+        },
+        method: 'POST',
+        body: JSON.stringify(data)
+    })
+    return res.json()
+  }
+
+  export const changePass = async (token: string ,data: ResetPassword) => {
+    const res = await fetch('http://localhost:8000/api/auth/resetpassword', {
+        headers: {
+            'Content-Type' : 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        method: 'PATCH',
+        body: JSON.stringify(data)
+    })
+    return res.json()
+  }
+
+  export const changeEmail = async (data: UserRegister) => {
+    const token = Cookies.get('token')
+    const res = await fetch('http://localhost:8000/api/user/changemail', {
+        headers: {
+            'Content-Type' : 'application/json',
+            Authorization : `Bearer ${token}`
+        },
+        method: 'POST',
+        body: JSON.stringify(data)
+    })
+    return res.json()
+  }
+
+  export const reverifyEmail = async (token: string) => {
+    const res = await fetch(`http://localhost:8000/api/user/reverify/${token}`, {
+        headers: {
+            'Content-Type' : 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        method: 'PATCH',
+    })
+    return res.json()
   }

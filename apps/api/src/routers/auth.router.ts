@@ -20,9 +20,8 @@ export class AuthRouter {
   private initialization(): void {
     this.router.post("/register", this.authController.createBuyerData);
     this.router.post("/login", this.authController.loginBuyer);
-    this.router.post("/registerstoreadm", this.authController.createStoreAdmin);
-    this.router.post("/loginstoreadm", this.authController.loginStoreAdmin);
-    this.router.patch("/changepass", this.authMiddleware.verifyToken, this.buyerController.changePassword)
+    this.router.post("/reqchangepass", this.authMiddleware.verifyToken, this.authController.changePassMail)
+    this.router.patch("/resetpassword", this.authMiddleware.verifyToken, this.authController.changePassword)
     this.router.patch(
       "/verification",
       this.authMiddleware.verifyToken,

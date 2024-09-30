@@ -4,34 +4,42 @@ import { Formik, Form } from 'formik';
 import { motion } from 'framer-motion';
 import { navigate } from '@/libs/action/server';
 import { toast } from 'react-toastify';
-import { verificationProcess } from '@/libs/action/user';
-import { verificationSchema } from '@/libs/schema';
+import { resetPasswordSchema} from '@/libs/schema';
 import { Input } from '@/components/inputformik';
-import { UserFirstVerification } from '@/types/user';
+import { ResetPassword} from '@/types/user';
+import { changePass } from '@/libs/action/buyer';
+import Cookies from 'js-cookie';
 
-export default function Verification({
+export default function ResetForm({
   params,
 }: {
   params: { token: string };
-}) {
-  interface UserRegisterConfPass extends UserFirstVerification {
+})
+
+{
+  interface ResetConfPass extends ResetPassword {
     confirmpassword: string;
   }
 
-  const initialValues: UserRegisterConfPass = {
-    first_name: '',
+  const initialValues: ResetConfPass = {
     password: '',
+    newPassword: '',
     confirmpassword: '',
-    phone: '',
   };
-  const handleSubmit = async (data: UserFirstVerification) => {
+  const handleSubmit = async (data: ResetPassword) => {
     try {
-      const { result, ok } = await verificationProcess(params.token, data);
-      if (!ok) throw result.msg;
-      toast.success(result.msg);
+      const res = await changePass(
+        params.token,
+        data
+      );
+      if (res.status == 'error') throw toast.error(res.msg)
+      toast.success('Password has changed, please log back in');
+      Cookies.remove('token')
       navigate('/login');
     } catch (error) {
-      toast.error('No cap');
+      // toast.error('Reset Failed')
+      console.log(error);
+      
     }
   };
 
@@ -43,7 +51,7 @@ export default function Verification({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: 'easeOut' }}
       >
-        Please verify your account
+        Enter your current and new password
       </motion.h1>
 
       <motion.div
@@ -54,7 +62,7 @@ export default function Verification({
       >
         <Formik
           initialValues={initialValues}
-          validationSchema={verificationSchema}
+          validationSchema={resetPasswordSchema}
           onSubmit={(values, action) => {
             const { confirmpassword, ...formData } = values;
             handleSubmit(formData), action.resetForm();
@@ -63,23 +71,19 @@ export default function Verification({
           {() => (
             <Form>
               <div className="space-y-4">
-                <label className="block text-sm font-medium text-main-black">
-                  Full name
-                </label>
-                <Input name="first_name" type="string" placeholder="Jane Doe" />
-                <label className="block text-sm font-medium text-main-black">
-                  Password
-                </label>
-                <Input name="password" type="password" />
-                <label className="block text-sm font-medium text-main-black">
-                  Confirm Password
-                </label>
-                <Input name="confirmpassword" type="password" />
-                <label className="block text-sm font-medium text-main-black">
-                  Phone Number
-                </label>
-                <Input name="phone" type="string" placeholder="081233334444" />
-                <button
+              <label className="block text-sm font-medium text-main-black">
+                Current Password
+              </label>
+              <Input name="password" type="password"/>
+              <label className="block text-sm font-medium text-main-black">
+                New Password
+              </label>
+              <Input name="newPassword" type="password" />
+              <label className="block text-sm font-medium text-main-black">
+                Confirm Password
+              </label>
+              <Input name="confirmpassword" type="password" />
+              <button
                   type="submit"
                   className="w-full bg-main text-secondary font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105"
                 >

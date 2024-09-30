@@ -17,7 +17,11 @@ export class BuyerRouter {
 
     private initializeRouters(): void {
         this.router.get('/details', this.authMiddleware.verifyToken, this.buyerController.getBuyerByID)
-        this.router.patch('/', this.authMiddleware.verifyToken, uploader('avatar', '/avatar').single('avatar'), this.buyerController.buyerAvatar)        
+        this.router.get('/code', this.authMiddleware.verifyToken, this.buyerController.getCode)
+        this.router.post('/code', this.authMiddleware.verifyToken, this.buyerController.useCode)
+        this.router.post('/changemail', this.authMiddleware.verifyToken, this.buyerController.changeMail)
+        this.router.patch('/', this.authMiddleware.verifyToken, uploader('avatar', '/avatar').single('avatar'), this.buyerController.buyerAvatar)  
+        this.router.patch('/reverify/:token', this.buyerController.newEmailAddr)     
     }
 
     getRouter(): Router {

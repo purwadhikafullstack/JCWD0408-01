@@ -49,15 +49,13 @@ export const verificationSchema = Yup.object({
 
 export const loginSchemaStore = Yup.object({
   email: Yup.string().email('Invalid format').required('Email is required'),
-  password: Yup.string()
-    .min(8, 'Password must be at least 8 characters long')
-    
+  password: Yup.string().min(8, 'Password must be at least 8 characters long'),
 });
 
 export const createCategorybySuperAdmin = yup.object().shape({
-  category_name: yup.string().required("category name is required"),
-  description: yup.string().required("description is required"),
-})
+  category_name: yup.string().required('category name is required'),
+  description: yup.string().required('description is required'),
+});
 
 export const createProductbySuperAdmin = yup.object().shape({
   name: yup.string().required("name is required"),
@@ -74,3 +72,29 @@ export const validationSchemaDiscount = Yup.object({
   discount_value: yup.number().required('Required'),
   expires_at: yup.string().required('Required')
 })
+
+export const resetPasswordSchema = yup.object({
+  password: Yup.string()
+    .min(8, 'Password must be at least 8 characters long')
+    .matches(/[A-Z]/, 'Password must include at least one uppercase letter')
+    .matches(/[a-z]/, 'Password must include at least one lowercase letter')
+    .matches(/\d/, 'Password must include at least one number')
+    .matches(
+      /[!@#$%^&*]/,
+      'Password must include at least one special character from !@#$%^&*',
+    )
+    .required('Password is required'),
+  newPassword: Yup.string()
+    .min(8, 'Password must be at least 8 characters long')
+    .matches(/[A-Z]/, 'Password must include at least one uppercase letter')
+    .matches(/[a-z]/, 'Password must include at least one lowercase letter')
+    .matches(/\d/, 'Password must include at least one number')
+    .matches(
+      /[!@#$%^&*]/,
+      'Password must include at least one special character from !@#$%^&*',
+    )
+    .required('Password is required'),
+  confirmpassword: Yup.string()
+    .oneOf([Yup.ref('newPassword')], "Passwords don't match")
+    .required('Confirm password is required'),
+});

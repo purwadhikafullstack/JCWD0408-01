@@ -133,7 +133,6 @@ export default function AddrMap({ closeModal, submitFunction }: AddressProp) {
       try {
         await submitFunction(addressData);
         console.log(addressData);
-        toast.success('Address Added!');
         closeModal();
       } catch {
         toast.error('Failed Adding Address!');
@@ -156,7 +155,7 @@ export default function AddrMap({ closeModal, submitFunction }: AddressProp) {
       <div className="font-bold text-base pb-3">
         Note: Place an accurate mark
       </div>
-      <div ref={mapContainerRef} className="w-full h-96"></div>
+      <div ref={mapContainerRef} className="w-full lg:h-96 h-72"></div>
       <div className="flex justify-center mt-4">
         <button
           onClick={handleSubmit}

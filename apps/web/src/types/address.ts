@@ -16,4 +16,5 @@ export interface addressCard {
     city?: string | null;
     province?: string | null;
     postcode?: string | null;
+    is_primary: boolean
 }

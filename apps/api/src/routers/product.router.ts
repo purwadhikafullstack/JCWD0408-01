@@ -14,6 +14,7 @@ export class ProductRouter {
 
     private initializeRouter() {
         this.router.get(`/:store_id`, this.productController.getProductbyStoreId)
+        this.router.get(`/details/:product_id`, this.productController.getProductDetail)
         this.router.post(`/create/:store_id`, uploader("product", "/product").single("image"), this.productController.createProduct)
     }
 

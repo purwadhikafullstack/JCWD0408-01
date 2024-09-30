@@ -82,4 +82,38 @@ export class ProductController {
             responseError(res, error);
         }
     }
+
+    async getProductDetail(req: Request, res: Response){
+        try {
+            const product = await prisma.product.findUnique({
+                where: { product_id: +req.params.product_id },
+                include: {
+                    Inventory: {
+                        select: {
+                            qty: true
+                        }
+                    },
+                    category: {
+                        select: {
+                            category_name: true
+                        }
+                    }
+                }
+            });
+
+            if (!product) {
+                return res.status(404).send({
+                    status: 'error',
+                    msg: 'Product not found'
+                });
+            }
+
+            return res.status(200).send({
+                status: 'ok',
+                product
+            });
+        } catch (error) {
+            responseError(res, error);
+        }
+    }
 }

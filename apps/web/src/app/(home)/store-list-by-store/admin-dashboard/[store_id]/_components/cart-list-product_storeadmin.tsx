@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { motion } from "framer-motion";
 import IsiComponentCart from "./isi-component-cart_storeadmin";
+import Link from "next/link";
 
 interface Product {
     name: string;
@@ -69,11 +70,11 @@ export default function CartListProductByStoreAdmin() {
         <motion.div className="flex flex-col justify-around items-center gap-5 pt-5 w-full"
         >
             {
-                data?.product.map((item: Product) => {
+                data?.product.map((item: Product, key: any) => {
                     return (
-                        <div className="flex lg:flex-row flex-wrap lg:justify-between justify-center items-center lg:h-10 h-60 rounded-[10px] border-[1px] w-full">
+                        <Link href={`/details-discount-management/${item.product_id}}`} className="flex lg:flex-row flex-wrap lg:justify-between justify-center items-center lg:h-10 h-60 rounded-[10px] border-[1px] w-full hover:bg-secondary hover:border-secondary hover:scale-105 duration-200" key={key}>
                             <IsiComponentCart name={item?.name} stock={item.Inventory[0]?.qty} />
-                        </div>
+                        </Link>
                     )
                 })
             }

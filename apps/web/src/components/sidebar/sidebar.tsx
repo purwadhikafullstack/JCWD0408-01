@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { VscAccount } from "react-icons/vsc";
 import { AiOutlineProduct } from "react-icons/ai";
-import { RiDiscountPercentLine } from "react-icons/ri";
+import { RiDiscountPercentLine, RiSecurePaymentLine } from "react-icons/ri";
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -72,15 +72,15 @@ export default function Sidebar() {
                   </div>
                 </div>
               </Link>
-              {/* <Link href="/paymentproof" className='z-20 w-[200px]'>
+              <Link href="/" className='z-20 w-[200px]'>
                 <div className='text-main-black text-lg  hover:bg-main hover:text-secondary p-3 w-full pl-5  text-left flex justify-start gap-2 items-center transition-colors'>
                   <RiSecurePaymentLine size={28} className="text-main-black" />
                   <div className="text-[18px]">
-                    Payment Proof
+                    Assign Store Admin
                   </div>
                 </div>
-              </Link> */}
-              <Link href="/vouchermanagement" className='z-20 w-[200px]'>
+              </Link>
+              <Link href="/" className='z-20 w-[200px]'>
                 <div className=' text-main-black text-lg  hover:bg-main hover:text-secondary p-3 w-full pl-5  text-left flex justify-start gap-2 items-center transition-colors'>
                   <RiDiscountPercentLine size={28} className="text-main-black" />
                   <div className="text-[18px]">

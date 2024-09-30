@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import CartStorebyStore from "./_components/cart-store";
 import SidebarStoreAdmin from "@/components/sidebar/sidebarStoreAdmin";
+import { VscAccount } from "react-icons/vsc";
 
 interface StoreList {
     current_page: number;
@@ -71,7 +72,7 @@ export default function StoreListByStore() {
                 <div className="flex justify-start items-center gap-5 p-5">
                     <div className="flex justify-start items-center gap-5 p-10 pt-16">
                         <div className="">
-                            <Image src="/GM.jpeg" alt="About Us" width={72} height={64} className='rounded-[10px]' />
+                        <VscAccount size={64} color="grey" />
                         </div>
                         <div className="flex flex-col">
                             <h1 className="font-extrabold text-[24px]">HALLO!</h1>

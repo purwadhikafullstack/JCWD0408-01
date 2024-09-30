@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { IoIosMore } from "react-icons/io";
 import DaftarProductDetail from "./daftar-product-detail";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
 interface ProductData {
     status: string,
@@ -22,7 +24,8 @@ interface ProductData {
 export default function DaftarProduct() {
     const [data, setData] = useState<ProductData | null>(null);
     const [page, setPage] = useState(1);
-    
+    const params = useParams()
+
     const fetchDataProduct = async () => {
         const res = await fetch(`http://localhost:8000/api/superadmin/product?page=${page}`, {
             headers: {
@@ -35,7 +38,7 @@ export default function DaftarProduct() {
         setData(data)
     }
 
-    useEffect(()=> {
+    useEffect(() => {
         fetchDataProduct()
     }, [page])
 
@@ -47,7 +50,7 @@ export default function DaftarProduct() {
 
     const handleNext = () => {
         if (page === data?.totalPages) {
-            return 
+            return
         }
         setPage(page + 1)
     }
@@ -56,8 +59,10 @@ export default function DaftarProduct() {
         <div className="flex flex-col justify-center items-center gap-2 ">
             {
                 data?.product.map((item: any, key: any) => {
-                    return(
-                        <DaftarProductDetail nama={item.name} created_at={item.created_at} harga_product={item.price} stocktotal_inventory={10} />
+                    return (
+                        <Link href={`details-discount-management/${item.product_id}`} className="w-full">
+                            <DaftarProductDetail nama={item.name} created_at={item.created_at} harga_product={item.price} stocktotal_inventory={10} />
+                        </Link>
                     )
                 })
             }

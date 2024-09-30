@@ -66,3 +66,11 @@ export const createProductbySuperAdmin = yup.object().shape({
   image: yup.string().required("image is required"),
   category_id: yup.number().required("category id is required")
 })
+
+export const validationSchemaDiscount = Yup.object({
+  product_id: yup.number().required('Required'),
+  discount_code: yup.string().required('Required'),
+  discount_type: yup.string().required('Required'),
+  discount_value: yup.number().required('Required'),
+  expires_at: yup.string().required('Required')
+})

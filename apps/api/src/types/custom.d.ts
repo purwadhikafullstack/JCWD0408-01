@@ -8,3 +8,9 @@ declare namespace Express {
         user : User
     }
 }
+
+declare namespace Express {
+    export interface Request {
+        file?: Multer.File;
+    }
+}

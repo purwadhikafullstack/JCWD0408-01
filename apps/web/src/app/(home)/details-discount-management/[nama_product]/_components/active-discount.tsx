@@ -40,13 +40,12 @@ export default function ActiveDiscount() {
 
     useEffect(() => {
         fetchDataDiscount()
-    }, [])
+    }, [page])
 
     const handleNext = () => {
-        if (page === data?.totalPage) {
-            return;
+        if (page < data?.totalPage!) {
+            setPage(page + 1)
         }
-        setPage(page + 1)
     }
 
     const handlePrev = () => {

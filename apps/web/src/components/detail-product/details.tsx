@@ -36,7 +36,7 @@ export default function DetailProductRightBar() {
     const [originalQuantity, setOriginalQuantity] = useState<number>(0)
 
     useEffect(() => {
-        if (data) {
+        if (data && data.product.Inventory.length > 0) {
             setQuantity(data.product.Inventory[0].qty);
             setOriginalQuantity(data.product.Inventory[0].qty);
         }

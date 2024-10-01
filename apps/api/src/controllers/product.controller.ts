@@ -56,7 +56,7 @@ export class ProductController {
                 }
 
                 const createProduct = await prisma.product.create({
-                    data: {               
+                    data: {
                         name: req.body.name,
                         description: req.body.description,
                         store_id: store.store_id,
@@ -83,21 +83,13 @@ export class ProductController {
         }
     }
 
-    async getProductDetail(req: Request, res: Response){
+    async getProductDetail(req: Request, res: Response) {
         try {
             const product = await prisma.product.findUnique({
                 where: { product_id: +req.params.product_id },
                 include: {
-                    Inventory: {
-                        select: {
-                            qty: true
-                        }
-                    },
-                    category: {
-                        select: {
-                            category_name: true
-                        }
-                    }
+                    Inventory: { select: { qty: true } },
+                    category: { select: { category_name: true } }
                 }
             });
 
@@ -111,6 +103,48 @@ export class ProductController {
             return res.status(200).send({
                 status: 'ok',
                 product
+            });
+        } catch (error) {
+            responseError(res, error);
+        }
+    }
+
+    async getProductBySearchBar(req: Request, res: Response) {
+        try {
+            interface FilterSearch {
+                OR?: [{ name: { contains: string } }]
+            }
+
+            const { search, page: pageQuery } = req.query;
+            const page = parseInt(pageQuery as string) || 1;
+            const filterQ: FilterSearch = {}
+            if (search) {
+                filterQ.OR = [
+                    { name: { contains: search as string } },
+                ]
+            }
+            const limit = 24;
+            const offset = (page - 1) * limit;
+
+            const product = await prisma.product.findMany({
+                where: filterQ,
+                skip: offset,
+                take: limit,
+                include: {
+                    Inventory: true,
+                    category: true
+                }
+            });
+
+            const totalProducts = await prisma.product.count({
+                where: filterQ
+            });
+
+            return res.status(200).send({
+                status: 'ok',
+                product,
+                totalPages: Math.ceil(totalProducts / limit),
+                currentPage: page,
             });
         } catch (error) {
             responseError(res, error);

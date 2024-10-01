@@ -29,14 +29,16 @@ interface Category {
 export default function DetailProductAdmin() {
     const params = useParams()
     const [data, setData] = useState<ProductDetails | null>()
+    const convertParams = (params.nama_product).toString().split("%")[0]
+
+    console.log((params.nama_product).toString().split("%")[0])
 
     const fetchDetailProduct = async () => {
-        const res = await fetch(`http://localhost:8000/api/product/details/${params.nama_product}`, {
+        const res = await fetch(`http://localhost:8000/api/product/details/${convertParams}`, {
             headers: {
                 'Content-Type': 'application/json',
             },
             method: 'GET',
-
         })
         const fetchData = await res.json();
         setData(fetchData)
@@ -63,7 +65,7 @@ export default function DetailProductAdmin() {
                 <p className="text-[16px] text-justify text-balance lg:w-[650px] font-normal mt-2">{data?.product.description}</p>  
                 <div className="flex text-[16px] gap-5 mt-4 ">
                     <p className="bg-main text-secondary p-2 rounded-[6px]">Price : Rp. {priceMap}</p>
-                    <p className="bg-main text-secondary p-2 rounded-[6px]">Stock : {data?.product.Inventory[0].qty}</p>
+                    <p className="bg-main text-secondary p-2 rounded-[6px]">Stock : {data?.product.Inventory[0]?.qty == undefined ? 0 : data?.product.Inventory[0]?.qty}</p>
                 </div>
             </div>
             <p className="">

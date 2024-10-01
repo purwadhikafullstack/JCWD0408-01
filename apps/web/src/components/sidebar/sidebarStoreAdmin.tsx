@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { VscAccount } from "react-icons/vsc";
 import { AiOutlineProduct } from "react-icons/ai";
 import { RiSecurePaymentLine } from "react-icons/ri";
-import { RiDiscountPercentLine } from "react-icons/ri";
+import { LuClipboardList } from "react-icons/lu";
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -75,21 +75,20 @@ export default function SidebarStoreAdmin() {
               </Link>
               <Link href="/paymentproof" className='z-20 w-[200px]'>
                 <div className='text-main-black text-lg  hover:bg-main hover:text-secondary p-3 w-full pl-5  text-left flex justify-start gap-2 items-center transition-colors'>
-                  <RiSecurePaymentLine size={28} className="text-main-black" />
+                  <LuClipboardList size={28} className="text-main-black" />
                   <div className="text-[18px]">
-                    Payment Proof
+                    Orders
                   </div>
                 </div>
               </Link>
-              <Link href="/vouchermanagement" className='z-20 w-[200px]'>
+              {/* <Link href="/vouchermanagement" className='z-20 w-[200px]'>
                 <div className=' text-main-black text-lg  hover:bg-main hover:text-secondary p-3 w-full pl-5  text-left flex justify-start gap-2 items-center transition-colors'>
                   <RiDiscountPercentLine size={28} className="text-main-black" />
                   <div className="text-[18px]">
                     Disc. Management
                   </div>
-
                 </div>
-              </Link>
+              </Link> */}
               <div className='border-[1px] border-white mt-5 w-full '></div>
             </div>
             <div>

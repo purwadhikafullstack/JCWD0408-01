@@ -51,9 +51,8 @@ export class BuyerController {
       })
 
       return res.status(200).send(
-      
         refCode
-      )
+    )
     } catch (error) {
       responseError(res, error)
     }

@@ -98,4 +98,12 @@ export class SuperAdminController {
             responseError(res, error);
         }
     }
+
+    async createStore(req: Request, res: Response) {
+        try {
+            
+        } catch (error) {
+            
+        }
+    }
 }

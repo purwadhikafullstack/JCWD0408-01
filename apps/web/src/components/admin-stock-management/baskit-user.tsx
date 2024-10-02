@@ -84,9 +84,9 @@ export default function BaskitUser() {
     return (
         <div className="flex flex-col justify-center items-center gap-2 ">
             {
-                data?.data.map((item) => {
+                data?.data.map((item, key) => {
                     return (
-                        <UserCartDetails nama={item.first_name} created_at={item.created_at} email={item.email} />
+                        <UserCartDetails nama={item.first_name} created_at={item.created_at} email={item.email} key={item.user_id}/>
                     )
                 })
             }

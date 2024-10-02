@@ -20,6 +20,7 @@ import { ProductRouter } from './routers/product.router';
 import { SuperAdminRouter } from './routers/superadmin.router';
 import { OAuthRouter } from './routers/oauth.router';
 import { DiscountRouter } from './routers/discount.router';
+import { InventoryRouter } from './routers/inventory.router';
 
 
 
@@ -73,6 +74,7 @@ export default class App {
     const superAdminRouter = new SuperAdminRouter()
     const oAuthRouter = new OAuthRouter()
     const discountRouter = new DiscountRouter()
+    const inventoryRouter = new InventoryRouter()
 
 
 
@@ -89,6 +91,7 @@ export default class App {
     this.app.use('/api/product', productRouter.getRouter())
     this.app.use('/api/superadmin', superAdminRouter.getRouter())
     this.app.use('/api/discount', discountRouter.getRouter())
+    this.app.use('/api/inventory', inventoryRouter.getRouter())
   }
 
   public start(): void {

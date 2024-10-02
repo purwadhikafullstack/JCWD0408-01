@@ -209,6 +209,7 @@ model Inventory {
   store_id   Int
   product_id Int
   qty        Int
+  total_qty  Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
   store      Store    @relation(fields: [store_id], references: [store_id])

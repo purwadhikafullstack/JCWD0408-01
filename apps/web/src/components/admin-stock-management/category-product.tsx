@@ -59,8 +59,7 @@ export default function CategoryProduct() {
             {
                 data?.allCategories.map((item: any, key: any) => {
                     return (
-                        
-                        <CategoryProductDetail nama={item.category_name}  stock={0} pendapatan={0} registered_product={item.Product.length} />
+                        <CategoryProductDetail nama={item.category_name} registered_product={item.Product.length} key={key}/>
                     )
                 })
             }

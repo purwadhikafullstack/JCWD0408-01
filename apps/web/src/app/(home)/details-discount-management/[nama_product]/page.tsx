@@ -1,7 +1,6 @@
 'use client'
 
 import Sidebar from "@/components/sidebar/sidebar";
-import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { VscAccount } from "react-icons/vsc";
 import { SlGraph } from "react-icons/sl";
 import { MdOutlineDiscount } from "react-icons/md";
@@ -11,6 +10,7 @@ import PercentageFormDiscount from "./_components/percentage-form-discount";
 import ActiveDiscount from "./_components/active-discount";
 import DetailProductAdmin from "./_components/detail-product";
 import NominalFormDiscount from "./_components/fix-form-discount";
+import InventoryHistory from "./_components/inventory-history";
 
 export default function DiscountManagementPage() {
     const params = useParams()
@@ -57,7 +57,7 @@ export default function DiscountManagementPage() {
                         <p>Active Discount</p>
                     </div>
                     <ActiveDiscount />
-                  
+                    <InventoryHistory />
                     <div className="border-[1px] w-full border-accent"></div>
                     <div className="flex gap-2 items-center">
                         <SlGraph size={24} />

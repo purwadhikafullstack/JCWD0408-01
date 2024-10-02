@@ -19,6 +19,16 @@ CREATE TABLE `User` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `AccountChanges` (
+    `change_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `change_type` ENUM('email', 'password', 'username', 'date_ob', 'avatar', 'phone', 'name') NOT NULL,
+    `is_requesting` BOOLEAN NULL DEFAULT false,
+    `changed_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`change_id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Provider` (
     `provider_id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_id` INTEGER NOT NULL,
@@ -160,6 +170,7 @@ CREATE TABLE `Inventory` (
     `store_id` INTEGER NOT NULL,
     `product_id` INTEGER NOT NULL,
     `qty` INTEGER NOT NULL,
+    `total_qty` INTEGER NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 

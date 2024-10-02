@@ -19,6 +19,16 @@ CREATE TABLE `User` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `AccountChanges` (
+    `change_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `change_type` ENUM('email', 'password', 'username', 'date_ob', 'avatar', 'phone', 'name') NOT NULL,
+    `is_requesting` BOOLEAN NULL DEFAULT false,
+    `changed_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`change_id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Provider` (
     `provider_id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_id` INTEGER NOT NULL,
@@ -48,10 +58,10 @@ CREATE TABLE `Address` (
     `user_id` INTEGER NOT NULL,
     `address` TEXT NOT NULL,
     `subdistrict` VARCHAR(191) NULL,
-    `city` VARCHAR(191) NULL,
-    `city_id` VARCHAR(191) NULL,
-    `province` VARCHAR(191) NULL,
-    `province_id` VARCHAR(191) NULL,
+    `city` VARCHAR(191) NOT NULL,
+    `city_id` VARCHAR(191) NOT NULL,
+    `province` VARCHAR(191) NOT NULL,
+    `province_id` VARCHAR(191) NOT NULL,
     `postcode` VARCHAR(191) NULL,
     `latitude` DOUBLE NOT NULL,
     `longitude` DOUBLE NOT NULL,
@@ -60,6 +70,20 @@ CREATE TABLE `Address` (
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (`address_id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `RajaOngkir` (
+    `ongkir_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `city_id` VARCHAR(191) NOT NULL,
+    `city_name` VARCHAR(191) NOT NULL,
+    `province_id` VARCHAR(191) NOT NULL,
+    `province` VARCHAR(191) NOT NULL,
+    `type` VARCHAR(191) NOT NULL,
+    `postal_code` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `RajaOngkir_city_id_key`(`city_id`),
+    PRIMARY KEY (`ongkir_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -114,8 +138,10 @@ CREATE TABLE `Store` (
     `store_name` VARCHAR(191) NOT NULL,
     `address` VARCHAR(191) NOT NULL,
     `subdistrict` VARCHAR(191) NULL,
-    `city` VARCHAR(191) NULL,
+    `city` VARCHAR(191) NOT NULL,
+    `city_id` VARCHAR(191) NOT NULL,
     `province` VARCHAR(191) NOT NULL,
+    `province_id` VARCHAR(191) NOT NULL,
     `postcode` VARCHAR(191) NOT NULL,
     `latitude` DOUBLE NOT NULL,
     `longitude` DOUBLE NOT NULL,

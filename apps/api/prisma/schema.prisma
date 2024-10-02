@@ -100,10 +100,10 @@ model Address {
   user_id     Int
   address     String   @db.Text
   subdistrict String?
-  city        String?
-  city_id     String?
-  province    String?
-  province_id String?
+  city        String
+  city_id     String
+  province    String
+  province_id String
   postcode    String?
   latitude    Float
   longitude   Float
@@ -111,6 +111,16 @@ model Address {
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now())
   user        User     @relation(fields: [user_id], references: [user_id])
+}
+
+model RajaOngkir {
+  ongkir_id   Int    @id @default(autoincrement())
+  city_id     String @unique
+  city_name   String
+  province_id String
+  province    String
+  type        String
+  postal_code String
 }
 
 model Referral {
@@ -162,8 +172,10 @@ model Store {
   store_name  String      @unique
   address     String
   subdistrict String?
-  city        String?
+  city        String
+  city_id     String
   province    String
+  province_id String
   postcode    String
   latitude    Float
   longitude   Float

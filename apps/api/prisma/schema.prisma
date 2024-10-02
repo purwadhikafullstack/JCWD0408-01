@@ -187,21 +187,30 @@ model Category {
 }
 
 model Product {
-  product_id  Int         @id @default(autoincrement())
-  store_id    Int
-  name        String
-  description String      @db.Text
-  price       Int
-  category_id Int
-  image       String?
-  created_at  DateTime    @default(now())
-  updated_at  DateTime    @default(now())
-  store       Store       @relation(fields: [store_id], references: [store_id])
-  category    Category    @relation(fields: [category_id], references: [category_id])
-  Discount    Discount[]
-  Inventory   Inventory[]
-  OrderItem   OrderItem[]
-  CartItem    CartItem[]
+  product_id   Int            @id @default(autoincrement())
+  store_id     Int
+  name         String
+  description  String         @db.Text
+  price        Int
+  category_id  Int
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @default(now())
+  store        Store          @relation(fields: [store_id], references: [store_id])
+  category     Category       @relation(fields: [category_id], references: [category_id])
+  Discount     Discount[]
+  Inventory    Inventory[]
+  OrderItem    OrderItem[]
+  CartItem     CartItem[]
+  ProductImage ProductImage[]
+}
+
+model ProductImage {
+  image_id          Int      @id @default(autoincrement())
+  product_id Int
+  url               String
+  created_at        DateTime @default(now())
+  updated_at        DateTime @default(now())
+  product           Product  @relation(fields: [product_id], references: [product_id])
 }
 
 model Inventory {

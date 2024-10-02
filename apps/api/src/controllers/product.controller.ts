@@ -3,7 +3,7 @@ import prisma from "@/prisma";
 import { Request, response, Response } from "express";
 import { create } from "handlebars";
 
-const baseUrl = 'https://localhost:8000/api'
+const baseUrl = 'http://localhost:8000/api'
 
 export class ProductController {
     async getProductbyStoreId(req: Request, res: Response) {
@@ -53,25 +53,29 @@ export class ProductController {
                     });
                 }
 
-                let image = null;
-                if (req.file) {
-                    image = `${baseUrl}/public/product/${req.file?.filename}`;
-                }
+                const files: Express.Multer.File[] = req.files as Express.Multer.File[];
+                const image = files.map((file) => `${baseUrl}/public/product/${file.filename}`)
 
                 const createProduct = await prisma.product.create({
                     data: {
                         name: req.body.name,
                         description: req.body.description,
                         store_id: store.store_id,
-                        image: image,
                         category_id: +req.body.category_id,
                         price: +req.body.price,
                         Inventory: {
                             create: {
                                 qty: +req.body.qty,
                                 store_id: store.store_id,
-                                total_qty : +req.body.qty
+                                total_qty: +req.body.qty
                             }
+                        },
+                        ProductImage: {
+                            create: image.map((url) => {
+                                return {
+                                    url
+                                }
+                            })
                         }
                     }
                 });
@@ -92,16 +96,21 @@ export class ProductController {
             const product = await prisma.product.findUnique({
                 where: { product_id: +req.params.product_id },
                 include: {
-                    Inventory: { 
-                        select: { 
+                    Inventory: {
+                        select: {
                             qty: true,
                             total_qty: true,
                             created_at: true
                         },
                         orderBy: { created_at: 'desc' }
                     },
+                    ProductImage: {
+                        select: {
+                            url: true
+                        }
+                    },
                     category: { select: { category_name: true } }
-                } 
+                }
             });
 
             if (!product) {

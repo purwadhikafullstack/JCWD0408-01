@@ -48,6 +48,13 @@ export class SuperAdminController {
             const offset = (Number(page) - 1) * limit;
 
             const product = await prisma.product.findMany({
+                include: {
+                    Inventory: {
+                        orderBy: {
+                            created_at: 'desc'
+                        }
+                    }
+                },
                 skip: offset,
                 take: limit
             });

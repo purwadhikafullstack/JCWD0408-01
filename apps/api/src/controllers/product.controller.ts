@@ -17,7 +17,9 @@ export class ProductController {
                 skip: offset,
                 take: limit,
                 include: {
-                    Inventory: true,
+                    Inventory: {
+                        orderBy: { created_at: 'desc' },
+                    },
                 }
             });
 
@@ -30,6 +32,7 @@ export class ProductController {
                 product,
                 totalPages: Math.ceil(totalProducts / limit),
                 currentPage: page,
+                totalProducts
             });
         } catch (error) {
             responseError(res, error);
@@ -66,7 +69,8 @@ export class ProductController {
                         Inventory: {
                             create: {
                                 qty: +req.body.qty,
-                                store_id: store.store_id
+                                store_id: store.store_id,
+                                total_qty : +req.body.qty
                             }
                         }
                     }
@@ -88,9 +92,16 @@ export class ProductController {
             const product = await prisma.product.findUnique({
                 where: { product_id: +req.params.product_id },
                 include: {
-                    Inventory: { select: { qty: true } },
+                    Inventory: { 
+                        select: { 
+                            qty: true,
+                            total_qty: true,
+                            created_at: true
+                        },
+                        orderBy: { created_at: 'desc' }
+                    },
                     category: { select: { category_name: true } }
-                }
+                } 
             });
 
             if (!product) {

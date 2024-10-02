@@ -41,9 +41,9 @@ export default function BaskitAdmin() {
             },
             method: 'GET',
         });
-        const data = await res.json();
-        setData(data)
-        console.log(data.data)
+        const dataFetch = await res.json();
+        setData(dataFetch)
+        console.log(dataFetch.data[1].Store.store_name)
     }
 
     useEffect(() => {
@@ -55,8 +55,14 @@ export default function BaskitAdmin() {
             {
                 data?.data.map((item, key) => {
                     return(         
-                            <AdminCartDetails store_admin={item.first_name} created_At={item.created_at} stocktotal_inventory="stocktotal_inventory" pendapatan_bulanini="pendapatan_bulanini" store={item.Store.store_name}/>
-                    
+                        <AdminCartDetails 
+                            store_admin={item.first_name || ''} 
+                            created_At={item.created_at || ''} 
+                            stocktotal_inventory="stocktotal_inventory" 
+                            pendapatan_bulanini="pendapatan_bulanini" 
+                            store={item.Store && item.Store.store_name ? item.Store.store_name : 'Unsigned'} 
+                            key={key}
+                        />
                     )
                 })
             }

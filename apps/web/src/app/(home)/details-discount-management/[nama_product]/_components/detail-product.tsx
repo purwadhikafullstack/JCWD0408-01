@@ -11,6 +11,7 @@ interface DataProduct {
     Inventory: [
         {
             qty: number
+            total_qty: number
         }
     ],
     category: Category
@@ -62,10 +63,10 @@ export default function DetailProductAdmin() {
                     <p className="text-[14px] text-justify text-balance lg:w-[650px] font-normal text-gray-500 ">#product_code{data?.product.product_id}</p>
                     <p className="text-[14px] text-justify text-balance lg:w-[650px] font-normal text-gray-500 ">{data?.product.category.category_name}</p>
                 </div>
-                <p className="text-[16px] text-justify text-balance lg:w-[650px] font-normal mt-2">{data?.product.description}</p>  
+                <p className="text-[16px] lg:w-[650px] font-normal mt-2">{data?.product.description}</p>  
                 <div className="flex text-[16px] gap-5 mt-4 ">
                     <p className="bg-main text-secondary p-2 rounded-[6px]">Price : Rp. {priceMap}</p>
-                    <p className="bg-main text-secondary p-2 rounded-[6px]">Stock : {data?.product.Inventory[0]?.qty == undefined ? 0 : data?.product.Inventory[0]?.qty}</p>
+                    <p className="bg-main text-secondary p-2 rounded-[6px]">Stock : {data?.product.Inventory[0]?.total_qty == undefined ? 0 : data?.product.Inventory[0]?.total_qty}</p>
                 </div>
             </div>
             <p className="">

@@ -80,15 +80,14 @@ export default function Sidebar() {
                   </div>
                 </div>
               </Link>
-              <Link href="/" className='z-20 w-[200px]'>
+              {/* <Link href="/" className='z-20 w-[200px]'>
                 <div className=' text-main-black text-lg  hover:bg-main hover:text-secondary p-3 w-full pl-5  text-left flex justify-start gap-2 items-center transition-colors'>
                   <RiDiscountPercentLine size={28} className="text-main-black" />
                   <div className="text-[18px]">
                     Disc. Management
                   </div>
-
                 </div>
-              </Link>
+              </Link> */}
               <div className='border-[1px] border-white mt-5 w-full '></div>
               <Link href="/admin-stock-management" className='z-20 w-[200px]'>
                 <div className="text-main-black text-lg  hover:bg-main hover:text-secondary p-3 pl-5 cursor-pointer text-left transition-colors z-20">

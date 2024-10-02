@@ -3,6 +3,7 @@ import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { IoIosMore } from "react-icons/io";
 import CategoryProductDetail from "./category-product-detail";
 import { use } from "chai";
+import { revalidateTag } from "next/cache";
 
 export interface CategoryData{
     status: string,
@@ -28,18 +29,18 @@ export default function CategoryProduct() {
         const res = await fetch(`http://localhost:8000/api/category?page=${page}`, {
             headers: {
                 'Content-Type': 'application/json',
+                
             },
-            method: 'GET',
+            next: { tags : ["reload"]},
         });
         const data = await res.json();
         console.log(data)
         setData(data)
     }
 
-
     useEffect(() => {
         fetchDataCategory()
-    }, [page])
+    }, [page, "reload"])
 
     const handlePrev = () => {
         if (page > 1) {
@@ -59,8 +60,7 @@ export default function CategoryProduct() {
             {
                 data?.allCategories.map((item: any, key: any) => {
                     return (
-                        
-                        <CategoryProductDetail nama={item.category_name}  stock={0} pendapatan={0} registered_product={item.Product.length} />
+                        <CategoryProductDetail nama={item.category_name} registered_product={item.Product.length} key={key}/>
                     )
                 })
             }

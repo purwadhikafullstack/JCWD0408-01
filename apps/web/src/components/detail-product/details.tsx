@@ -13,6 +13,7 @@ interface DataProduct {
     Inventory: [
         {
             qty: number
+            total_qty: number
         }
     ],
     category: Category
@@ -36,9 +37,9 @@ export default function DetailProductRightBar() {
     const [originalQuantity, setOriginalQuantity] = useState<number>(0)
 
     useEffect(() => {
-        if (data) {
-            setQuantity(data.product.Inventory[0].qty);
-            setOriginalQuantity(data.product.Inventory[0].qty);
+        if (data && data.product.Inventory.length > 0) {
+            setQuantity(data.product.Inventory[0].total_qty);
+            setOriginalQuantity(data.product.Inventory[0].total_qty);
         }
     }, [data]);
 
@@ -53,6 +54,7 @@ export default function DetailProductRightBar() {
         })
         const fetchData = await res.json();
         setData(fetchData)
+        console.log(fetchData)
     }
 
     useEffect(() => {

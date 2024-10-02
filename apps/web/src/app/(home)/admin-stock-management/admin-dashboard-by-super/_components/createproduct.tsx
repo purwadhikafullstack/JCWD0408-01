@@ -10,6 +10,8 @@ import { RiGalleryUploadFill } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
 import ImagePreview from './imagePreview';
+import ImagePreviewRoom from './imagePreview';
+import ImagePreviewProduct from './imagePreview';
 
 export default function CreateProduct() {
 
@@ -17,7 +19,6 @@ export default function CreateProduct() {
         name: "",
         description: "",
         price: "",
-        image: null,
         category_id: "",
         qty: ""
     }
@@ -38,11 +39,11 @@ export default function CreateProduct() {
         formData.append('name', data.name)
         formData.append('description', data.description)
         formData.append('price', data.price)
-        if (data.image) {
-            formData.append('image', data.image);
-        }
         formData.append('category_id', data.category_id)
         formData.append('qty', data.qty)
+        image.forEach((file) => {
+            formData.append('product', file)
+        })
 
         try {
             const res = await fetch(`http://localhost:8000/api/product/create/${store_id}`, {
@@ -61,6 +62,7 @@ export default function CreateProduct() {
     }
 
     const [data, setData] = useState<ICategory>()
+    const [image, setImage] = useState<File[]>([])
 
     interface ICategory {
         status: string,
@@ -73,12 +75,26 @@ export default function CreateProduct() {
     }
 
     const mediaRef = useRef<HTMLInputElement | null>(null);
-    const handleFileChange = (event: any, setFieldValue: any) => {
-        const file = event.target.files[0]
-        if (file) {
-            setFieldValue('image', file)
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            const newFile = Array.from(e.target.files);
+            const maxFileSize = 1 * 1024 * 1024;
+            const filterSize = newFile.filter((file) => {
+                if (file.size > maxFileSize) {
+                    toast.error("Ukuran file terlalu besar, maksimal 1MB");
+                    return false;
+                }
+                return true;
+            });
+            const total = image.length + filterSize.length;
+            if (total > 3) {
+                toast.error("Maksimal upload 5 gambar");
+                return;
+            }
+            setImage((prevFiles) => [...prevFiles, ...filterSize]);
         }
-    }
+    };
 
     const getCategory = async () => {
         try {
@@ -94,10 +110,12 @@ export default function CreateProduct() {
         }
     }
 
+
     useEffect(() => {
         getCategory()
     }, [])
 
+    console.log(image)
     return (
         <motion.div className='flex flex-col gap-5 '
             initial={{ opacity: 0.5, translateY: -5 }}
@@ -143,11 +161,14 @@ export default function CreateProduct() {
                                                 <RiGalleryUploadFill size={56} className="text-third cursor-pointer hover:text-white" />
                                             </div>
                                         </label>
-                                        <ImagePreview image={values.image} setFieldValue={setFieldValue} mediaRef={mediaRef} />
+                                        <ImagePreviewProduct files={image} setSelectedFiles={setImage} />
+
                                         <input
-                                            onChange={(e: any) => handleFileChange(e, setFieldValue)}
+                                            onChange={handleFileChange}
                                             type="file"
                                             id="upload"
+                                            multiple
+                                            max={3}
                                             name="image"
                                             className="hidden"
                                         />

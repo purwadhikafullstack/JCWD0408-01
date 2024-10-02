@@ -1,60 +1,57 @@
 'use client'
 import { Field } from 'formik';
-import Image from 'next/image';
-import React from 'react';
+import Image from "next/image";
+import { useEffect, useState } from "react";
 import { IoCloseOutline } from "react-icons/io5";
 
-
-interface ImagePreviwProps {
-    image?: File | null;
-    setFieldValue: (Field: string, value: any, shouldValidate?: boolean) => void;
-    mediaRef: React.RefObject<HTMLInputElement>;
+interface ImagePreviewProps {
+    files: File[];
+    setSelectedFiles: (files: File[]) => void;
 }
 
-const ImagePreview: React.FC<ImagePreviwProps> = ({ image, setFieldValue, mediaRef }) => {
-    const [imageUrl, setImageUrl] = React.useState<string | null>(null);
-    console.log(image);
-    
+const ImagePreviewProduct: React.FC<ImagePreviewProps> = ({
+    files,
+    setSelectedFiles,
+}) => {
+    const [previews, setPreviews] = useState<string[]>([]);
 
-    const onRemove = () => {
-        setFieldValue('media', null)
-        if (mediaRef.current) {
-            mediaRef.current.value = ''
+    const onRemove = (index: number) => {
+        const newFile = files.filter((n, i) => i !== index);
+        setSelectedFiles(newFile);
+    };
+
+    useEffect(() => {
+        if (files.length > 0) {
+            const previewUrls = files.map((file) => URL.createObjectURL(file));
+            setPreviews(previewUrls);
         }
-    }
-
-    React.useEffect(() => {
-        if (image) {
-            const objectUrl = URL.createObjectURL(image);
-            setImageUrl(null);
-
-            return () => URL.revokeObjectURL(objectUrl);
-        } else {
-            setImageUrl(null);
-        }
-    }, [image]);
-
-    if (!imageUrl) {
-        return null;
-    }
+    }, [files]);
 
     return (
-        <div>
-            <Image 
-            src={imageUrl} 
-            alt='Preview' 
-            width={100} 
-            height={100}
-            style={{maxWidth: '300px', maxHeight:'200px', objectFit:'cover'}}
-            />
-            {/* <button
-            onClick={onRemove}
-            className='absolute top-2 right-2 bg-third'
-            >
-                <IoCloseOutline />
-            </button> */}
-        </div>
-    )
-}
+        <section>
+            <div className="flex gap-2">
+                {previews.map((src, index) => (
+                    <div className="relative">
+                        <Image
+                            key={index}
+                            src={src}
+                            alt={`preview-${index}`}
+                            width={200}
+                            height={200}
+                            className="h-24 w-24 rounded-md object-cover"
+                        />
+                        <button
+                            type="button"
+                            onClick={() => onRemove(index)}
+                            className="absolute right-1 top-1 rounded-full bg-black bg-opacity-60 p-[2px] text-xl text-white hover:bg-opacity-45"
+                        >
+                            <IoCloseOutline className="h-4 w-4" />
+                        </button>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+};
 
-export default ImagePreview
+export default ImagePreviewProduct;

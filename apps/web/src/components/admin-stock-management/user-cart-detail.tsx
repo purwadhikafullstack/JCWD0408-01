@@ -1,15 +1,13 @@
-export default function UserCartDetails({nama, created_at, email} : {nama: string, created_at: string, email: string}) {
+export default function UserCartDetails({ nama, created_at, email }: { nama: string, created_at: string, email: string }) {
     return (
-        <div className="flex lg:flex-row flex-wrap lg:justify-between justify-center text-[14px] items-center lg:h-10 h-60 rounded-[10px] hover:bg-secondary hover:border-secondary duration-200 border-[1px] w-full">
-                <p className="p-2 lg:pl-10 w-[250px]">{nama}</p>
-                <div className="flex flex-row gap-5 w-[350px]">
-                    <p className="">Created : {created_at.split("T")[0]}</p>
-                    <p className="">{email}</p>
-                </div>
-                <div>
+        <div className="flex lg:flex-row flex-wrap lg:justify-between justify-center text-[14px] items-center lg:h-10 h-60 rounded-[10px] hover:bg-secondary hover:border-secondary duration-200 border-[1px] w-full gap-2">
+            <p className="p-2 lg:pl-10 md:w-[250px]">{nama}</p>
+            <p className="md:w-[250px]">Created : {created_at.split("T")[0]}</p>
+            <p className="md:w-[200px] text-right">{email}</p>
+            <div>
 
-                </div>
-                {/* <button type="button" className="" onClick={toggleModal}>
+            </div>
+            {/* <button type="button" className="" onClick={toggleModal}>
                     <IoIosMore size={32} className="text-main hover:text-secondary duration-300 hover:bg-main hover:rounded-full md:mr-10" />
                 </button>
                 {isModalOpen && (
@@ -20,6 +18,6 @@ export default function UserCartDetails({nama, created_at, email} : {nama: strin
                         </ul>
                     </div>
                 )} */}
-            </div>
+        </div>
     )
 }

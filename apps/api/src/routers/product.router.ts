@@ -13,9 +13,10 @@ export class ProductRouter {
     }
 
     private initializeRouter() {
+        this.router.get('/products-catalogue', this.productController.getProductBySearchBar)
         this.router.get(`/:store_id`, this.productController.getProductbyStoreId)
         this.router.get(`/details/:product_id`, this.productController.getProductDetail)
-        this.router.post(`/create/:store_id`, uploader("product", "/product").single("image"), this.productController.createProduct)
+        this.router.post(`/create/:store_id`, uploader("product", "/product").array("product"), this.productController.createProduct)
     }
 
     getRouter(){

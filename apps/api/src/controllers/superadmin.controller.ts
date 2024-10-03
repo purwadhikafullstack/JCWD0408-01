@@ -75,7 +75,7 @@ export class SuperAdminController {
     async allStoreList(req: Request, res : Response){
         try {
             const { page = 1 } = req.query;
-            const limit = 6;
+            const limit = 10;
             const offset = (Number(page) - 1) * limit;
 
             const store = await prisma.store.findMany({
@@ -101,9 +101,80 @@ export class SuperAdminController {
 
     async createStore(req: Request, res: Response) {
         try {
-            
+          const { address, city, postcode, subdistrict, province } = req.body;
+    
+          const partsToRemove = [subdistrict, city, province, postcode]
+            .filter((part) => part)
+            .map((part) => part.toLowerCase());
+    
+          const filteredAddress = address
+            .split(', ')
+            .map((part: string) => part.trim())
+            .filter((part: string) => !partsToRemove.includes(part.toLowerCase()))
+            .join(', ');
+          const newStore = await prisma.store.create({
+            data: {
+              ...req.body,
+              address: filteredAddress,
+              latitude: parseFloat(req.body.latitude),
+              longitude: parseFloat(req.body.longitude),
+            },
+          });
+    
+          return res.status(200).send({
+            status: 'ok',
+            newStore,
+          });
         } catch (error) {
-            
+          responseError(res, error);
         }
-    }
+      }
+
+      async editStore(req: Request, res: Response) {
+        try {
+            const { address, city, postcode, subdistrict, province } = req.body;
+      
+            const partsToRemove = [subdistrict, city, province, postcode]
+              .filter((part) => part)
+              .map((part) => part.toLowerCase());
+      
+            const filteredAddress = address
+              .split(', ')
+              .map((part: string) => part.trim())
+              .filter((part: string) => !partsToRemove.includes(part.toLowerCase()))
+              .join(', ');
+            const editedStore = await prisma.store.update({
+              data: {
+                ...req.body,
+                address: filteredAddress,
+                latitude: parseFloat(req.body.latitude),
+                longitude: parseFloat(req.body.longitude),
+              },
+              where: {
+                store_id: req.body.store_id
+              }
+            });
+      
+            return res.status(200).send({
+              status: 'ok',
+              editedStore,
+            });
+          } catch (error) {
+            responseError(res, error);
+          }
+      }
+
+      async deleteStore(req: Request, res: Response) {
+        try {
+            await prisma.store.delete({
+                where: {
+                    store_id: req.body.store_id
+                }
+            })
+            
+            return res.status(200).send('Deletion Success')
+        } catch (error) {
+            responseError(res, error)
+        }
+      }
 }

@@ -98,3 +98,10 @@ export const resetPasswordSchema = yup.object({
     .oneOf([Yup.ref('newPassword')], "Passwords don't match")
     .required('Confirm password is required'),
 });
+
+export const createStoreSchema = Yup.object({
+  store_name: Yup.string()
+    .matches(/^[a-zA-Z\s]+$/, 'Store name can only contain letters and spaces.')
+    .required('Store name is required.')
+});
+

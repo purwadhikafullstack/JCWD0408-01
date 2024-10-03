@@ -26,6 +26,7 @@ import { VoucherRouter } from './routers/voucher.router';
 
 
 
+
 export default class App {
   private app: Express;
 
@@ -83,7 +84,7 @@ export default class App {
 
 
     this.app.get('/api', (req: Request, res: Response) => {
-      res.send(`Hello, Purwadhika Student API!`);
+      res.send(`Hello, Welcome To Baskit!`);
     });
 
     this.app.use('/api/auth', authRouter.getRouter())

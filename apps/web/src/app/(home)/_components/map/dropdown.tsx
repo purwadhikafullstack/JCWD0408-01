@@ -15,9 +15,7 @@ interface DropDownProps {
 }
 
 export default function DropDownAddr({
-  selectedProvince,
   setSelectedProvince,
-  selectedCity,
   setSelectedCity,
   onProvinceSelect,
   onCitySelect,

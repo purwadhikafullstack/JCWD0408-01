@@ -12,7 +12,6 @@ async function loadJSONData() {
 async function insertData() {
   const jsonData = await loadJSONData(); // Load the JSON data
 
-  // Use Prisma to insert data into the rajaongkir table
   await prisma.rajaOngkir.createMany({
     data: jsonData, // Insert the array of objects
   });

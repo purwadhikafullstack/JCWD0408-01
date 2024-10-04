@@ -98,7 +98,8 @@ export const provinceList = async () => {
     }
 
     const newData = await res.json();
-
+    console.log(newData);
+    
     localStorage.setItem(cacheKey, JSON.stringify({ data: newData, timestamp: now }));
 
     return newData;

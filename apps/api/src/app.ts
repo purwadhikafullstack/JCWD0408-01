@@ -22,6 +22,7 @@ import { OAuthRouter } from './routers/oauth.router';
 import { DiscountRouter } from './routers/discount.router';
 import { InventoryRouter } from './routers/inventory.router';
 import { VoucherRouter } from './routers/voucher.router';
+import { HomeProdRouter } from './routers/homeproduct.router';
 
 
 
@@ -79,6 +80,7 @@ export default class App {
     const discountRouter = new DiscountRouter()
     const inventoryRouter = new InventoryRouter()
     const voucherRouter = new VoucherRouter()
+    const homeProdRouter = new HomeProdRouter()
 
 
 
@@ -98,6 +100,7 @@ export default class App {
     this.app.use('/api/discount', discountRouter.getRouter())
     this.app.use('/api/inventory', inventoryRouter.getRouter())
     this.app.use('/api/voucher', voucherRouter.getRouter())
+    this.app.use('/api/homeprod', homeProdRouter.getRouter())
   }
 
   public start(): void {

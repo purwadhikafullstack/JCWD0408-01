@@ -8,6 +8,7 @@ import { UserLogin } from '@/types/user';
 import { Form, Formik, FormikHelpers, Field, ErrorMessage } from 'formik';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
+import GoogleAuth from './googleauth';
 
 export default function BuyerLoginForm() {
   const initialValues: UserLogin = {
@@ -71,6 +72,12 @@ export default function BuyerLoginForm() {
           <Link href="/register" className="text-main hover:underline font-bold">
             Click here</Link>
         </p>
+        <div className="my-6 flex items-center justify-center">
+          <hr className="w-full border-gray-300" />
+          <span className="px-4 text-gray-500">OR</span>
+          <hr className="w-full border-gray-300" />
+        </div>
+        <GoogleAuth/>
       </div>
     </div>
   );

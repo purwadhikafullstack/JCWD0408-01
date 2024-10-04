@@ -58,7 +58,7 @@ export default function Sidebar() {
           variants={sidebarVariants}
           transition={{ type: 'spring', stiffness: 250, damping: 25 }}
         >
-          <div className="flex flex-col space-y-32 mt-10">
+          <div className="flex flex-col space-y-24 mt-10">
             <Link href={'/'}>
               <Image
                 src={'/logo/baskitgreen.svg'}

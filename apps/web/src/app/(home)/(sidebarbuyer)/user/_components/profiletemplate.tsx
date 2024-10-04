@@ -21,6 +21,7 @@ export default function Profile({
   phone,
   date_ob,
   avatar,
+  password,
   referral_code,
 }: refCodeProfile) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -67,13 +68,16 @@ export default function Profile({
               </button>
             </div>
           </div>
-
-          <button
-            onClick={() => setIsConfirmationOpen(true)} // Open confirmation modal
-            className="mt-10 w-48 mx-auto bg-main text-secondary px-4 py-2 rounded-lg hover:bg-main-dark transition duration-200"
-          >
-            Change Password
-          </button>
+          {password ? (
+            <button
+              onClick={() => setIsConfirmationOpen(true)}
+              className="mt-10 w-48 mx-auto bg-main text-secondary px-4 py-2 rounded-lg hover:bg-main-dark transition duration-200"
+            >
+              Change Password
+            </button>
+          ) : (
+            ''
+          )}
         </div>
 
         <div className="flex flex-col space-y-6 w-full pt-10 lg:pt-0 lg:w-1/2">
@@ -84,7 +88,7 @@ export default function Profile({
                 {first_name} {last_name}
               </span>
             </div>
-            
+
             <div className="flex flex-col border-b border-gray-300 pb-2">
               <span className="font-medium text-lg">Date of Birth</span>
               <span className="text-gray-700 text-xl flex items-center justify-between">
@@ -95,23 +99,25 @@ export default function Profile({
                 />
               </span>
             </div>
-
             <div className="flex flex-col border-b border-gray-300 pb-2">
               <span className="font-medium text-lg">Email</span>
-              
-              {/* Conditionally render the email or the ChangeEmail component */}
               {isEditingEmail ? (
-                <div className="w-full"> {/* Make input field take full width */}
-                  <ChangeMail onCancel={handleCancelEmailChange} onSuccess={handleEmailChangeSuccess} /> {/* Pass onCancel handler */}
+                <div className="w-full">
+                  <ChangeMail
+                    onCancel={handleCancelEmailChange}
+                    onSuccess={handleEmailChangeSuccess}
+                  />
                 </div>
               ) : (
                 <span className="text-gray-700 text-xl flex items-center justify-between">
                   {email}
-                  <FaPen
-                    className="text-gray-500 cursor-pointer hover:text-main transition duration-200"
-                    title="Edit Email"
-                    onClick={() => setIsEditingEmail(true)} // Enable editing
-                  />
+                  {password && (
+                    <FaPen
+                      className="text-gray-500 cursor-pointer hover:text-main transition duration-200"
+                      title="Edit Email"
+                      onClick={() => setIsEditingEmail(true)}
+                    />
+                  )}
                 </span>
               )}
             </div>

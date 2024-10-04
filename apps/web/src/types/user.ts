@@ -20,6 +20,7 @@ export interface Buyer {
     phone: string
     date_ob: string
     avatar: File
+    password: string
 }
 
 export interface BuyerAvatar {

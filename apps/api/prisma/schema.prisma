@@ -43,10 +43,15 @@ enum ChangeType {
   name
 }
 
+enum ProviderType {
+  GOOGLE
+  FACEBOOK
+}
+
 model User {
   user_id    Int      @id @default(autoincrement())
   email      String   @unique
-  password   String
+  password   String?
   phone      String?  @unique
   first_name String
   last_name  String?
@@ -66,34 +71,19 @@ model User {
   Voucher           Voucher[]
   cartItems         CartItem[]
   Provider          Provider[]
-  Session           Session[]
 }
 
-model AccountChanges {
-  change_id     Int        @id @default(autoincrement())
-  change_type   ChangeType
-  is_requesting Boolean?   @default(false)
-  changed_at    DateTime   @default(now())
-}
 
 model Provider {
   provider_id         Int      @id @default(autoincrement())
   user_id             Int
-  provider_name       String
-  provider_account_id String   @unique
+  provider_name       ProviderType
   created_at          DateTime @default(now())
   updated_at          DateTime @default(now())
 
   user User @relation(fields: [user_id], references: [user_id])
 }
 
-model Session {
-  id           Int      @id @default(autoincrement())
-  sessionToken String   @unique
-  user_id      Int
-  expires      DateTime
-  user         User     @relation(fields: [user_id], references: [user_id])
-}
 
 model Address {
   address_id  Int      @id @default(autoincrement())
@@ -110,7 +100,7 @@ model Address {
   is_primary  Boolean  @default(false)
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now())
-  user        User     @relation(fields: [user_id], references: [user_id])
+  user        User     @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 }
 
 model RajaOngkir {

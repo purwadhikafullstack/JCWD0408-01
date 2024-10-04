@@ -59,6 +59,16 @@ export default function ActiveDiscount() {
 
     return (
         <div className="flex flex-col gap-2">
+            <div className="flex w-full justify-between text-[16px] sm:px-10 mb-2">
+                <p>Discount Code</p>
+                <div className="flex lg:gap-40 gap-5">
+                    <p>Discount Value</p>
+                    <p>Minimum Order</p>
+                    <p>Expired At</p>
+                </div>
+                <p>More</p>
+            </div>
+            <div className="w-full border-[1px] border-secondary mb-2"></div>
             {
                 data?.data.map((item: Data, key: any) => {
                     return (

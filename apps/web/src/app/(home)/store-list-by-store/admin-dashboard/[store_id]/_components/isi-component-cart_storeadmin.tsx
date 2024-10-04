@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import { IoIosMore } from 'react-icons/io';
 
-export default function IsiComponentCartByStoreAdmin({ name, stock }: { name: string, stock: number }) {
+export default function IsiComponentCartByStoreAdmin({ name, stock, last_update }: { name: string, stock: number, last_update: number }) {
     // const [isModalOpen, setIsModalOpen] = useState(false);
 
     // const handlebutton = () => {
@@ -18,12 +18,9 @@ export default function IsiComponentCartByStoreAdmin({ name, stock }: { name: st
             >{name}</motion.p>
             <div className="flex md:gap-20 gap-10 ">
                 <div className="flex  items-center md:pl-10 pl-6 gap-2">STOCK : {stock} </div>
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2 mr-5">
                     <p>LAST UPDATE :</p>
-                    <div>NAIK</div>
-                    <div><FaAngleUp size={32} className="text-main " /></div>
-                    <div>TURUN</div>
-                    <div><FaAngleDown size={32} className="text-red-900 " /></div>
+                    <div>{last_update}</div>
                 </div>
             </div>
             {/* <button onClick={handlebutton}><IoIosMore size={32} className="text-main hover:text-secondary duration-300 hover:bg-main hover:rounded-full md:mr-10" /></button>

@@ -60,9 +60,9 @@ export default function DaftarProduct() {
             {
                 data?.product.map((item: any, key: any) => {
                     return (
-                        <Link href={`details-discount-management/${item.product_id}`} className="w-full">
-                            <DaftarProductDetail nama={item.name} created_at={item.created_at} harga_product={item.price} stocktotal_inventory={10} />
-                        </Link>
+                        <div className="w-full">
+                            <DaftarProductDetail nama={item.name} created_at={item.created_at} harga_product={item.price} stocktotal_inventory={item.Inventory[0].total_qty} product_id={item.product_id} key={key} />
+                        </div>
                     )
                 })
             }

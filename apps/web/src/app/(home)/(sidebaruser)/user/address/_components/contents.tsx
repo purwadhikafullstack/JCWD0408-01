@@ -1,12 +1,17 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import AddrMap from '../../../../_components/addrmap';
-import Cookies from 'js-cookie';
+import AddrMap from '../../../../_components/map/addrmap';
 import AddrListTemplate from './addrlisttemplate';
 import { addressCard, addressForm } from '@/types/address';
-import { addAddress, deleteAddress, editAddress, getAddrList, setDefaultAddr } from '@/libs/action/address';
-import Modal from '@/app/(home)/_components/modal';
+import {
+  addAddress,
+  deleteAddress,
+  editAddress,
+  getAddrList,
+  setDefaultAddr,
+} from '@/libs/action/address';
+import Modal from '@/app/(home)/_components/map/modal';
 import ConfirmationModal from '@/app/(home)/_components/confirmationmodal';
 import { toast } from 'react-toastify';
 
@@ -53,13 +58,13 @@ export default function Contents() {
   const confirmSetDefault = async () => {
     if (addressIdToSetDefault !== null) {
       try {
-        const res = await setDefaultAddr(addressIdToSetDefault)
+        const res = await setDefaultAddr(addressIdToSetDefault);
 
         if (!res.ok) {
           throw new Error('Failed to delete address');
         }
         await fetchData();
-        toast.success('The address has been set to default')
+        toast.success('The address has been set to default');
       } catch (err: any) {
         console.error('Failed to set default address:', err.message);
       } finally {
@@ -72,13 +77,13 @@ export default function Contents() {
   const confirmDelete = async () => {
     if (addressIdToDelete !== null) {
       try {
-        const res = await deleteAddress(addressIdToDelete)
+        const res = await deleteAddress(addressIdToDelete);
         if (!res.ok) {
           throw new Error('Failed to delete address');
         }
 
         await fetchData();
-        toast.success('The address has been deleted')
+        toast.success('The address has been deleted');
       } catch (err: any) {
         console.error(err.message);
       } finally {
@@ -90,7 +95,7 @@ export default function Contents() {
 
   const fetchData = async () => {
     try {
-      const res = await getAddrList()
+      const res = await getAddrList();
 
       if (!res.ok) {
         throw new Error('Failed to fetch user details');
@@ -111,7 +116,7 @@ export default function Contents() {
       try {
         await editAddress({ ...data, address_id: editingAddressId });
         await fetchData();
-        toast.success('The address has been edited')
+        toast.success('The address has been edited');
         handleCloseModal();
       } catch (err) {
         console.error('Failed to update address:', err);
@@ -123,7 +128,7 @@ export default function Contents() {
     try {
       await addAddress(data);
       await fetchData();
-      toast.success('New address has been added')
+      toast.success('New address has been added');
       handleCloseModal();
     } catch (err) {
       console.error('Failed to add address:', err);

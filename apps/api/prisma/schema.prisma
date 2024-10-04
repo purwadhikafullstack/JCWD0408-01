@@ -100,10 +100,10 @@ model Address {
   user_id     Int
   address     String   @db.Text
   subdistrict String?
-  city        String?
-  city_id     String?
-  province    String?
-  province_id String?
+  city        String
+  city_id     String
+  province    String
+  province_id String
   postcode    String?
   latitude    Float
   longitude   Float
@@ -111,6 +111,16 @@ model Address {
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now())
   user        User     @relation(fields: [user_id], references: [user_id])
+}
+
+model RajaOngkir {
+  ongkir_id   Int    @id @default(autoincrement())
+  city_id     String @unique
+  city_name   String
+  province_id String
+  province    String
+  type        String
+  postal_code String
 }
 
 model Referral {
@@ -162,8 +172,10 @@ model Store {
   store_name  String      @unique
   address     String
   subdistrict String?
-  city        String?
+  city        String
+  city_id     String
   province    String
+  province_id String
   postcode    String
   latitude    Float
   longitude   Float
@@ -187,21 +199,30 @@ model Category {
 }
 
 model Product {
-  product_id  Int         @id @default(autoincrement())
-  store_id    Int
-  name        String
-  description String      @db.Text
-  price       Int
-  category_id Int
-  image       String?
-  created_at  DateTime    @default(now())
-  updated_at  DateTime    @default(now())
-  store       Store       @relation(fields: [store_id], references: [store_id])
-  category    Category    @relation(fields: [category_id], references: [category_id])
-  Discount    Discount[]
-  Inventory   Inventory[]
-  OrderItem   OrderItem[]
-  CartItem    CartItem[]
+  product_id   Int            @id @default(autoincrement())
+  store_id     Int
+  name         String
+  description  String         @db.Text
+  price        Int
+  category_id  Int
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @default(now())
+  store        Store          @relation(fields: [store_id], references: [store_id])
+  category     Category       @relation(fields: [category_id], references: [category_id])
+  Discount     Discount[]
+  Inventory    Inventory[]
+  OrderItem    OrderItem[]
+  CartItem     CartItem[]
+  ProductImage ProductImage[]
+}
+
+model ProductImage {
+  image_id          Int      @id @default(autoincrement())
+  product_id Int
+  url               String
+  created_at        DateTime @default(now())
+  updated_at        DateTime @default(now())
+  product           Product  @relation(fields: [product_id], references: [product_id])
 }
 
 model Inventory {
@@ -209,6 +230,7 @@ model Inventory {
   store_id   Int
   product_id Int
   qty        Int
+  total_qty  Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
   store      Store    @relation(fields: [store_id], references: [store_id])

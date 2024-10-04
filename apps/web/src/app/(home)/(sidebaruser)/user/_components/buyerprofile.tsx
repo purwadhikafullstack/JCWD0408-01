@@ -42,7 +42,7 @@ export default function BuyerProfile() {
       });
 
       const rfcode = await rcode.json();
-      // console.log(rfcode);
+      console.log(rfcode);
       setRefCode(rfcode);
     };
     fetchRefCode();

@@ -6,6 +6,8 @@ import { MdOutlineTransitEnterexit } from 'react-icons/md'
 import { createCategorybySuperAdmin } from '@/libs/schema'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
+import { revalidateTag } from 'next/cache'
+import { tagRevalidate } from '@/libs/action/server'
 
 export default function RegisterCategory({ toggleModalCategory }: { toggleModalCategory: () => void }) {
     const router = useRouter()
@@ -22,13 +24,15 @@ export default function RegisterCategory({ toggleModalCategory }: { toggleModalC
                     'Content-Type': 'application/json'
                 },
                 method: 'POST',
-                body: JSON.stringify(data)
+                body: JSON.stringify(data),
+
             })
             const { result , ok }= await res.json()
             if (!ok) throw result.msg
             console.log(result)
             console.log(ok)
             toast.success(result.msg)
+            revalidateTag('reload')
             action.resetForm()
             router.refresh()
         } catch (error) {
@@ -53,6 +57,7 @@ export default function RegisterCategory({ toggleModalCategory }: { toggleModalC
                     action.resetForm()
                     console.log(values)
                     toggleModalCategory()
+                    tagRevalidate('reload')
                     createCategory(values, action)
                 }}
             >

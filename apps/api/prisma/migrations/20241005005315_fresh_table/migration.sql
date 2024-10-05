@@ -6,7 +6,7 @@ CREATE TABLE `User` (
     `phone` VARCHAR(191) NULL,
     `first_name` VARCHAR(191) NOT NULL,
     `last_name` VARCHAR(191) NULL,
-    `date_ob` VARCHAR(191) NULL,
+    `date_ob` DATETIME(3) NULL,
     `avatar` VARCHAR(191) NULL,
     `role` ENUM('buyer', 'store_admin', 'super_admin') NOT NULL,
     `verified` BOOLEAN NOT NULL DEFAULT false,
@@ -22,7 +22,7 @@ CREATE TABLE `User` (
 CREATE TABLE `Provider` (
     `provider_id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_id` INTEGER NOT NULL,
-    `provider_name` ENUM('GOOGLE', 'FACEBOOK', 'TRADITIONAL') NOT NULL,
+    `provider_name` ENUM('GOOGLE', 'FACEBOOK') NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 

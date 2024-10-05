@@ -55,7 +55,7 @@ model User {
   phone      String?  @unique
   first_name String
   last_name  String?
-  date_ob    String?
+  date_ob    DateTime?
   avatar     String?
   role       Role
   verified   Boolean  @default(false)

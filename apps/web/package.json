@@ -33,7 +33,10 @@
     "react-modal": "^3.16.1",
     "react-toastify": "^10.0.5",
     "yup": "^1.4.0",
-    "zustand": "^4.5.5"
+    "zustand": "^4.5.5",
+    "embla-carousel-react": "8.3.0",
+		"embla-carousel": "8.3.0",
+		"embla-carousel-autoplay": "8.3.0"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",

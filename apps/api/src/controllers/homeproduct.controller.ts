@@ -48,4 +48,23 @@ export class HomeProdController {
       responseError(res, error)
     }
   }
+
+  async getDiscountedProduct(req: Request, res: Response) {
+    try {
+      const products = await prisma.product.findMany({
+        include: {
+          Discount: true
+        }
+      })
+
+      console.log(products);
+      
+      return res.status(200).send({
+        status: 'ok',
+        products
+      })
+    } catch (error) {
+      responseError(res, error)
+    }
+  }
 }

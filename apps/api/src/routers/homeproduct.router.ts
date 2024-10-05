@@ -14,6 +14,7 @@ export class HomeProdRouter {
 
     private initializeRouter() {
         this.router.get('/', this.homeProdController.getClosestProduct)
+        this.router.get('/disc', this.homeProdController.getDiscountedProduct)
     }
 
     getRouter(){

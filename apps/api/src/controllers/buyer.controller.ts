@@ -1,10 +1,7 @@
-import { createToken, createTokenEmail, verifyEmailToken } from '@/helpers/createToken';
-import { hashPass } from '@/helpers/hashPassword';
-import { sendResetPassEmail, sendReverificationEmail, sendVerificationEmail } from '@/helpers/nodemailer';
-import { generateReferralCode } from '@/helpers/referralcode';
+import { createTokenEmail, verifyEmailToken } from '@/helpers/createToken';
+import { sendReverificationEmail } from '@/helpers/nodemailer';
 import { responseError } from '@/helpers/responseError';
 import prisma from '@/prisma';
-import { compare } from 'bcrypt';
 import { Request, Response } from 'express';
 
 const base_url = process.env.BASE_URL
@@ -160,6 +157,46 @@ export class BuyerController {
       return res.status(200).send({
         status: 'ok',
         msg: 'Email has been changed'
+      })
+    } catch (error) {
+      responseError(res, error)
+    }
+  }
+
+  async editPhone(req: Request, res: Response) {
+    try {
+      await prisma.user.update({
+        where: {
+          user_id: req.user.id
+        },
+        data: {
+          phone: req.body.phone
+        }
+      })
+
+      return res.status(200).send({
+        status: 'ok',
+        msg: 'Phone number has been changed'
+      })
+    } catch (error) {
+      responseError(res, error)
+    }
+  }
+
+  async editDateOB(req: Request, res: Response) {
+    try {
+      await prisma.user.update({
+        where: {
+          user_id: req.user.id
+        },
+        data: {
+          date_ob: req.body.date_ob
+        }
+      })
+
+      return res.status(200).send({
+        status: 'ok',
+        msg: 'Date of birth has been updated'
       })
     } catch (error) {
       responseError(res, error)

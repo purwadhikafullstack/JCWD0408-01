@@ -35,3 +35,7 @@ export interface ResetPassword {
     password: string
     newPassword: string
 }
+
+export interface UserPhone {
+    phone: string
+}

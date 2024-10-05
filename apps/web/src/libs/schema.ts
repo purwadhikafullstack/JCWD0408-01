@@ -105,3 +105,15 @@ export const createStoreSchema = Yup.object({
     .required('Store name is required.')
 });
 
+export const editPhoneSchema = Yup.object({
+  phone: Yup.string()
+  .matches(
+    /^08\d{9,12}$/,
+    'Phone number must start with 08 with 10 to 13 digits long',
+  )
+  .required('Phone number is required')
+})
+
+export const editDateSchema = Yup.object({
+  date_ob: Yup.date().required('Please select the date')
+})

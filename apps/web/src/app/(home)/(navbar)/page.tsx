@@ -2,7 +2,9 @@
 
 import { EmblaOptionsType } from 'embla-carousel';
 import { useEffect } from 'react';
-import EmblaCarousel from '../_components/EmbraCarousel';
+import EmblaCarousel from '../_components/homecomponent/EmbraCarousel';
+import { nearProducts } from '@/libs/action/home';
+import NearProductCard from '../_components/homecomponent/nearproductcard';
 
 export default function Home() {
   useEffect(() => {
@@ -11,10 +13,10 @@ export default function Home() {
       const currentTime = Date.now();
       const lastAccessed = lastAccessedStr ? Number(lastAccessedStr) : null;
 
-      if (!lastAccessed || currentTime - lastAccessed > 3600000) {
+      if (!lastAccessed || currentTime - lastAccessed > 3600) {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
-            (position) => {
+            async (position) => {
               const { latitude, longitude, accuracy } = position.coords;
               localStorage.setItem(
                 'lastGeolocationAccess',
@@ -31,6 +33,14 @@ export default function Home() {
                 longitude,
                 accuracy,
               });
+
+              // Call the nearProducts function with the obtained latitude and longitude
+              try {
+                const products = await nearProducts(latitude, longitude);
+                console.log('Nearby products:', products);
+              } catch (error) {
+                console.error('Error fetching nearby products:', error);
+              }
             },
             (error) => {
               console.error('Geolocation error:', error);
@@ -57,6 +67,7 @@ export default function Home() {
   return (
     <div>
       <EmblaCarousel slides={SLIDES} options={OPTIONS} />
+      <NearProductCard/>
     </div>
   );
 }

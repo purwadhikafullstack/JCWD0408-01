@@ -3,7 +3,8 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { Suspense } from 'react';
+import Loading from './loading';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,7 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children}
+        <Suspense 
+        fallback={<Loading/>}>
+          {children}
+        </Suspense>
         {/* <Footer /> */}
         <ToastContainer
           position="top-center"

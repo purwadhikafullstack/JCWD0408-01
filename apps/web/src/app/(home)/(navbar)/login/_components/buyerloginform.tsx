@@ -2,7 +2,7 @@
 
 import { Input } from '@/components/inputformik';
 import { loginBuyer } from '@/libs/action/buyer';
-import { createCookie } from '@/libs/action/server';
+import { createCookie, navigate } from '@/libs/action/server';
 import { loginSchema } from '@/libs/schema';
 import { UserLogin } from '@/types/user';
 import { Form, Formik, FormikHelpers, Field, ErrorMessage } from 'formik';
@@ -21,6 +21,7 @@ export default function BuyerLoginForm() {
       const { result, ok } = await loginBuyer(data);
       if (!ok) throw result.msg;
       createCookie('token', result.token);
+      navigate('/')
       toast.success(result.msg);
       action.resetForm();
     } catch (error) {

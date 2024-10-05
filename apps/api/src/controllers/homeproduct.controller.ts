@@ -32,7 +32,7 @@ export class HomeProdController {
             distance,
           };
         })
-        .filter((store) => store.distance <= 150) 
+        .filter((store) => store.distance <= 300) 
         .sort((a, b) => a.distance - b.distance);
 
         // console.log("Filtered stores:", filteredStores);

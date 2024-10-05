@@ -13,7 +13,6 @@ const createAccountbySuperAdmin = yup.object().shape({
     phone: yup.string().matches(/^[0-9]+$/, "phone number must be only digits").required("phone number is required")
 })
 
-
 export default function RegisterForm({ toggleModal }: { toggleModal: () => void }) {
     const initialValues: ICreateAccBySuperAdmin = {
         email: "",
@@ -31,16 +30,16 @@ export default function RegisterForm({ toggleModal }: { toggleModal: () => void 
                 method: 'POST',
                 body: JSON.stringify(data)
             })
-            const { result , ok }= await res.json()
-            if (!ok) throw result.msg
-            console.log(result)
-            console.log(ok)
-            toast.success(result.msg)
+            const { status, msg } = await res.json()
+            if (status == `error`) throw msg
+            toast.success(msg)
             action.resetForm()
         } catch (error) {
             toast.error(error as string)
         }
     }
+
+    const [showPassword, setShowPassword] = useState(false)
 
     return (
         <motion.div className=" flex flex-col bg-secondary rounded-[6px] p-10 gap-5  w-[525px]"
@@ -80,16 +79,23 @@ export default function RegisterForm({ toggleModal }: { toggleModal: () => void 
                                                 component="div"
                                                 className="text-red-500 text-sm absolute left-36 text-[12px] mt-[2px]" />
                                         </div>
-                                        <div className="flex flex-col gap-2">
+                                        <div className="flex flex-col gap-2 relative">
                                             PASSWORD
                                             <Field
-                                                type="password"
+                                                type={showPassword ? "text" : "password"}
                                                 name="password"
                                                 className="p-2 rounded-[6px] w-full" />
                                             <ErrorMessage
                                                 name="password"
                                                 component="div"
-                                                className="text-red-500 text-sm absolute left-48 text-[12px] mt-[2px]" />
+                                                className="text-red-500 text-sm absolute left-28 text-[12px] mt-[2px]" />
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowPassword(!showPassword)}
+                                                className="absolute  right-2 top-10 text-sm text-main"
+                                            >
+                                                {showPassword ? "Hide" : "Show"}
+                                            </button>
                                         </div>
                                         <div className="flex gap-4 ">
                                             <div className="flex flex-col gap-2 w-full">

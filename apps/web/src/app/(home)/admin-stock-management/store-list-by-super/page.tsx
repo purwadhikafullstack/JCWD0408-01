@@ -62,7 +62,6 @@ export default function StoreListBySuper() {
     }, [page])
 
     console.log(data)
-    // console.log(data?.store[0].User.first_name)
 
     return (
         <div>

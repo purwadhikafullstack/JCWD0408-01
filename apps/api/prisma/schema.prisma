@@ -181,6 +181,7 @@ model Category {
   category_id   Int       @id @default(autoincrement())
   category_name String
   description   String    @db.Text
+  category_url     String?
   created_at    DateTime  @default(now())
   updated_at    DateTime  @default(now())
   Product       Product[]

@@ -56,6 +56,12 @@ export class ProductController {
                 const files: Express.Multer.File[] = req.files as Express.Multer.File[];
                 const image = files.map((file) => `${baseUrl}/public/product/${file.filename}`)
 
+                const data = await prisma.product.findFirst({
+                    where: { name: req.body.name }
+                })
+
+                if (data) throw ("Product already exists");
+
                 const createProduct = await prisma.product.create({
                     data: {
                         name: req.body.name,
@@ -152,7 +158,8 @@ export class ProductController {
                 take: limit,
                 include: {
                     Inventory: true,
-                    category: true
+                    category: true,
+                    ProductImage: true
                 }
             });
 

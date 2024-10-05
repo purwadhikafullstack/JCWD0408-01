@@ -1,4 +1,5 @@
 import { CategoryController } from "@/controllers/category.controller";
+import { uploader } from "@/helpers/uploader";
 import { Router } from "express";
 
 export class CategoryRouter {
@@ -14,7 +15,8 @@ export class CategoryRouter {
     private initializeRouter() {
         this.router.get('/', this.categoryRouter.getAllCategoryQuery)
         this.router.get('/all', this.categoryRouter.getAllCategory)
-        this.router.post('/create', this.categoryRouter.createCategory)
+        this.router.post('/create', uploader('category_url', '/category_url').single('category_url'), this.categoryRouter.createCategory)
+        this.router.patch('/update/:id', uploader('category_url', '/category_url').single('category_url'), this.categoryRouter.updateCategory)
         this.router.delete('/:id', this.categoryRouter.deleteCategory)
     }
 

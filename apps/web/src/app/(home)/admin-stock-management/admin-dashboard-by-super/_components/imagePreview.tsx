@@ -36,9 +36,9 @@ const ImagePreviewProduct: React.FC<ImagePreviewProps> = ({
                             key={index}
                             src={src}
                             alt={`preview-${index}`}
-                            width={200}
-                            height={200}
-                            className="h-24 w-24 rounded-md object-cover"
+                            width={100}
+                            height={100}
+                            className="h-14 w-14 rounded-md object-cover"
                         />
                         <button
                             type="button"

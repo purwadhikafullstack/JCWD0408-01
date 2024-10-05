@@ -4,7 +4,8 @@ import './globals.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Footer } from '@/components/Footer';
-
+import { Suspense } from 'react';
+import Loading from './loading';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,7 +22,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children}
+        <Suspense 
+        fallback={<Loading/>}>
+          {children}
+        </Suspense>
         <ToastContainer
           position="top-center"
           autoClose={3000}

@@ -18,7 +18,7 @@ export class AuthController {
        
 
       const newBuyerData = await prisma.user.create({
-        data: {email: req.body.email, role: 'buyer', first_name: '', password: '', phone: '', ...req.body}
+        data: {email: req.body.email, role: 'buyer', first_name: '', }
       })
 
       const token = createToken({
@@ -45,7 +45,7 @@ export class AuthController {
       })
       
       if (!buyer) throw 'User Not Found';
-      const validPass = await compare(req.body.password, buyer.password);
+      const validPass = await compare(req.body.password, buyer.password!);
       if (!validPass) throw 'Password Incorrect';
       const token = createLoginToken({
         id: buyer.user_id,
@@ -148,13 +148,13 @@ export class AuthController {
           user_id: req.user.id
         }
       })
-      const validPass = await compare(req.body.password, userData!.password)
+      const validPass = await compare(req.body.password, userData!.password!)
       
       if (!validPass) throw 'Password Incorrect'
       
       const newPassword = req.body.newPassword
       
-      const isSamePass = await compare(newPassword, userData!.password)
+      const isSamePass = await compare(newPassword, userData!.password!)
       
       if (isSamePass) throw "Can't use similar password"
       

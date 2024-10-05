@@ -61,6 +61,7 @@ export default function BuyerProfile() {
           date_ob={data!.date_ob}
           avatar={data!.avatar}
           referral_code={refCode?.referral_code!}
+          password={data?.password!}
         />
       </div>
     </div>

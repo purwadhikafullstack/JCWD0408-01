@@ -15,9 +15,7 @@ interface DropDownProps {
 }
 
 export default function DropDownAddr({
-  selectedProvince,
   setSelectedProvince,
-  selectedCity,
   setSelectedCity,
   onProvinceSelect,
   onCitySelect,
@@ -33,6 +31,8 @@ export default function DropDownAddr({
     const fetchProvinces = async () => {
       try {
         const provinceData = await provinceList();
+        console.log(provinceData);
+        
         if (Array.isArray(provinceData)) {
           setProvinces(provinceData);
         }

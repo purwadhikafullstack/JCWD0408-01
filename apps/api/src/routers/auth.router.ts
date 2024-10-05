@@ -1,5 +1,4 @@
 import { AuthController } from "@/controllers/auth.controller";
-import { BuyerController } from "@/controllers/buyer.controller";
 import { AuthMiddleware } from "@/middleware/auth.middleware";
 import { Router } from "express";
 

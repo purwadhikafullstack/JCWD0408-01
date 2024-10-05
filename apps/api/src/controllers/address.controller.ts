@@ -146,7 +146,6 @@ export class AddrController {
           province: 'asc'
         }
       })
-
       return res.status(200).send(
         
         allProvinces

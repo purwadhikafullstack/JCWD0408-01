@@ -20,6 +20,7 @@ export interface Buyer {
     phone: string
     date_ob: string
     avatar: File
+    password: string
 }
 
 export interface BuyerAvatar {
@@ -33,4 +34,8 @@ export interface Referral {
 export interface ResetPassword {
     password: string
     newPassword: string
+}
+
+export interface UserPhone {
+    phone: string
 }

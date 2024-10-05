@@ -7,9 +7,9 @@ import { UserRegister } from '@/types/user';
 import { Form, Formik } from 'formik';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
+import GoogleAuth from '../../login/_components/googleauth';
 
 export default function BuyerRegistForm() {
-
   const initialValues: UserRegister = {
     email: '',
   };
@@ -58,6 +58,12 @@ export default function BuyerRegistForm() {
             Log in
           </Link>
         </p>
+        <div className="my-6 flex items-center justify-center">
+          <hr className="w-full border-gray-300" />
+          <span className="px-4 text-gray-500">OR</span>
+          <hr className="w-full border-gray-300" />
+        </div>
+        <GoogleAuth/>
       </div>
     </div>
   );

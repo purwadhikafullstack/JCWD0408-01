@@ -1,13 +1,11 @@
-'use client';
-
 import React, { useEffect, useRef, useState } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { addAddress } from '@/libs/action/address';
 import { toast } from 'react-toastify';
 import AddressInput from './addrinput';
 import SuggestionsList from './suggestionlist';
-import { addressForm } from '@/types/address';
+import { addressForm, RajaOngkir } from '@/types/address';
+import DropDownAddr from './dropdown';
 
 interface AddressProp {
   closeModal: () => void;
@@ -24,16 +22,21 @@ export default function AddrMap({ closeModal, submitFunction }: AddressProp) {
   );
   const [address, setAddress] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [firstSuggestion, setFirstSuggestion] = useState<string | null>(null);
   const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(
     null,
   );
   const [detailsData, setDetailsData] = useState<any>(null);
+  const [selectedProvince, setSelectedProvince] = useState<RajaOngkir | null>(
+    null,
+  );
+  const [selectedCity, setSelectedCity] = useState<RajaOngkir | null>(null);
 
   useEffect(() => {
     const initializedMap = new maplibregl.Map({
       container: mapContainerRef.current as HTMLElement,
       style: `https://tiles.locationiq.com/v3/streets/raster.json?key=${process.env.ACCESS_TOKEN}&language=id`,
-      center: [107.6191, -6.9175],
+      center: [107.6191, -6.9175], 
       zoom: 12,
     });
 
@@ -57,13 +60,16 @@ export default function AddrMap({ closeModal, submitFunction }: AddressProp) {
       setDebounceTimeout(timeout);
     } else {
       setSuggestions([]);
+      setFirstSuggestion(null);
     }
   };
 
   const fetchSuggestions = async (value: string) => {
+    if (!selectedCity) return;
+
     try {
       const response = await fetch(
-        `https://us1.locationiq.com/v1/autocomplete.php?key=${process.env.ACCESS_TOKEN}&q=${encodeURIComponent(value)}&format=json&accept-language=id`,
+        `https://us1.locationiq.com/v1/autocomplete.php?key=${process.env.ACCESS_TOKEN}&q=${encodeURIComponent(value)}&format=json&accept-language=id&country=ID&city=${encodeURIComponent(selectedCity.city_name)}`,
       );
       const data = await response.json();
       const filteredSuggestions = Array.isArray(data)
@@ -71,21 +77,25 @@ export default function AddrMap({ closeModal, submitFunction }: AddressProp) {
             .filter((item: any) => item.display_name.includes('Indonesia'))
             .map((item: any) => item.display_name)
         : [];
+
       setSuggestions(filteredSuggestions);
+      setFirstSuggestion(filteredSuggestions[0] || null);
     } catch {
       setSuggestions([]);
+      setFirstSuggestion(null);
     }
   };
 
   const handleSelectSuggestion = async (suggestion: string) => {
     setAddress(suggestion);
     setSuggestions([]);
+    setFirstSuggestion(null);
     await handleGeocode(suggestion);
   };
 
   const handleGeocode = async (address: string) => {
     const response = await fetch(
-      `https://us1.locationiq.com/v1/search.php?key=${process.env.ACCESS_TOKEN}&q=${encodeURIComponent(address)}&format=json&accept-language=id`,
+      `https://us1.locationiq.com/v1/search.php?key=${process.env.ACCESS_TOKEN}&q=${encodeURIComponent(address)}&format=json&accept-language=id&country=ID`,
     );
     const data = await response.json();
     if (data && data.length > 0) {
@@ -112,7 +122,7 @@ export default function AddrMap({ closeModal, submitFunction }: AddressProp) {
   const fetchLocationDetails = async (lat: number, lon: number) => {
     try {
       const detailsResponse = await fetch(
-        `https://us1.locationiq.com/v1/reverse.php?key=${process.env.ACCESS_TOKEN}&lat=${lat}&lon=${lon}&format=json&accept-language=id`,
+        `https://us1.locationiq.com/v1/reverse.php?key=${process.env.ACCESS_TOKEN}&lat=${lat}&lon=${lon}&format=json&accept-language=id&country=ID`,
       );
       const detailsData = await detailsResponse.json();
       setDetailsData(detailsData);
@@ -124,8 +134,10 @@ export default function AddrMap({ closeModal, submitFunction }: AddressProp) {
       const addressData = {
         address,
         subdistrict: detailsData?.address?.subdistrict,
-        city: detailsData?.address?.city,
-        province: detailsData?.address?.state,
+        city: selectedCity!.city_name,
+        province: selectedProvince!.province,
+        city_id: selectedCity!.city_id,
+        province_id: selectedProvince!.province_id,
         postcode: detailsData?.address?.postcode,
         latitude: location.lat,
         longitude: location.lon,
@@ -140,12 +152,61 @@ export default function AddrMap({ closeModal, submitFunction }: AddressProp) {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (firstSuggestion) {
+        handleGeocode(firstSuggestion);
+      }
+      setSuggestions([]);
+    }
+  };
+
+  const handleProvinceSelect = async (province: RajaOngkir) => {
+    setSelectedProvince(province);
+    const coordinates = await fetchCoordinates(province.province);
+    if (coordinates) {
+      map?.flyTo({ center: [coordinates.lon, coordinates.lat], zoom: 10 });
+    }
+  };
+
+  const handleCitySelect = async (city: RajaOngkir) => {
+    setSelectedCity(city);
+    const coordinates = await fetchCoordinates(city.city_name);
+    if (coordinates) {
+      map?.flyTo({ center: [coordinates.lon, coordinates.lat], zoom: 14 });
+    }
+  };
+
+  const fetchCoordinates = async (address: string) => {
+    const response = await fetch(
+      `https://us1.locationiq.com/v1/search.php?key=${process.env.ACCESS_TOKEN}&q=${encodeURIComponent(address)}&format=json&country=ID`,
+    );
+    const data = await response.json();
+    if (data && data.length > 0) {
+      return { lat: data[0].lat, lon: data[0].lon };
+    }
+    return null;
+  };
+
   return (
     <div className="relative">
+      <DropDownAddr
+        setSelectedProvince={(province) => {
+          setSelectedProvince(province);
+          handleProvinceSelect(province);
+        } }
+        setSelectedCity={(city) => {
+          setSelectedCity(city);
+          handleCitySelect(city);
+        } }
+        onProvinceSelect={handleProvinceSelect}
+        onCitySelect={handleCitySelect} selectedProvince={null} selectedCity={null}      />
       <AddressInput
         address={address}
         onAddressChange={handleAddressChange}
         onSearch={handleSelectSuggestion}
+        onKeyDown={handleKeyDown}
       />
       <SuggestionsList
         suggestions={suggestions}

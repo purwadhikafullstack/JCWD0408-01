@@ -11,14 +11,10 @@ export default function BuyerNavbar() {
   
   return (
     <nav className="w-full z-20 fixed top-0 h-16 px-4 flex items-center justify-between shadow-md bg-secondary">
-      {/* Logo Section */}
       <div className="flex items-center w-36">
         <Image src={'/logo/baskitgreen.svg'} width={150} height={50} alt="Logo" />
       </div>
-
-      {/* Action Buttons */}
       <div className="flex items-center space-x-4">
-        {/* Menu Toggle for Mobile */}
         <button
           className="block p-2 hover:bg-gray-100 rounded-full"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -30,8 +26,6 @@ export default function BuyerNavbar() {
           )}
         </button>
       </div>
-
-      {/* Dropdown Menu */}
       <div className={`absolute right-0 top-16 w-48 bg-secondary shadow-lg transition-transform duration-300 ease-in-out ${isMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0 pointer-events-none'}`}>
         <div className="flex flex-col p-4 space-y-6">
           <Link href="/">

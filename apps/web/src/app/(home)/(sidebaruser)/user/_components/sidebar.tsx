@@ -108,7 +108,7 @@ export default function Sidebar() {
                 </div>
               </Link>
               <Link
-                href="/vouchers"
+                href="/user/vouchers"
                 className="z-20 w-[200px]"
                 onClick={() => handleItemClick('/vouchers')}
               >
@@ -177,7 +177,7 @@ export default function Sidebar() {
               <FaShoppingCart />
             </Link>
             <Link
-              href="/vouchers"
+              href="/user/vouchers"
               className={`hover:text-secondary text-lg font-bold flex items-center p-4 rounded 
       ${activeItem === '/vouchers' ? 'bg-main text-secondary' : 'text-main'}`}
               onClick={() => handleItemClick('/vouchers')}

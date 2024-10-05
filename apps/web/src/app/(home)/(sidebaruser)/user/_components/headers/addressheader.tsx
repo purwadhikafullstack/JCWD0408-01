@@ -5,7 +5,7 @@ import { fifties } from "@/types/fonts";
 
 export default function AddrHeader() {
   return (
-    <div>
+    <div className='flex justify-center items-center lg:inline'>
       <motion.h1
         className={`${fifties.className} text-7xl pb-10 lg:text-8xl lg:mx-28 text-main lg:pb-24 pt-10`}
         initial={{ x: '100vw', skewX: -30, opacity: 0 }}

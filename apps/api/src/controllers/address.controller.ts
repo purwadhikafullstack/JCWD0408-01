@@ -1,3 +1,4 @@
+import { fetchCityAndProvince } from '@/helpers/rajaongkirfetch';
 import { responseError } from '@/helpers/responseError';
 import prisma from '@/prisma';
 import { Request, Response } from 'express';
@@ -35,37 +36,27 @@ export class AddrController {
       const existingAddr = await prisma.address.findFirst({
         where: { user_id: req.user.id },
       });
-
+  
+      const addressData = {
+        ...req.body,
+        address: filteredAddress,
+        user_id: req.user.id,
+        latitude: parseFloat(req.body.latitude),
+        longitude: parseFloat(req.body.longitude),
+      };
+  
       if (!existingAddr) {
-        const newAddress = await prisma.address.create({
-          data: {
-            ...req.body,
-            address: filteredAddress,
-            user_id: req.user.id,
-            latitude: parseFloat(req.body.latitude),
-            longitude: parseFloat(req.body.longitude),
-            is_primary: true
-          },
-        });
-        return res.status(200).send({
-          status: 'ok',
-          newAddress,
-        });
-      } else {
-        const newAddress = await prisma.address.create({
-          data: {
-            ...req.body,
-            address: filteredAddress,
-            user_id: req.user.id,
-            latitude: parseFloat(req.body.latitude),
-            longitude: parseFloat(req.body.longitude),
-          },
-        });
-        return res.status(200).send({
-          status: 'ok',
-          newAddress,
-        });
+        addressData.is_primary = true; 
       }
+  
+      const newAddress = await prisma.address.create({
+        data: addressData,
+      });
+
+      return res.status(200).send({
+        status: 'ok',
+        newAddress,
+      });
 
     } catch (error) {
       responseError(res, error);
@@ -103,7 +94,9 @@ export class AddrController {
         status: 'update success',
         updatedAddress,
       });
-    } catch (error) {}
+    } catch (error) {
+      responseError(res, error)
+    }
   }
 
   async setDefaultAddr(req: Request, res: Response) {
@@ -138,6 +131,43 @@ export class AddrController {
       });
     } catch (error) {
       responseError(res, error);
+    }
+  }
+
+  async listOfProvince(req: Request, res: Response) {
+    try {
+      const allProvinces = await prisma.rajaOngkir.findMany({
+        select: {
+          province : true,
+          province_id: true
+        },
+        distinct: ['province'],
+        orderBy: {
+          province: 'asc'
+        }
+      })
+
+      return res.status(200).send(
+        
+        allProvinces
+      )
+    } catch (error) {
+      responseError(res, error)
+    }
+  }
+
+  async chooseCity(req: Request, res: Response) {
+    try {
+      const cityData = await prisma.rajaOngkir.findMany({
+        where: { province_id: req.body.province_id},
+        orderBy: {
+          type: 'asc'
+        }
+      })
+
+      return res.status(200).send(cityData)
+    } catch (error) {
+      responseError(res, error)
     }
   }
 }

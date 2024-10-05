@@ -7,12 +7,10 @@ export class AuthRouter {
   private router: Router;
   private authController: AuthController;
   private authMiddleware: AuthMiddleware;
-  private buyerController: BuyerController
 
   constructor() {
     this.authController = new AuthController();
     this.authMiddleware = new AuthMiddleware();
-    this.buyerController = new BuyerController()
     this.router = Router();
     this.initialization();
   }

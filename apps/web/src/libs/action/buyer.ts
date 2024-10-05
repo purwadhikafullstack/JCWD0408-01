@@ -1,6 +1,6 @@
 import { BuyerAvatar, ResetPassword, UserLogin, UserRegister } from "@/types/user";
+import { RefCodeVoucher } from "@/types/voucher";
 import Cookies from "js-cookie";
-import { json } from "stream/consumers";
 
 export const registerBuyer = async (data: UserRegister) => {
     const res = await fetch('http://localhost:8000/api/auth/register', {
@@ -106,6 +106,18 @@ export const updateAvatar = async (dataUrl: string) => {
             Authorization: `Bearer ${token}`
         },
         method: 'PATCH',
+    })
+    return res.json()
+  }
+
+  export const buyerVoucher = async () => {
+    const token  = Cookies.get('token')
+    const res = await fetch(`http://localhost:8000/api/voucher/ref`, {
+        headers: {
+            'Content-Type' : 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        method: 'GET'
     })
     return res.json()
   }

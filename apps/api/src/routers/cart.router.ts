@@ -2,6 +2,7 @@ import { Router } from "express";
 import { CartController } from "@/controllers/cart.controller";
 import { AuthMiddleware } from "@/middleware/auth.middleware";
 
+
 class CartRouter {
   public router: Router;
   private cartController: CartController;

@@ -50,11 +50,10 @@ export default function CreateProduct() {
                 method: 'POST',
                 body: formData
             })
-            const { result, ok } = await res.json()
-            if (!ok) throw result.msg
-            console.log(result)
-            console.log(ok)
-            toast.success(result.msg)
+            const { status ,msg  } = await res.json()
+            if (status == "error") throw msg
+            console.log(status)
+            toast.success(msg)
             action.resetForm()
         } catch (error) {
             toast.error(error as string)
@@ -82,14 +81,14 @@ export default function CreateProduct() {
             const maxFileSize = 1 * 1024 * 1024;
             const filterSize = newFile.filter((file) => {
                 if (file.size > maxFileSize) {
-                    toast.error("Ukuran file terlalu besar, maksimal 1MB");
+                    toast.error("Maximum file must be 1MB");
                     return false;
                 }
                 return true;
             });
             const total = image.length + filterSize.length;
             if (total > 3) {
-                toast.error("Maksimal upload 5 gambar");
+                toast.error("Maximum file must be 3");
                 return;
             }
             setImage((prevFiles) => [...prevFiles, ...filterSize]);
@@ -109,7 +108,6 @@ export default function CreateProduct() {
             toast.error(error as string)
         }
     }
-
 
     useEffect(() => {
         getCategory()
@@ -134,7 +132,7 @@ export default function CreateProduct() {
                         <div>
                             <Form className='flex flex-col  items-center justify-around  p-2 gap-2 rounded-[6px] bg-secondary'>
                                 <p className='text-left w-full p-2 text-[18px] font-bold'>Product Form</p>
-                                <div className='flex gap-2 w-full'>
+                                <div className='flex flex-wrap gap-4 w-full'>
                                     <div>
                                         <Field
                                             name='name'
@@ -143,7 +141,7 @@ export default function CreateProduct() {
                                             className='p-4 rounded' />
                                         <ErrorMessage
                                             name='name'
-                                            component='div' />
+                                            component='div' className='text-[12px] absolute' />
                                     </div>
                                     <div>
                                         <Field
@@ -153,16 +151,15 @@ export default function CreateProduct() {
                                             className="p-4 rounded" />
                                         <ErrorMessage
                                             name='price'
-                                            component='div' />
+                                            component='div' className='text-[12px] absolute' />
                                     </div>
-                                    <div className=" rounded-md">
+                                    <div className=" rounded-md flex">
                                         <label htmlFor="upload" className="text-center">
                                             <div className="flex justify-center">
                                                 <RiGalleryUploadFill size={56} className="text-third cursor-pointer hover:text-white" />
                                             </div>
                                         </label>
                                         <ImagePreviewProduct files={image} setSelectedFiles={setImage} />
-
                                         <input
                                             onChange={handleFileChange}
                                             type="file"
@@ -175,27 +172,28 @@ export default function CreateProduct() {
                                         <ErrorMessage
                                             name="image"
                                             component={'div'}
-                                            className="text-xs text-red-700"
+                                            className="text-xs text-red-700  text-[12px] absolute"
                                         />
                                     </div>
-                                    <div className='flex items-center gap-2'>
+                                    <div className='flex flex-row items-center gap-2 text-[12px]'>
                                         Category
                                         <Field
                                             as='select'
                                             name='category_id'
                                             className='p-4 rounded'
                                         >
+                                            <option className='text-[10px]'>Select Category</option>
                                             {
                                                 data?.allCategories.map(({ category_id, category_name }: { category_id: number, category_name: string }) => {
                                                     return (
-                                                        <option key={category_id} value={category_id} className='text-justify'>{category_name}</option>
+                                                        <option key={category_id} value={category_id} className='text-justify '>{category_name}</option>
                                                     )
                                                 })
                                             }
                                         </Field>
                                         <ErrorMessage
                                             name='category_id'
-                                            component='div' />
+                                            component='div' className='absolute text-[12px] mt-20' />
                                     </div>
                                     <div>
                                         <Field
@@ -205,10 +203,10 @@ export default function CreateProduct() {
                                             className="p-4 rounded" />
                                         <ErrorMessage
                                             name='qty'
-                                            component='div' />
+                                            component='div' className='text-[12px] absolute' />
                                     </div>
                                 </div>
-                                <div className='w-full'>
+                                <div className='w-full mt-5'>
                                     <Field
                                         name='description'
                                         as='textarea'
@@ -216,7 +214,7 @@ export default function CreateProduct() {
                                         className="p-4 rounded w-full" />
                                     <ErrorMessage
                                         name='description'
-                                        component='div' />
+                                        component='div'  className='text-[12px] absolute' />
                                 </div>
                                 <button type='submit' className='p-4 bg-main w-44 text-secondary rounded-[6px] hover:bg-secondary hover:text-main mb-4'>Submit</button>
                             </Form>

@@ -90,9 +90,9 @@ export default function CartListProductByStoreAdmin() {
                 {
                     data?.product.map((item: Product, key: any) => {
                         return (
-                            <Link href={`/details-discount-management/${item.product_id}`} className="flex lg:flex-row flex-wrap lg:justify-between justify-center items-center lg:h-10 h-60 rounded-[10px] border-[1px] w-full hover:bg-secondary hover:border-secondary duration-200" key={key}>
-                                <IsiComponentCart name={item?.name} stock={item.Inventory[0]?.total_qty}  last_update={item.Inventory[0]?.qty} />
-                            </Link>
+                            <div className="flex lg:flex-row flex-wrap lg:justify-between justify-center items-center lg:h-10 h-60 rounded-[10px] border-[1px] w-full hover:bg-secondary hover:border-secondary duration-200" key={key}>
+                                <IsiComponentCart product_id={item?.product_id}  name={item?.name} stock={item.Inventory[0]?.total_qty}  last_update={item.Inventory[0]?.qty} />
+                            </div>
                         )
                     })
                 }

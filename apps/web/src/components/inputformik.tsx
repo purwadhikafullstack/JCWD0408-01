@@ -44,6 +44,7 @@ export interface ICreateProductBySuperAdmin {
 export interface ICreateCategoryBySuperAdmin {
   category_name : string;
   description : string;
+  category_url : File | null;
 }
 
 export interface CreateDiscount {

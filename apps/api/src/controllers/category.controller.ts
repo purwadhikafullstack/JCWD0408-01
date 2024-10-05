@@ -2,6 +2,8 @@ import { responseError } from "@/helpers/responseError";
 import prisma from "@/prisma";
 import { Request, Response } from "express";
 
+const baseUrl = process.env.BASE_URL
+
 export class CategoryController {
     async getAllCategoryQuery(req: Request, res: Response) {
         try {
@@ -35,9 +37,14 @@ export class CategoryController {
             const category = await prisma.category.findFirst({
                 where: { category_name: req.body.category_name }
             })
+
             if (category) throw ("Category already exists");
+
+            const category_url = `${baseUrl}/public/event/${req.file?.filename}`
+
+
             const newCategory = await prisma.category.create({
-                data: { ...req.body }
+                data: { ...req.body, category_url: category_url }
             })
             return res.status(201).send({
                 status: 'ok',
@@ -51,10 +58,10 @@ export class CategoryController {
 
     async deleteCategory(req: Request, res: Response) {
         try {
-            const { id } = req.params;
             const deleteCategory = await prisma.category.delete({
-                where: { category_id: parseInt(id) }
+                where: { category_id: +req.params.id }
             })
+
             return res.status(200).send({
                 status: 'success',
                 msg: 'Category has been deleted',
@@ -83,4 +90,26 @@ export class CategoryController {
         }
     }
 
+    async updateCategory(req: Request, res: Response) {
+        try {
+            const updateCategory = await prisma.category.findUnique({
+                where: { category_id: +req.params.id }
+            })
+            if (!updateCategory) throw ("Category not found");
+
+            const category_url = `${baseUrl}/public/event/${req.file?.filename}`
+
+            const category = await prisma.category.update({
+                where: { category_id: +req.params.id },
+                data: { ...req.body , category_url: category_url}
+            })
+            return res.status(200).send({
+                status: 'ok',
+                msg: 'Category updated successfully',
+                category
+            })
+        } catch (error) {
+            responseError(res, error)
+        }
+    }
 }

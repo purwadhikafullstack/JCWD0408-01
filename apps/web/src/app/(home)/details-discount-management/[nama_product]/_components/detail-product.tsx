@@ -2,12 +2,12 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-interface ProductDetails {
+export interface ProductDetails {
     product: DataProduct,
     status: string
 }
 
-interface DataProduct {
+export interface DataProduct {
     Inventory: [
         {
             qty: number
@@ -28,7 +28,7 @@ interface DataProduct {
 
 }
 
-interface Category {
+export interface Category {
     category_name: string
 }
 

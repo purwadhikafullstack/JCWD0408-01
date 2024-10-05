@@ -55,12 +55,14 @@ export default function CategoryProduct() {
         setPage(page + 1)
     }
 
+    console.log(data?.allCategories[0].category_id)
+
     return (
         <div className="flex flex-col justify-center items-center gap-2 ">
             {
                 data?.allCategories.map((item: any, key: any) => {
                     return (
-                        <CategoryProductDetail nama={item.category_name} registered_product={item.Product.length} key={key}/>
+                        <CategoryProductDetail nama={item.category_name} registered_product={item.Product.length} category_id={item.category_id} category_url={item.category_url} key={key}/>
                     )
                 })
             }

@@ -19,6 +19,7 @@ export class StoreAdminRouter {
         this.router.get('/', this.storeAdmin.getAllStoreAdmin)
         this.router.get('/authorizestore', this.authMiddleware.verifyToken, this.storeAdmin.getAdminAuthorizeStore)
         this.router.post('/create', this.storeAdmin.createStoreAdmin)
+        this.router.patch('/update/:id', this.storeAdmin.updateStoreAdmin)
         this.router.delete('/:id', this.storeAdmin.deleteStoreAdmin)
     }
 

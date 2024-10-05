@@ -26,6 +26,7 @@ const createAccountbySuperAdmin = yup.object().shape({
     .required('phone number is required'),
 });
 
+
 export default function RegisterForm({
   toggleModal,
 }: {
@@ -60,6 +61,7 @@ export default function RegisterForm({
       toast.error(error as string);
     }
   };
+
 
   return (
     <motion.div

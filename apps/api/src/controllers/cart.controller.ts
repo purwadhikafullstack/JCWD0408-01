@@ -108,6 +108,7 @@ export class CartController {
     }
   }
 
+
   async getCartCount(req: Request, res: Response) {
     try {
       const { user_id } = req.params;

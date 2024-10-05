@@ -11,7 +11,6 @@ export default function BaskitAdmin() {
     const [data, setData] = useState<UserData | null>(null);
     const [page, setPage] = useState(1);
 
-
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
     };
@@ -19,7 +18,6 @@ export default function BaskitAdmin() {
     const handleUpdateAdmin = () => {
         setisModalUpdateAdmin(!isModalUpdateAdmin);
     }
-
     
     const handleNext = () => {
         if (page === data?.totalPages) {
@@ -43,9 +41,10 @@ export default function BaskitAdmin() {
         });
         const dataFetch = await res.json();
         setData(dataFetch)
-        console.log(dataFetch.data[1].Store.store_name)
     }
 
+    // console.log(data?.data[0].user_id)
+    
     useEffect(() => {
         fetchDataUser()
     }, [page])
@@ -61,7 +60,8 @@ export default function BaskitAdmin() {
                             stocktotal_inventory="stocktotal_inventory" 
                             pendapatan_bulanini="pendapatan_bulanini" 
                             store={item.Store && item.Store.store_name ? item.Store.store_name : 'Unsigned'} 
-                            key={key}
+                            user_id={item.user_id}
+                            key={key} admin_email={item.email}
                         />
                     )
                 })

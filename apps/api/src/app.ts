@@ -21,6 +21,7 @@ import { SuperAdminRouter } from './routers/superadmin.router';
 import { OAuthRouter } from './routers/oauth.router';
 import { DiscountRouter } from './routers/discount.router';
 import { InventoryRouter } from './routers/inventory.router';
+import { CartRouter } from './routers/cart.router';
 import { VoucherRouter } from './routers/voucher.router';
 import { HomeProdRouter } from './routers/homeproduct.router';
 
@@ -79,10 +80,9 @@ export default class App {
     const oAuthRouter = new OAuthRouter()
     const discountRouter = new DiscountRouter()
     const inventoryRouter = new InventoryRouter()
+    const cartRouter = new CartRouter()
     const voucherRouter = new VoucherRouter()
     const homeProdRouter = new HomeProdRouter()
-
-
 
 
     this.app.get('/api', (req: Request, res: Response) => {
@@ -99,6 +99,7 @@ export default class App {
     this.app.use('/api/superadmin', superAdminRouter.getRouter())
     this.app.use('/api/discount', discountRouter.getRouter())
     this.app.use('/api/inventory', inventoryRouter.getRouter())
+    this.app.use('/api/cart', cartRouter.getRouter())
     this.app.use('/api/voucher', voucherRouter.getRouter())
     this.app.use('/api/homeprod', homeProdRouter.getRouter())
   }

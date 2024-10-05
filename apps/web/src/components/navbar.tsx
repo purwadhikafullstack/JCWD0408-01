@@ -1,22 +1,25 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  FiShoppingCart,
-  FiUser,
-  FiGift,
-  FiMenu,
-  FiSearch,
-  FiX,
-} from 'react-icons/fi';
+import { FiShoppingCart, FiUser, FiGift, FiMenu, FiSearch, FiX, } from 'react-icons/fi';
 import clsx from 'clsx';
 import Link from 'next/link';
 import Image from 'next/image';
+import { IoMdCloseCircleOutline } from "react-icons/io";
+import { motion } from 'framer-motion';
+import { PiBasket } from "react-icons/pi";
+import { AddToCartNav } from './navbar/addToCartNav';
 
 interface ProductResult {
   product: [
     {
-      Inventory: []
+      Inventory: [
+        {
+          total_qty: number
+          product_id: number
+          qty: number
+        }
+      ]
       category: {
         category_id: number
         category_name: string
@@ -27,13 +30,20 @@ interface ProductResult {
       category_id: number
       created_at: string
       description: string
-      image: string
       name: string
       price: number
       product_id: number
       store_id: number
       updated_at: string
-    }
+      ProductImage: [
+        {
+          url: string
+          product_id: number
+          image__id: number
+        }
+      ]
+    },
+
   ]
   currentPage: number
   totalPages: number
@@ -49,6 +59,7 @@ export default function Navbar() {
   const [results, setResults] = useState<ProductResult | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [data, setData] = useState<string>('');
 
 
   const fetchDataProduct = async () => {
@@ -95,10 +106,7 @@ export default function Navbar() {
     }
     typingTimeoutRef.current = setTimeout(() => {
       fetchDataProduct();
-      // if (e.target.value.trim() === '') {
-      //   setIsModalOpen(false)
-      //   setResults(null);}
-    });
+    }, 300);
   };
 
   const handleResetSearch = () => {
@@ -112,142 +120,153 @@ export default function Navbar() {
       if (typingTimeoutRef.current) {
         clearTimeout(typingTimeoutRef.current);
       }
-      fetchDataProduct();
+      setData(search);
+      console.log(` data : ${data}`);
     }
   };
 
+  const toIDR = (number: number) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+    }).format(number);
+  };
+
   return (
-    <nav className="w-full z-20 fixed top-0 lg:h-24 h-16 px-4 md:px-8 flex items-center justify-between shadow-md bg-secondary">
-      <button onClick={handleResetSearch}>
-        <Link href={"/"} className="flex items-center w-36 lg:w-[271px]">
-          <Image src={'/logo/baskit.svg'} width={270} height={100} alt='' />
-        </Link>
-      </button>
-      <div
-        className={clsx('flex-grow max-w-md mx-auto transition-all', {
-          hidden: isSearchOpen,
-        })}
-      >
-        <div className="relative hidden md:block">
-          <input
-            type="text"
-            placeholder="Search for items..."
-            value={search}
-            onChange={handleSearchChange}
-            onKeyDown={handleKeyDown}
-            className="w-full px-4 py-2 border border-main-black rounded-full focus:outline-none"
-          />
-          <button
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 hover:scale-125"
-            onClick={fetchDataProduct}
-          >
-            <FiSearch className="w-5 h-5 text-main-black" />
-          </button>
-          {isModalOpen && results && results.product && results.product.length > 0 && (
-            <div className="absolute top-5  w-full h-full mt-2 p-4 z-100">
-              <ul className='w-full border border-main trans rounded-[6px] bg-main/45 backdrop-blur-lg'>
-                {results.product.slice().map((item, index) => (
-                  <div key={index} className=''>
-                    <Link href={`/details-product/${item.product_id}`} className="">
-                      <button onClick={handleResetSearch} className='w-full hover:scale-x-105 hover:bg-secondary rounded-[6px] hover:text-main duration-300'>
-                        <div className='w-full py-4 px-5 text-[14px] text-secondary flex items-center justify-between hover:text-main'>
-                          <p>{item.name}</p>
-                          <p className='text-[10px]'>{item.category.category_name}</p>
-                        </div>
-                      </button>
-                    </Link>
-                  </div>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      </div>
-      <div className="flex items-center lg:w-[271px] space-x-6">
-        <button
-          className="block md:hidden p-2 hover:bg-gray-100 rounded-full"
-          onClick={() => setIsSearchOpen(!isSearchOpen)}
-        >
-          {isSearchOpen ? (
-            <FiX className="w-6 h-6 text-gray-700" />
-          ) : (
-            <FiSearch className="w-6 h-6 text-gray-700" />
-          )}
+    <div className='w-full'>
+      <nav className="w-full z-20 fixed top-0 lg:h-24 h-16 px-2 md:px-8 flex items-center justify-between shadow-md bg-secondary">
+        <button onClick={handleResetSearch}>
+          <Link href={"/"} className="flex items-center w-[75px] md:w-[175px] lg:w-[250px]">
+            <Image src={'/logo/baskit.svg'} width={175} height={100} alt='' />
+          </Link>
         </button>
-        <button
-          className="block md:hidden p-2 hover:bg-gray-100 rounded-full"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        <div
+          className={clsx('flex-grow max-w-md mx-auto transition-all', {
+            hidden: isSearchOpen,
+          })}
         >
-          {isMenuOpen ? (
-            <FiX className="w-6 h-6 text-gray-700" />
-          ) : (
-            <FiMenu className="w-6 h-6 text-gray-700" />
-          )}
-        </button>
-        <div className="hidden md:flex items-center space-x-6">
-          <button className="p-2 hover:bg-main rounded-full">
-            <FiGift className="w-6 h-6 text-main-black hover:text-secondary" />
-          </button>
-          <button className="p-2 hover:bg-main rounded-full">
-            <FiShoppingCart className="w-6 h-6 text-main-black hover:text-secondary" />
-          </button>
-          <div
-            className="relative"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Link href={'/user'}>
-              <button className="p-2 hover:bg-main rounded-full">
-                <FiUser className="w-6 h-6 text-main-black hover:text-secondary" />
-              </button>
-            </Link>
-            {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-secondary border border-gray-300 shadow-xl">
-                <div className="flex flex-col p-2 space-y-1">
-                  <button className="px-4 py-2 text-main hover:bg-main hover:text-secondary">
-                    Profile
-                  </button>
-                  <button className="px-4 py-2 text-main hover:bg-main hover:text-secondary">
-                    Settings
-                  </button>
-                  <button className="px-4 py-2 text-main hover:bg-main hover:text-secondary">
-                    Logout
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-      {isSearchOpen && (
-        <div className="absolute top-16 left-0 right-0 px-4 md:hidden">
-          <div className="relative">
+          <div className="relative ">
             <input
               type="text"
-              placeholder="Search for items..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-full focus:outline-none"
+              placeholder="items?..."
+              value={search}
+              onChange={handleSearchChange}
+              onKeyDown={handleKeyDown}
+              className="w-full px-4 py-2 border border-main rounded-full focus:outline-none"
             />
+            <button
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 hover:scale-125"
+              onClick={fetchDataProduct}
+            >
+              <FiSearch size={16} className=" text-main mr-1 " />
+            </button>
+
           </div>
         </div>
-      )}
-      {isMenuOpen && (
-        <div className="absolute top-16 right-0 w-48 bg-white shadow-lg md:hidden">
-          <div className="flex flex-col p-4 space-y-2">
-            <button className="flex items-center space-x-2">
-              <FiGift className="w-6 h-6 text-gray-700" />
-              <span>Vouchers</span>
+        <div className="flex items-center lg:w-[271px] ">
+          <button
+            className="block md:hidden p-2 hover:bg-gray-100 rounded-full"
+            onClick={() => setIsSearchOpen(!isSearchOpen)}
+          >
+          </button>
+          <button
+            className="block md:hidden p-2 hover:bg-gray-100 rounded-full"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? (
+              <FiX className="w-6 h-6 text-gray-700" />
+            ) : (
+              <FiMenu className="w-6 h-6 text-gray-700" />
+            )}
+          </button>
+          <div className="hidden md:flex items-center space-x-6">
+            <button className="p-2 hover:bg-main rounded-full hover:text-secondary place-content-center duration-300">
+              <FiGift size={24} />
             </button>
-            <button className="flex items-center space-x-2">
-              <FiShoppingCart className="w-6 h-6 text-gray-700" />
-              <span>Cart</span>
+            <button className="p-2 hover:bg-main rounded-full  hover:text-secondary place-content-center duration-300">
+              <PiBasket size={24} />
             </button>
-            <button className="flex items-center space-x-2">
-              <FiUser className="w-6 h-6 text-gray-700" />
-              <span>Profile</span>
-            </button>
+            <div
+              className="relative rounded "
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
+              <Link href={'/user'}>
+                <button className="p-2 hover:bg-main rounded-full  hover:text-secondary duration-300">
+                  <FiUser size={24} />
+                </button>
+              </Link>
+              {isDropdownOpen && (
+                <motion.div className="absolute right-0 mt-2 w-48 bg-main/30 backdrop-blur-sm border-[1px]  border-main shadow-xl rounded-[6px]">
+                  <div className="flex flex-col">
+                    <button className="px-4 py-2 text-secondary duration-200 hover:bg-main hover:text-secondary">
+                      Profile
+                    </button>
+                    <button className="px-4 py-2 text-secondary duration-200 hover:bg-main hover:text-secondary">
+                      Settings
+                    </button>
+                    <button className="px-4 py-2 text-secondary duration-200 hover:bg-main hover:text-secondary">
+                      Logout
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </div>
           </div>
         </div>
-      )}  
-    </nav>
+        {isMenuOpen && (
+          <div className="absolute top-16 right-0 w-full bg-white shadow-lg md:hidden duration-300">
+            <div className="flex flex-col bg-main/30 backdrop-blur-sm border-[1px]  border-b-main ">
+              <div className='p-2 text-main duration-200 hover:bg-main hover:text-secondary'>
+                <button className="flex items-center gap-2 "><FiGift className="w-6 h-6" /><span className=''>Vouchers</span></button>
+              </div>
+              <div className='p-2 text-main duration-200 hover:bg-main hover:text-secondary'>
+                <button className="flex items-center gap-2"><FiShoppingCart className="w-6 h-6" /><span>Cart</span></button>
+              </div>
+              <div className='p-2 text-main duration-200 hover:bg-main hover:text-secondary'>
+                <button className="flex items-center gap-2"><FiUser className="w-6 h-6" /><span>Profile</span></button>
+              </div>
+            </div>
+          </div>
+        )}
+      </nav>
+      {isModalOpen && results && results.product && results.product.length > 0 && (
+        <motion.div className=" flex flex-col gap-5 absolute top-16 sm:top-18 lg:top-24 w-full  z-10 bg-main/50 backdrop-blur-sm border-b-[1px] border-main"
+          initial={{ opacity: 0, translateY: -10 }}
+          animate={{ opacity: 1, translateY: 0 }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+        >
+          <div className='flex items-center justify-center p-5'>
+            <button onClick={handleResetSearch}><IoMdCloseCircleOutline size={32} className='text-secondary hover:scale-110 active:scale-95 duration-300 hover:bg-main hover:text-secondary rounded-full' /></button>
+          </div>
+          <div className='flex flex-wrap justify-center gap-5 '>
+            {results.product.slice().map((item, index) => (
+              <div className='w-[165px]  hover:scale-105 hover:bg-secondary rounded-[6px] hover:text-main duration-300'>
+                <Link href={`/details-product/${item.product_id}`} className="" key={index}>
+                  <button onClick={handleResetSearch}>
+                    <div className='w-full py-4 px-5 text-[14px] text-secondary text-left flex flex-col gap-2 items-center justify-between hover:text-main'>
+                      <div className='h-[150px] flex items-center'>
+                        <Image src={item.ProductImage && item.ProductImage.length > 0 ? item.ProductImage[0].url : '/dummy-image.jpg'
+                        } width={150} height={150} alt='Product' className='rounded-[6px] ' />
+                      </div>
+                      <p className='h-[40px]'>{item.name}</p>
+                      <p className='text-left'>{toIDR(item.price)}</p>
+                      <p className='text-[10px]'>{item.category.category_name}</p>
+                      <p>Qty: {item.Inventory[0].total_qty}</p>
+                    </div>
+                  </button>
+                </Link>
+                <div className='hover:scale-110 duration-300'>
+                  <AddToCartNav item={item.Inventory[0].total_qty} product_id={item.product_id} />
+                </div>
+              </div>
+            ))}
+          </div>
+          <div>
+          </div>
+        </motion.div>
+      )
+      }
+    </div >
   );
 }

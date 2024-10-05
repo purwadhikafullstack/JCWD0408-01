@@ -2,7 +2,7 @@ import { Router } from "express";
 import { CartController } from "@/controllers/cart.controller";
 import { AuthMiddleware } from "@/middleware/auth.middleware";
 
-class CartRouter {
+export class CartRouter {
     public router: Router;
     private cartController: CartController;
     private authMiddleware: AuthMiddleware;
@@ -16,9 +16,12 @@ class CartRouter {
 
     private initializeRoutes() {
         this.router.post('/add', this.authMiddleware.verifyToken, this.cartController.addToCart);
+        this.router.post(`/addnav`, this.authMiddleware.verifyToken, this.cartController.addToCartNav);
         this.router.patch('/update', this.authMiddleware.verifyToken, this.cartController.updateCart);
         this.router.delete('/remove', this.authMiddleware.verifyToken, this.cartController.removeFromCart);
     }
-}
 
-export default new CartRouter().router;
+    getRouter() {
+        return this.router;
+    }
+}

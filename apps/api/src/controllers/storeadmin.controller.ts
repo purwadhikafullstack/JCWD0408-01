@@ -45,9 +45,8 @@ export class StoreAdminController {
 
     async deleteStoreAdmin(req: Request, res: Response) {
         try {
-            const { id } = req.params;
             const deleteStoreAdmin = await prisma.user.delete({
-                where : { user_id: parseInt(id) }
+                where: { user_id: +req.params.id }
             })
 
             return res.status(200).send({
@@ -74,6 +73,29 @@ export class StoreAdminController {
             return res.status(200).send({
                 status: 'success',
                 store
+            })
+        } catch (error) {
+            responseError(res, error)
+        }
+    }
+
+    async updateStoreAdmin(req: Request, res: Response) {
+        try {
+            const updateStoreAdmin = await prisma.user.findUnique({
+                where: { user_id: +req.params.id }
+            })
+
+            const password = await hashPass(req.body.password);
+
+            const updatedStoreAdmin = await prisma.user.update({
+                where: { user_id: +req.params.id },
+                data: { ...req.body, password, updated_at : new Date() }
+            })
+
+            return res.status(200).send({
+                status: 'success',
+                msg: 'Store Admin has been updated',
+                updatedStoreAdmin
             })
         } catch (error) {
             responseError(res, error)

@@ -40,13 +40,11 @@ export default function IsiComponentCart({ product_id, name, stock, last_stock_u
                 method: 'POST',
                 body: JSON.stringify(data)
             })
-            const { result, ok } = await res.json()
-            if (!ok) throw result.msg
-            console.log(result)
-            console.log(ok)
+            const { status, msg } = await res.json()
+            if (status == "error") throw toast.error(msg)
+            toast.success(msg)
             router.push(`/admin-stock-management/admin-dashboard-by-super/${params.id}`)
         } catch (error) {
-            console.log(error)
             toast.error(error as string)
         }
 }

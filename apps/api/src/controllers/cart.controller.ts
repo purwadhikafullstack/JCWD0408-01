@@ -83,4 +83,26 @@ export class CartController {
       responseError(res, error);
     }
   }
+
+  async addToCartNav(req: Request, res: Response) {
+    try {
+      
+      const addToCart = await prisma.cartItem.create({
+        data: {
+          user_id: req.user?.id,
+          product_id: req.body.product_id,
+          quantity: req.body.quantity,
+        }
+      })
+      
+      return res.status(201).send({
+        status : 'success',
+        msg: 'Item added to cart',
+        addToCart
+      })
+
+    } catch (error) {
+      responseError(res, error);
+    }
+  }
 }

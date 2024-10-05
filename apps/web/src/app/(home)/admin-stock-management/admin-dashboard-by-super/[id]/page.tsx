@@ -34,7 +34,7 @@ export default function AdminDashboard() {
                         </div>
                         <div>
                             <h1 className="font-extrabold text-[24px]">HALLO! GOD</h1>
-                            <h1>Right now you are accessing Store with {params.id}</h1>
+                            <h1>Right now you are accessing Store with ID_{params.id}</h1>
                         </div>
                     </div>
                 </div>
@@ -50,11 +50,7 @@ export default function AdminDashboard() {
                             </div>
                         )
                     }
-                    <button>
-                        <IoMdRemove size={32} className="bg-main text-secondary rounded hover:bg-secondary hover:text-main duration-300 active:bg-black" />
-                    </button>
-                </div>
-      
+                </div> 
                 <CartListProduct />
                 <div className="flex flex-col px-10  text-[20px] font-medium" >Performance</div>
                 <div className="flex flex-col justify-around items-center gap-5 p-10 pt-5 ">

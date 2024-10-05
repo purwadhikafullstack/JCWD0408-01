@@ -12,7 +12,6 @@ interface InventoryData {
 }
 
 interface Inventory {
-    id: number // Assuming an `id` field exists, as it's used as a key below
     qty: number
     total_qty: number
     updated_at: string
@@ -68,8 +67,8 @@ export default function InventoryHistory() {
             </div>
             <div className="w-full border-[1px] border-secondary mb-2"></div>
             {
-                data?.inventory.map((item) => (
-                    <div key={item.id} className="flex gap-6">
+                data?.inventory.map((item, key) => (
+                    <div key={key} className="flex gap-6">
                         <div className="flex lg:flex-row flex-wrap font-normal text-[14px] lg:justify-between justify-between items-center lg:h-10 h-60 rounded-[10px] border-[1px] w-full mb-2 ">
                             <p className="p-2 lg:pl-10 w-[125px] lg:w-[350px] font-bold text-[16px] text-center lg:text-left">{item.total_qty}</p>
                             <p className="lg:w-[250px] w-[125px] text-center"> {item.qty}</p>

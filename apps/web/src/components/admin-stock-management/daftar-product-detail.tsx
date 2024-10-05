@@ -12,14 +12,22 @@ export default function DaftarProductDetail({nama, created_at, stocktotal_invent
     }
 
     console.log(product_id)
+    const formatIDR = (number: number) => {
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+        }).format(number);
+    };
+
+    const formattedHargaProduct = formatIDR(harga_product);
 
     return (
         <div className="flex lg:flex-row flex-wrap lg:justify-between justify-center text-[14px] items-center lg:h-10 h-60 rounded-[10px] hover:bg-secondary hover:border-secondary duration-200 border-[1px] w-full">
-            <Link href={`/details-discount-management/${product_id}`} className="p-2 lg:pl-10 w-[250px]">{nama} <span className="text-[12px] text-slate-400">#product_code{product_id}</span></Link>
+            <Link href={`/details-discount-management/${product_id}`} className="p-2 lg:pl-10 w-[325px]">{nama} <span className="text-[10px] text-slate-400">#p.code{product_id}</span></Link>
             <p className="w-[100px]">{created_at.split("T")[0]}</p>
-            <div className="flex gap-5 w-[250px]">
-                <p className="">Quantity : {stocktotal_inventory}</p>
-                <p className=""> Price : {harga_product}</p>
+            <div className="flex gap-5 w-[300px]">
+                <p className="w-[75px]">Qty : {stocktotal_inventory}</p>
+                <p className=""> Price : {formattedHargaProduct}</p>
             </div>
             <button type="button" className="" onClick={toggleModal}>
                 <IoIosMore size={32} className="text-main hover:text-secondary duration-300 hover:bg-main hover:rounded-full md:mr-10" />

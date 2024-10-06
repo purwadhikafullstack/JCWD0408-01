@@ -86,47 +86,52 @@ export default function CardItems({ name, price, qty, product_id, image }: { nam
                 <p className="text-[14px]">{convertPrice}</p>
                 <p className="text-[12px]">Qty : {qty}</p>
             </div>
-            <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchemaAddCartNav}
-            onSubmit={(values, action) => {
-                console.log(values);
-                addToCartNav(values);
-                action.resetForm()
-            }}
-        >
-            {({ setFieldValue }) => (
-                <Form>
-                    <div className="  bg-secondary/50 rounded-[10px] border-[1px] border-main">
-                        <div className="flex justify-between items-center place-content-center px-6">
-                            <button
-                                type="button"
-                                onClick={() => removeFromCart(setFieldValue)}
-                                className="w-5"
-                            >
-                                <AiOutlineMinus />
-                            </button>
-                            <Field name="quantity">
-                                {() => <p className="w-4">{cart}</p>}
-                            </Field>
-                            <button
-                                type="button"
-                                onClick={() => addToCart(setFieldValue)}
-                                className="w-5"
-                            >
-                                <AiOutlinePlus />
-                            </button>
-                        </div>
-                        <button
-                            type="submit"
-                            className="bg-main border-main border-[1px] p-2 rounded-[6px] w-full text-secondary hover:text-secondary active:scale-95 duration-200"
-                        >
-                            Add to cart
-                        </button>
-                    </div>
-                </Form>
-            )}
-        </Formik>
+            {
+                token && (
+                    <Formik
+                    initialValues={initialValues}
+                    validationSchema={validationSchemaAddCartNav}
+                    onSubmit={(values, action) => {
+                        console.log(values);
+                        addToCartNav(values);
+                        action.resetForm()
+                    }}
+                >
+                    {({ setFieldValue }) => (
+                        <Form>
+                            <div className="  bg-secondary/50 rounded-[10px] border-[1px] border-main">
+                                <div className="flex justify-between items-center place-content-center px-6">
+                                    <button
+                                        type="button"
+                                        onClick={() => removeFromCart(setFieldValue)}
+                                        className="w-5"
+                                    >
+                                        <AiOutlineMinus />
+                                    </button>
+                                    <Field name="quantity">
+                                        {() => <p className="w-4">{cart}</p>}
+                                    </Field>
+                                    <button
+                                        type="button"
+                                        onClick={() => addToCart(setFieldValue)}
+                                        className="w-5"
+                                    >
+                                        <AiOutlinePlus />
+                                    </button>
+                                </div>
+                                <button
+                                    type="submit"
+                                    className="bg-main border-main border-[1px] p-2 rounded-[6px] w-full text-secondary hover:text-secondary active:scale-95 duration-200"
+                                >
+                                    Add to cart
+                                </button>
+                            </div>
+                        </Form>
+                    )}
+                </Formik>
+                )
+            }
+          
         </div>
     )
 }

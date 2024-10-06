@@ -167,6 +167,13 @@ export default function SummaryCart() {
                 <div className="flex items-center">
                     <button onClick={handleSubmitFilter} className="w-20 h-6 text-center text-[16px] bg-main text-white rounded-[10px]">Filter</button>
                 </div>
+                <div className="flex items-center">
+                    <button onClick={() => {
+                        setCategoryId(null);
+                        setProductId(null);
+                        fetchDataTransation();
+                    }} className="w-20 h-6 text-center text-[16px] bg-main text-white rounded-[10px]">Reset</button>
+                </div>
             </div>
             <div className="px-5">
                 {

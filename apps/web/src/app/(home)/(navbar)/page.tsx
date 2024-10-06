@@ -9,6 +9,7 @@ import { HomePageCategory, NearbyProducts } from '@/types/homeproduct';
 import { getHomeCategory } from '@/libs/action/category';
 import CategoryHome from '../_components/homecomponent/categoryhome';
 import CategoryDropDown from '../_components/homecomponent/categorydropdown';
+import RecomendedItemsBottom from '@/components/detail-product/recomended-items';
 
 export default function Home() {
   const [products, setProducts] = useState<NearbyProducts[]>([]);
@@ -75,10 +76,10 @@ export default function Home() {
       <EmblaCarousel slides={slideImages} options={OPTIONS} />
       <div className='flex items-center justify-center gap-10 pt-20 flex-wrap'>
         {category.length > 0 ? (
-          category.map((cat, key) => ( 
+          category.map((cat, key) => (
             <CategoryHome
-              key={key} 
-              category_id={cat.category_id} 
+              key={key}
+              category_id={cat.category_id}
               category_name={cat.category_name}
               category_url={cat.category_url}
               description={cat.description}
@@ -102,6 +103,9 @@ export default function Home() {
         ) : (
           <p>No nearby products available.</p>
         )}
+      </div>
+      <div className=' mt-10'>
+        <RecomendedItemsBottom />
       </div>
     </div>
   );

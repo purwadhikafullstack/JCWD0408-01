@@ -1,4 +1,4 @@
-import { BuyerAvatar, ResetPassword, UserLogin, UserRegister } from "@/types/user";
+import { BuyerAvatar, ResetPassword, UserLogin, UserPhone, UserRegister } from "@/types/user";
 import { RefCodeVoucher } from "@/types/voucher";
 import Cookies from "js-cookie";
 
@@ -122,3 +122,31 @@ export const updateAvatar = async (dataUrl: string) => {
     })
     return res.json()
   }
+
+  export const changePhone = async (phone: UserPhone) => {
+    const token = Cookies.get('token')
+    const res = await fetch('http://localhost:8000/api/user/changephone', {
+        headers: {
+            'Content-Type' : 'application/json',
+            Authorization : `Bearer ${token}`
+        },
+        method: 'PATCH',
+        body: JSON.stringify(phone)
+    })
+    return res.json() 
+  }
+
+  export const changeDateOB = async (date_ob: Date) => {
+    const token = Cookies.get('token')
+    const res = await fetch('http://localhost:8000/api/user/changedob', {
+        headers: {
+            'Content-Type' : 'application/json',
+            Authorization : `Bearer ${token}`
+        },
+        method: 'PATCH',
+        body: JSON.stringify({date_ob})
+    })
+    return res.json() 
+  }
+
+  

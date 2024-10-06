@@ -24,6 +24,8 @@ import { InventoryRouter } from './routers/inventory.router';
 import { CartRouter } from './routers/cart.router';
 import { VoucherRouter } from './routers/voucher.router';
 import { TransactionRouter } from './routers/transaction.router';
+import { HomeProdRouter } from './routers/homeproduct.router';
+
 
 
 
@@ -82,10 +84,11 @@ export default class App {
     const cartRouter = new CartRouter()
     const voucherRouter = new VoucherRouter()
     const transactionRouter = new TransactionRouter()
+    const homeProdRouter = new HomeProdRouter()
 
 
     this.app.get('/api', (req: Request, res: Response) => {
-      res.send(`Hello, Purwadhika Student API!`);
+      res.send(`Hello, Welcome To Baskit!`);
     });
 
     this.app.use('/api/auth', authRouter.getRouter())
@@ -101,6 +104,7 @@ export default class App {
     this.app.use('/api/cart', cartRouter.getRouter())
     this.app.use('/api/voucher', voucherRouter.getRouter())
     this.app.use('/api/transaction', transactionRouter.getRouter())
+    this.app.use('/api/homeprod', homeProdRouter.getRouter())
   }
 
   public start(): void {

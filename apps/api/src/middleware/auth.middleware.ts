@@ -1,6 +1,6 @@
 import { responseError } from '@/helpers/responseError';
 import { NextFunction, Request, Response } from 'express';
-import { verify } from 'jsonwebtoken';
+import { decode, verify } from 'jsonwebtoken';
 
 export class AuthMiddleware {
   verifyToken(req: Request, res: Response, next: NextFunction) {
@@ -18,23 +18,25 @@ export class AuthMiddleware {
     }
   }
 
-  checkStrAdmin(req: Request, res: Response, next: NextFunction) {
-    try {
-      if (req.user.role !== 'store_admin') throw 'You Are Not a Store Admin!';
+  checkRole(role: string) {
+    return (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const token = req.headers.authorization?.replace('Bearer ', '');
 
-      next();
-    } catch (error) {
-      responseError(res, error);
-    }
+        if (!token) throw 'Verification Failed';
+        const decoded = decode(token);
+        if (typeof decoded !== 'string' && decoded && decoded.role === role) {
+          next(); 
+        } else {
+          throw `You Are Not Authorized! Required role: ${role}`;
+        }
+      } catch (error) {
+        responseError(res, error);
+      }
+    };
   }
 
-  checkSuperAdmin(req: Request, res: Response, next: NextFunction) {
-    try {
-      if (req.user.role !== 'super_admin') throw 'You Are Not a Super Admin!';
+  checkStrAdmin = this.checkRole('store_admin');
+  checkSuperAdmin = this.checkRole('super_admin');
 
-      next();
-    } catch (error) {
-      responseError(res, error);
-    }
-  }
 }

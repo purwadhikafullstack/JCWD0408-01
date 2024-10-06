@@ -51,3 +51,79 @@
     src: url('/libs/fonts/NeueMontreal-Bold.otf') format('opentype');
   }
 }
+.embla {
+  max-width: 70%; /* Maintain your desired width */
+  margin: auto; /* Center the carousel */
+  --slide-height: 26rem; /* Increased height of each slide */
+  --slide-spacing: 1rem; /* Spacing between slides */
+  --slide-size: calc(100% - var(--slide-spacing)); /* Adjusted size for spacing */
+  border: 2px solid #ccc; /* Border around the entire carousel */
+  border-radius: 8px; /* Rounded corners for the carousel */
+  padding: 1rem; 
+}
+
+.embla__viewport {
+  overflow: hidden; /* Hide overflow */
+  position: relative; /* Needed for positioning of the slides */
+  height: var(--slide-height); /* Set height to the defined slide height */
+  border: 2px solid #ddd; /* Border for each slide */
+  border-radius: 6px; /* Optional rounded corners for each slide */
+  overflow: hidden; /* Hide overflow if content exceeds boundaries */
+}
+
+.embla__container {
+  display: flex; /* Flex layout for the slides */
+  touch-action: pan-y pinch-zoom; /* Enable touch actions */
+  margin-left: calc(var(--slide-spacing) * -1); /* Negative margin for spacing */
+}
+
+.embla__slide {
+  flex: 0 0 var(--slide-size); /* Set slide size */
+  min-width: 0; /* Prevent shrinkage */
+  padding-left: var(--slide-spacing); /* Add spacing to the left */
+  position: relative; /* Needed for absolutely positioned elements */
+  height: var(--slide-height); /* Set height to match the viewport */
+}
+
+.embla__controls {
+  display: grid; /* Use grid layout for controls */
+  grid-template-columns: auto 1fr; /* Columns for buttons and spacing */
+  justify-content: space-between; /* Space between buttons */
+  gap: 1.2rem; /* Gap between elements */
+  margin-top: 1.8rem; /* Margin above controls */
+}
+
+.embla__buttons {
+  display: grid; /* Use grid layout for buttons */
+  grid-template-columns: repeat(2, 1fr); /* Two buttons side by side */
+  gap: 0.6rem; /* Gap between buttons */
+  align-items: center; /* Center vertically */
+}
+
+.embla__button {
+  appearance: none; /* Remove default button styles */
+  background-color: transparent; /* Transparent background */
+  touch-action: manipulation; /* Touch action manipulation */
+  display: inline-flex; /* Inline-flex for proper alignment */
+  text-decoration: none; /* Remove underline */
+  cursor: pointer; /* Change cursor to pointer */
+  border: 0; /* No border */
+  padding: 0; /* No padding */
+  margin: 0; /* No margin */
+  width: 3.6rem; /* Width of the button */
+  height: 3.6rem; /* Height of the button */
+  border-radius: 50%; /* Circular button */
+  color: var(--text-body); /* Button color */
+  align-items: center; /* Center content */
+  justify-content: center; /* Center content */
+  z-index: 1; /* Ensure button is above the slides */
+}
+
+.embla__button:disabled {
+  color: var(--detail-high-contrast); /* Color when disabled */
+}
+
+.embla__button__svg {
+  width: 35%; /* Width of SVG inside buttons */
+  height: 35%; /* Height of SVG inside buttons */
+}

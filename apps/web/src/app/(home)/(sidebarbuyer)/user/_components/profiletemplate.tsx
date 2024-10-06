@@ -9,6 +9,9 @@ import { FaPen } from 'react-icons/fa'; // Importing the pencil icon
 import ConfirmationModal from '@/app/(home)/_components/confirmationmodal';
 import { navigate } from '@/libs/action/server';
 import ChangeMail from './profileedit/changemail';
+import ChangePhone from './profileedit/changephone';
+import ChangeDOB from './profileedit/changedateob';
+import { formatDate } from '@/utils/formatdate';
 
 interface refCodeProfile extends Buyer {
   referral_code: string | null;
@@ -21,11 +24,14 @@ export default function Profile({
   phone,
   date_ob,
   avatar,
+  password,
   referral_code,
 }: refCodeProfile) {
   const [modalOpen, setModalOpen] = useState(false);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
-  const [isEditingEmail, setIsEditingEmail] = useState(false); // New state for email editing
+  const [isEditingEmail, setIsEditingEmail] = useState(false);
+  const [isEditingPhone, setIsEditingPhone] = useState(false);
+  const [isEditingDOB, setIsEditingDOB] = useState(false);
   const avatarUrl = avatar ? `${avatar}` : '/defaultavatar.webp';
 
   const handlePasswordChangeConfirm = () => {
@@ -38,6 +44,22 @@ export default function Profile({
 
   const handleEmailChangeSuccess = () => {
     setIsEditingEmail(false); // Close the email editing state
+  };
+
+  const handleCancelPhoneChange = () => {
+    setIsEditingPhone(false); // Close the email editing form
+  };
+
+  const handlePhoneChangeSuccess = () => {
+    setIsEditingPhone(false); // Close the email editing state
+  };
+
+  const handleCancelDOBChange = () => {
+    setIsEditingDOB(false); // Close the email editing form
+  };
+
+  const handleDOBChangeSuccess = () => {
+    setIsEditingDOB(false); // Close the email editing state
   };
 
   return (
@@ -67,13 +89,16 @@ export default function Profile({
               </button>
             </div>
           </div>
-
-          <button
-            onClick={() => setIsConfirmationOpen(true)} // Open confirmation modal
-            className="mt-10 w-48 mx-auto bg-main text-secondary px-4 py-2 rounded-lg hover:bg-main-dark transition duration-200"
-          >
-            Change Password
-          </button>
+          {password ? (
+            <button
+              onClick={() => setIsConfirmationOpen(true)}
+              className="mt-10 w-48 mx-auto bg-main text-secondary px-4 py-2 rounded-lg hover:bg-main-dark transition duration-200"
+            >
+              Change Password
+            </button>
+          ) : (
+            ''
+          )}
         </div>
 
         <div className="flex flex-col space-y-6 w-full pt-10 lg:pt-0 lg:w-1/2">
@@ -84,41 +109,68 @@ export default function Profile({
                 {first_name} {last_name}
               </span>
             </div>
-            
-            <div className="flex flex-col border-b border-gray-300 pb-2">
-              <span className="font-medium text-lg">Date of Birth</span>
-              <span className="text-gray-700 text-xl flex items-center justify-between">
-                {date_ob ? date_ob : 'Not available'}
-                <FaPen
-                  className="text-gray-500 cursor-pointer hover:text-main transition duration-200"
-                  title="Edit Date of Birth"
-                />
-              </span>
-            </div>
 
             <div className="flex flex-col border-b border-gray-300 pb-2">
               <span className="font-medium text-lg">Email</span>
-              
-              {/* Conditionally render the email or the ChangeEmail component */}
               {isEditingEmail ? (
-                <div className="w-full"> {/* Make input field take full width */}
-                  <ChangeMail onCancel={handleCancelEmailChange} onSuccess={handleEmailChangeSuccess} /> {/* Pass onCancel handler */}
+                <div className="w-full">
+                  <ChangeMail
+                    onCancel={handleCancelEmailChange}
+                    onSuccess={handleEmailChangeSuccess}
+                  />
                 </div>
               ) : (
                 <span className="text-gray-700 text-xl flex items-center justify-between">
                   {email}
+                  {password && (
+                    <FaPen
+                      className="text-gray-500 cursor-pointer hover:text-main transition duration-200"
+                      title="Edit Email"
+                      onClick={() => setIsEditingEmail(true)}
+                    />
+                  )}
+                </span>
+              )}
+            </div>
+            <div className="flex flex-col border-b border-gray-300 pb-2">
+              <span className="font-medium text-lg">Phone Number</span>
+              {isEditingPhone ? (
+                <div className="w-full">
+                  <ChangePhone
+                    onCancel={handleCancelPhoneChange}
+                    onSuccess={handlePhoneChangeSuccess}
+                  />
+                </div>
+              ) : (
+                <span className="text-gray-700 text-xl flex items-center justify-between">
+                  {phone}
                   <FaPen
                     className="text-gray-500 cursor-pointer hover:text-main transition duration-200"
-                    title="Edit Email"
-                    onClick={() => setIsEditingEmail(true)} // Enable editing
+                    title="Edit Phone"
+                    onClick={() => setIsEditingPhone(true)}
                   />
                 </span>
               )}
             </div>
-
             <div className="flex flex-col border-b border-gray-300 pb-2">
-              <span className="font-medium text-lg">Phone Number</span>
-              <span className="text-gray-700 text-xl">{phone}</span>
+              <span className="font-medium text-lg">Date of Birth</span>
+              {isEditingDOB ? (
+                <div className="w-full">
+                  <ChangeDOB
+                    onCancel={handleCancelDOBChange}
+                    onSuccess={handleDOBChangeSuccess}
+                  />
+                </div>
+              ) : (
+                <span className="text-gray-700 text-xl flex items-center justify-between">
+                  {date_ob ? formatDate(date_ob) : 'Not available'}
+                  <FaPen
+                    className="text-gray-500 cursor-pointer hover:text-main transition duration-200"
+                    title="Edit Date of Birth"
+                    onClick={() => setIsEditingDOB(true)}
+                  />
+                </span>
+              )}
             </div>
 
             <div className="flex flex-col border-b border-gray-300 pb-2">

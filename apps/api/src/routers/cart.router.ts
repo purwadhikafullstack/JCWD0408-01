@@ -1,26 +1,24 @@
-import { Router } from "express";
 import { CartController } from "@/controllers/cart.controller";
-import { AuthMiddleware } from "@/middleware/auth.middleware";
+import { Router } from "express";
 
 export class CartRouter {
-    public router: Router;
+    private router: Router;
     private cartController: CartController;
-    private authMiddleware: AuthMiddleware;
 
     constructor() {
-        this.router = Router();
         this.cartController = new CartController();
-        this.authMiddleware = new AuthMiddleware();
-        this.initializeRoutes();
+        this.router = Router();
+        this.initializeRouter();
     }
 
-    private initializeRoutes() {
-        this.router.post('/add', this.authMiddleware.verifyToken, this.cartController.addToCart);
-        this.router.post(`/addnav`, this.authMiddleware.verifyToken, this.cartController.addToCartNav);
-        this.router.patch('/update', this.authMiddleware.verifyToken, this.cartController.updateCart);
-        this.router.delete('/remove', this.authMiddleware.verifyToken, this.cartController.removeFromCart);
-    }
 
+    private initializeRouter() {
+        this.router.post('/add', this.cartController.addToCart);
+        this.router.post('/addnav', this.cartController.addToCartNav);
+        this.router.put('/update', this.cartController.updateCart);
+        this.router.delete('/remove', this.cartController.removeFromCart);
+        this.router.get('/count/:user_id', this.cartController.getCartCount);
+    }
     getRouter() {
         return this.router;
     }

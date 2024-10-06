@@ -16,6 +16,9 @@ export class TransactionController {
                 const transaction = await prisma.order.findMany({
                     where: {
                         order_status: 'completed',
+                        created_at: {
+                            gte: new Date(new Date().setDate(new Date().getDate() - 30))
+                        },
                         OrderItem: {
                             some: {
                                 product: {
@@ -60,6 +63,9 @@ export class TransactionController {
                 const transaction = await prisma.order.findMany({
                     where: {
                         order_status: 'completed',
+                        created_at: {
+                            gte: new Date(new Date().setDate(new Date().getDate() - 30))
+                        },
                         OrderItem: {
                             some: {
                                 product: {
@@ -111,6 +117,9 @@ export class TransactionController {
                 const transaction = await prisma.order.findMany({
                     where: {
                         order_status: 'completed',
+                        created_at: {
+                            gte: new Date(new Date().setDate(new Date().getDate() - 30))
+                        },
                         OrderItem: {
                             some: {
                                 product: {
@@ -170,6 +179,9 @@ export class TransactionController {
             const order = await prisma.order.findMany({
                 where: {
                     order_status: 'completed',
+                    created_at: {
+                        gte: new Date(new Date().setDate(new Date().getDate() - 30))
+                    },
                     OrderItem: {}
                 },
                 select: {
@@ -216,6 +228,58 @@ export class TransactionController {
                 totalPage: Math.ceil(totalItem / limit)
             })
 
+        } catch (error) {
+            responseError(res, error);
+        }
+    }
+
+    async findTransactionByStore(req: Request, res: Response) {
+        try {
+            const store_id = req.params.store_id
+
+            const order = await prisma.order.findMany({
+                where: {
+                    order_status: 'completed',
+                    OrderItem: {
+                        some: {
+                            product: {
+                                store_id: +store_id,
+                            },
+                        },
+                    },
+                },
+                select: {
+                    user_id: true,
+                    total_price: true,
+                    created_at: true,
+                    OrderItem: {
+                        select: {
+                            product: {
+                                select: {
+                                    product_id: true,
+                                    name: true,
+                                    category_id: true,
+                                },
+                            },
+                            qty: true,
+                        },
+                    },
+                }, orderBy : {
+                    created_at: 'desc'
+                }
+            });
+
+            const totalRavenue = order.reduce((acc, curr) => acc + curr.total_price, 0)
+            const totalQty = order.reduce((acc, curr) => acc + curr.OrderItem.reduce((acc, curr) => acc + curr.qty, 0), 0)
+
+            return res.status(200).send({
+                status: 'success',
+                msg: 'Successfully get transaction',
+                order,
+                totalRavenue,
+                totalItem: order.length,
+                totalQty
+            })
         } catch (error) {
             responseError(res, error);
         }

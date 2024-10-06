@@ -72,7 +72,6 @@ export default function StoreList() {
 
   return (
     <div>
-      <Sidebar />
       <div className="lg:ml-64">
         <div className="flex justify-start items-center gap-5 p-5">
           <div className="flex justify-start items-center gap-5 p-10 pt-16">

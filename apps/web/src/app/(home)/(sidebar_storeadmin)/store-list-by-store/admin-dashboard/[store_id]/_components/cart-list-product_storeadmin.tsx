@@ -31,6 +31,7 @@ export default function CartListProductByStoreAdmin() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [page, setPage] = useState(1);
     const params = useParams()
+    const [transaction, setTransaction] = useState<any>(null);
 
     const handlebutton = () => {
         setIsModalOpen(!isModalOpen);
@@ -64,11 +65,26 @@ export default function CartListProductByStoreAdmin() {
 
     useEffect(() => {
         fetchProduct();
+        fetchTransaction();
     }, [page]);
 
-    // console.log(page)
     const splitter = (params.store_id).toString().split("%")[0]
-    // const splitterProduct_id = 
+
+    const fetchTransaction = async () => {
+        const res = await fetch(`http://localhost:8000/api/transaction/${params.store_id}`, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'GET',
+        });
+        const data = await res.json();
+        setTransaction(data)
+        console.log(data);
+    }
+
+    const convertIdr = (price: number) => {
+        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(price);
+    }
 
     return (
         <div className="">
@@ -78,9 +94,9 @@ export default function CartListProductByStoreAdmin() {
                 <div className="flex flex-col sm:flex-row justify-between items-center lg:gap-32 sm:gap-10 md:gap-20 gap-10">
                     <h1 className="mt-5 sm:mt-0 text-[32px] font-medium">{data?.product.length} <span className="text-[14px] font-light">Items</span></h1>
                     <div className="border-[1px] sm:h-16 sm:w-0 w-64 "></div>
-                    <h1>Total Product Terjual</h1>
+                    <h1>Product Sold :  <span className="font-bold">{transaction?.totalQty}</span></h1>
                     <div className="border-[1px] sm:h-16 sm:w-0 w-64 "></div>
-                    <h1 className="mb-5 sm:mb-0">Total Penjual Store</h1>
+                    <h1 className="mb-5 sm:mb-0">Profit : <span className="font-bold">{convertIdr(transaction?.totalRavenue)}</span>/month</h1>
                 </div>
                 <div className="border-[1px] w-full"></div>
             </div>

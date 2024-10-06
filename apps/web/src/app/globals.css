@@ -51,79 +51,81 @@
     src: url('/libs/fonts/NeueMontreal-Bold.otf') format('opentype');
   }
 }
+
 .embla {
-  max-width: 70%; /* Maintain your desired width */
-  margin: auto; /* Center the carousel */
-  --slide-height: 26rem; /* Increased height of each slide */
-  --slide-spacing: 1rem; /* Spacing between slides */
-  --slide-size: calc(100% - var(--slide-spacing)); /* Adjusted size for spacing */
-  border: 2px solid #ccc; /* Border around the entire carousel */
-  border-radius: 8px; /* Rounded corners for the carousel */
-  padding: 1rem; 
+  max-width: 70%;
+  margin: auto;
+  --slide-height: 26rem;
+  --slide-spacing: 1rem;
+  --slide-size: calc(100% - var(--slide-spacing));
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
 }
 
 .embla__viewport {
-  overflow: hidden; /* Hide overflow */
-  position: relative; /* Needed for positioning of the slides */
-  height: var(--slide-height); /* Set height to the defined slide height */
-  border: 2px solid #ddd; /* Border for each slide */
-  border-radius: 6px; /* Optional rounded corners for each slide */
-  overflow: hidden; /* Hide overflow if content exceeds boundaries */
+  overflow: hidden;
+  position: relative;
+  height: var(--slide-height);
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
 }
 
 .embla__container {
-  display: flex; /* Flex layout for the slides */
-  touch-action: pan-y pinch-zoom; /* Enable touch actions */
-  margin-left: calc(var(--slide-spacing) * -1); /* Negative margin for spacing */
+  display: flex;
+  touch-action: pan-y pinch-zoom;
+  margin-left: calc(var(--slide-spacing) * -1);
 }
 
 .embla__slide {
-  flex: 0 0 var(--slide-size); /* Set slide size */
-  min-width: 0; /* Prevent shrinkage */
-  padding-left: var(--slide-spacing); /* Add spacing to the left */
-  position: relative; /* Needed for absolutely positioned elements */
-  height: var(--slide-height); /* Set height to match the viewport */
+  flex: 0 0 var(--slide-size);
+  min-width: 0;
+  padding-left: var(--slide-spacing);
+  position: relative;
+  height: var(--slide-height);
 }
 
 .embla__controls {
-  display: grid; /* Use grid layout for controls */
-  grid-template-columns: auto 1fr; /* Columns for buttons and spacing */
-  justify-content: space-between; /* Space between buttons */
-  gap: 1.2rem; /* Gap between elements */
-  margin-top: 1.8rem; /* Margin above controls */
+  display: grid;
+  grid-template-columns: auto 1fr;
+  justify-content: space-between;
+  gap: 1.2rem;
+  margin-top: 1.8rem;
 }
 
 .embla__buttons {
-  display: grid; /* Use grid layout for buttons */
-  grid-template-columns: repeat(2, 1fr); /* Two buttons side by side */
-  gap: 0.6rem; /* Gap between buttons */
-  align-items: center; /* Center vertically */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+  align-items: center;
 }
 
 .embla__button {
-  appearance: none; /* Remove default button styles */
-  background-color: transparent; /* Transparent background */
-  touch-action: manipulation; /* Touch action manipulation */
-  display: inline-flex; /* Inline-flex for proper alignment */
-  text-decoration: none; /* Remove underline */
-  cursor: pointer; /* Change cursor to pointer */
-  border: 0; /* No border */
-  padding: 0; /* No padding */
-  margin: 0; /* No margin */
-  width: 3.6rem; /* Width of the button */
-  height: 3.6rem; /* Height of the button */
-  border-radius: 50%; /* Circular button */
-  color: var(--text-body); /* Button color */
-  align-items: center; /* Center content */
-  justify-content: center; /* Center content */
-  z-index: 1; /* Ensure button is above the slides */
+  appearance: none;
+  background-color: transparent;
+  touch-action: manipulation;
+  display: inline-flex;
+  text-decoration: none;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  color: var(--text-body);
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
 }
 
 .embla__button:disabled {
-  color: var(--detail-high-contrast); /* Color when disabled */
+  color: var(--detail-high-contrast);
 }
 
 .embla__button__svg {
-  width: 35%; /* Width of SVG inside buttons */
-  height: 35%; /* Height of SVG inside buttons */
+  width: 35%;
+  height: 35%;
 }
+

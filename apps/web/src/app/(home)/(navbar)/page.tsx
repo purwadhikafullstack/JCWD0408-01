@@ -1,12 +1,19 @@
 'use client';
 
 import { EmblaOptionsType } from 'embla-carousel';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import EmblaCarousel from '../_components/homecomponent/EmbraCarousel';
 import { nearProducts } from '@/libs/action/home';
 import NearProductCard from '../_components/homecomponent/nearproductcard';
+import { HomePageCategory, NearbyProducts } from '@/types/homeproduct';
+import { getHomeCategory } from '@/libs/action/category';
+import CategoryHome from '../_components/homecomponent/categoryhome';
+import CategoryDropDown from '../_components/homecomponent/categorydropdown';
 
 export default function Home() {
+  const [products, setProducts] = useState<NearbyProducts[]>([]);
+  const [category, setCategory] = useState<HomePageCategory[]>([]);
+
   useEffect(() => {
     const checkGeolocation = async () => {
       const lastAccessedStr = localStorage.getItem('lastGeolocationAccess');
@@ -17,7 +24,7 @@ export default function Home() {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
             async (position) => {
-              const { latitude, longitude, accuracy } = position.coords;
+              const { latitude, longitude } = position.coords;
               localStorage.setItem(
                 'lastGeolocationAccess',
                 currentTime.toString(),
@@ -26,24 +33,17 @@ export default function Home() {
                 'userCoordinates',
                 JSON.stringify({ latitude, longitude }),
               );
-
-              console.log('Geolocation granted:', position);
-              console.log('Stored coordinates with high accuracy:', {
-                latitude,
-                longitude,
-                accuracy,
-              });
-
-              // Call the nearProducts function with the obtained latitude and longitude
               try {
                 const products = await nearProducts(latitude, longitude);
-                console.log('Nearby products:', products);
+                const categories = await getHomeCategory();
+                setProducts(products.closestProducts); // Store the fetched products in state
+                setCategory(categories.categoryHome);
               } catch (error) {
-                console.error('Error fetching nearby products:', error);
+                console.error(error); // Handle error
               }
             },
             (error) => {
-              console.error('Geolocation error:', error);
+              console.log(error); // Handle geolocation error
             },
             {
               enableHighAccuracy: true,
@@ -52,7 +52,7 @@ export default function Home() {
             },
           );
         } else {
-          console.error('Geolocation is not supported by this browser.');
+          console.error("Geolocation not supported");
         }
       }
     };
@@ -60,14 +60,49 @@ export default function Home() {
     checkGeolocation();
   }, []);
 
+
   const OPTIONS: EmblaOptionsType = { loop: true };
-  const SLIDE_COUNT = 5;
-  const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
+
+  const slideImages = [
+    '/Promo/promodeo2.png',
+    '/Promo/promooil.jpeg',
+    '/Promo/promotiondeodorant.png',
+    '/Promo/promotionsnack.png'
+  ];
 
   return (
-    <div>
-      <EmblaCarousel slides={SLIDES} options={OPTIONS} />
-      <NearProductCard/>
+    <div className='mt-32'>
+      <EmblaCarousel slides={slideImages} options={OPTIONS} />
+      <div className='flex items-center justify-center gap-10 pt-20 flex-wrap'>
+        {category.length > 0 ? (
+          category.map((cat, key) => ( 
+            <CategoryHome
+              key={key} 
+              category_id={cat.category_id} 
+              category_name={cat.category_name}
+              category_url={cat.category_url}
+              description={cat.description}
+            />
+          ))
+        ) : (
+          <p>No categories available.</p>
+        )}
+      </div>
+      <div className='flex items-center justify-center gap-10 pt-20 flex-wrap'>
+        {products.length > 0 ? (
+          products.map((product, key) => (
+            <NearProductCard
+              key={key}
+              name={product.name}
+              description={product.description}
+              price={product.price}
+              ProductImage={product.ProductImage}
+            />
+          ))
+        ) : (
+          <p>No nearby products available.</p>
+        )}
+      </div>
     </div>
   );
 }

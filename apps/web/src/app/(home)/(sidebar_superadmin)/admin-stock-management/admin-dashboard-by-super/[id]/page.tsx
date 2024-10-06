@@ -103,7 +103,7 @@ export default function AdminDashboard() {
                         <div className="mb-5">LAST 5 TRANSACTION</div>
                         {
                             transaction?.order?.length ? (
-                                transaction.order.map((item: Order, key: number) => (
+                                transaction.order.slice(0, 5).map((item: Order, key: number) => (
                                     <div key={key} className="flex border-[1px] rounded-[10px] justify-between  p-2 m-2 gap-5 w-full">
                                         <p>User ID: {item.user_id}</p>
                                         <p>Total Qty: {item.OrderItem.reduce((total, orderItem) => total + orderItem.qty, 0)}</p>

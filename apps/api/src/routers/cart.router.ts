@@ -14,6 +14,7 @@ export class CartRouter {
 
     private initializeRouter() {
         this.router.post('/add', this.cartController.addToCart);
+        this.router.post('/addnav', this.cartController.addToCartNav);
         this.router.put('/update', this.cartController.updateCart);
         this.router.delete('/remove', this.cartController.removeFromCart);
         this.router.get('/count/:user_id', this.cartController.getCartCount);

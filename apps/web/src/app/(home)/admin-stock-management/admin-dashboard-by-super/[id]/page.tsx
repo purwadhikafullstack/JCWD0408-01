@@ -4,10 +4,10 @@ import Sidebar from '@/components/sidebar/sidebar';
 import { VscAccount } from 'react-icons/vsc';
 import { useState } from 'react';
 import { IoMdAdd, IoMdRemove } from 'react-icons/io';
-import CreateProduct from '../_components/createproduct';
 import { useParams } from 'next/navigation';
-import CartListProduct from '../_components/cart-list-product';
 import { motion } from 'framer-motion';
+import CreateProduct from '@/app/(home)/(sidebar_superadmin)/admin-stock-management/admin-dashboard-by-super/_components/createproduct';
+import CartListProduct from '@/app/(home)/(sidebar_superadmin)/admin-stock-management/admin-dashboard-by-super/_components/cart-list-product';
 
 export default function AdminDashboard() {
     const [createModalProduct, setCreateModalProduct] = useState(false);

@@ -21,15 +21,8 @@ export class AuthController {
       if (buyerEmail) throw "Email address has already been used";
 
       const newBuyerData = await prisma.user.create({
-        data: {
-          email: req.body.email,
-          role: "buyer",
-          first_name: "",
-          password: "",
-          phone: "",
-          ...req.body,
-        },
-      });
+        data: {email: req.body.email, role: 'buyer', first_name: '', }
+      })
 
       const token = createToken({
         id: newBuyerData.user_id,
@@ -51,12 +44,14 @@ export class AuthController {
   async loginBuyer(req: Request, res: Response) {
     try {
       const buyer = await prisma.user.findUnique({
-        where: { email: req.body.email },
-      });
 
-      if (!buyer) throw "User Not Found";
-      const validPass = await compare(req.body.password, buyer.password);
-      if (!validPass) throw "Password Incorrect";
+        where: {email: req.body.email}
+      })
+      
+      if (!buyer) throw 'User Not Found';
+      const validPass = await compare(req.body.password, buyer.password!);
+      if (!validPass) throw 'Password Incorrect';
+
       const token = createLoginToken({
         id: buyer.user_id,
         role: buyer.role,
@@ -153,20 +148,22 @@ export class AuthController {
     try {
       const userData = await prisma.user.findUnique({
         where: {
-          user_id: req.user.id,
-        },
-      });
-      const validPass = await compare(req.body.password, userData!.password);
 
-      if (!validPass) throw "Password Incorrect";
-
-      const newPassword = req.body.newPassword;
-
-      const isSamePass = await compare(newPassword, userData!.password);
-
-      if (isSamePass) throw "Can't use similar password";
-
-      const hashedPassword = await hashPass(newPassword);
+          user_id: req.user.id
+        }
+      })
+      const validPass = await compare(req.body.password, userData!.password!)
+      
+      if (!validPass) throw 'Password Incorrect'
+      
+      const newPassword = req.body.newPassword
+      
+      const isSamePass = await compare(newPassword, userData!.password!)
+      
+      if (isSamePass) throw "Can't use similar password"
+      
+      const hashedPassword = await hashPass(newPassword)
+      
 
       await prisma.user.update({
         where: { user_id: req.user.id },

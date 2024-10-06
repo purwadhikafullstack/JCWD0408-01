@@ -2,7 +2,8 @@
 const nextConfig = {
     images: {
         remotePatterns: [
-            { hostname: 'localhost' }
+            { hostname: 'localhost'},
+            { hostname: "lh3.googleusercontent.com" },
         ]
     },
     env: {

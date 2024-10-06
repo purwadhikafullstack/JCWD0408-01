@@ -98,3 +98,22 @@ export const resetPasswordSchema = yup.object({
     .oneOf([Yup.ref('newPassword')], "Passwords don't match")
     .required('Confirm password is required'),
 });
+
+export const createStoreSchema = Yup.object({
+  store_name: Yup.string()
+    .matches(/^[a-zA-Z\s]+$/, 'Store name can only contain letters and spaces.')
+    .required('Store name is required.')
+});
+
+export const editPhoneSchema = Yup.object({
+  phone: Yup.string()
+  .matches(
+    /^08\d{9,12}$/,
+    'Phone number must start with 08 with 10 to 13 digits long',
+  )
+  .required('Phone number is required')
+})
+
+export const editDateSchema = Yup.object({
+  date_ob: Yup.date().required('Please select the date')
+})

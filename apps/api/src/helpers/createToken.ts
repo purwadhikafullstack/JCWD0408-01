@@ -33,6 +33,15 @@ export const createLoginToken = (payload: Ipayload) => {
   }
 };
 
+export const createLoginOAuth = (payload: IpayloadMail) => {
+  try {
+    const token = sign(payload, key, { expiresIn: '24h' });
+    return token;
+  } catch (error) {
+    console.error("Error creating token:", error);
+    throw new Error("Token generation failed");
+  }
+};
 
 export const createTokenEmail = (payload: IpayloadMail) => {
   try {

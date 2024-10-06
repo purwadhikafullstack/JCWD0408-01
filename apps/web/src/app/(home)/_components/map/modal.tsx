@@ -1,5 +1,5 @@
 import React from 'react';
-import CloseIcon from '../../(sidebaruser)/user/_components/CloseIcon';
+import CloseIcon from '../../(sidebarbuyer)/user/_components/CloseIcon';
 
 interface ModalProps {
   closeModal: () => void;

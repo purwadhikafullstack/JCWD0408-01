@@ -15,6 +15,7 @@ export const registerBuyer = async (data: UserRegister) => {
 }
 
 export const loginBuyer = async (data: UserLogin) => {
+    const token = Cookies.get('token')
     const res = await fetch('http://localhost:8000/api/auth/login', {
         headers: {
             'Content-Type' : 'application/json'

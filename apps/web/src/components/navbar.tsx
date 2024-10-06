@@ -9,46 +9,14 @@ import { IoMdCloseCircleOutline } from "react-icons/io";
 import { motion } from 'framer-motion';
 import { PiBasket } from "react-icons/pi";
 import { AddToCartNav } from './navbar/addToCartNav';
+import Cookies from 'js-cookie';
+import { PiSignInBold } from "react-icons/pi";
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+import { FiLogOut } from "react-icons/fi";
+import { ProductResult } from './navbar/type';
 
-interface ProductResult {
-  product: [
-    {
-      Inventory: [
-        {
-          total_qty: number
-          product_id: number
-          qty: number
-        }
-      ]
-      category: {
-        category_id: number
-        category_name: string
-        description: string
-        created_at: string
-        updated_at: string
-      }
-      category_id: number
-      created_at: string
-      description: string
-      name: string
-      price: number
-      product_id: number
-      store_id: number
-      updated_at: string
-      ProductImage: [
-        {
-          url: string
-          product_id: number
-          image__id: number
-        }
-      ]
-    },
 
-  ]
-  currentPage: number
-  totalPages: number
-  status: string
-}
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -60,7 +28,13 @@ export default function Navbar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [data, setData] = useState<string>('');
+  const [isMounted, setIsMounted] = useState(false);
+  const token = Cookies.get('token');
+  const router = useRouter();
 
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const fetchDataProduct = async () => {
     if (search === ' ' || search === '') {
@@ -76,15 +50,12 @@ export default function Navbar() {
         },
       });
       const data: ProductResult = await res.json();
-      console.log(data);
       setResults(data);
       setIsModalOpen(true);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   }
-  console.log(results);
-
 
   const handleMouseEnter = useCallback(() => {
     if (dropdownTimeout) {
@@ -132,6 +103,16 @@ export default function Navbar() {
     }).format(number);
   };
 
+  const deleteCookie = () => {
+    Cookies.remove('token');
+    router.push('/login')
+    toast.success('Logout Success')
+  }
+
+  if (!isMounted) {
+    return null;
+  }
+
   return (
     <div className='w-full'>
       <nav className="w-full z-20 fixed top-0 lg:h-24 h-16 px-2 md:px-8 flex items-center justify-between shadow-md bg-secondary">
@@ -163,7 +144,7 @@ export default function Navbar() {
 
           </div>
         </div>
-        <div className="flex items-center lg:w-[271px] ">
+        <div className="flex items-center  justify-between">
           <button
             className="block md:hidden p-2 hover:bg-gray-100 rounded-full"
             onClick={() => setIsSearchOpen(!isSearchOpen)}
@@ -179,56 +160,99 @@ export default function Navbar() {
               <FiMenu className="w-6 h-6 text-gray-700" />
             )}
           </button>
-          <div className="hidden md:flex items-center space-x-6">
-            <button className="p-2 hover:bg-main rounded-full hover:text-secondary place-content-center duration-300">
-              <FiGift size={24} />
-            </button>
-            <button className="p-2 hover:bg-main rounded-full  hover:text-secondary place-content-center duration-300">
-              <PiBasket size={24} />
-            </button>
-            <div
-              className="relative rounded "
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
-              <Link href={'/user'}>
-                <button className="p-2 hover:bg-main rounded-full  hover:text-secondary duration-300">
-                  <FiUser size={24} />
+          {
+            !token && (
+              <div className="hidden gap-3 md:flex sm:w-[160px]  lg:w-[271px] text-right justify-end">
+                <Link href={'/register'}>
+                  <button className="p-2 flex items-center gap-2 hover:bg-main rounded-full hover:text-secondary place-content-center duration-300 text-[14px]">
+                    <p>REGISTER</p>
+                  </button>
+                </Link>
+                <Link href={'/login'}>
+                  <button className="p-2 flex items-center gap-2 hover:bg-main rounded-full hover:text-secondary place-content-center duration-300 text-[14px]">
+                    <p>LOGIN</p>
+                  </button>
+                </Link>
+              </div>
+            )
+          }
+          {
+            token && (
+              <div className="hidden md:flex items-center space-x-6 sm:w-[160px]  lg:w-[271px]">
+                <button className="p-2 hover:bg-main rounded-full hover:text-secondary place-content-center duration-300">
+                  <FiGift size={24} />
                 </button>
-              </Link>
-              {isDropdownOpen && (
-                <motion.div className="absolute right-0 mt-2 w-48 bg-main/30 backdrop-blur-sm border-[1px]  border-main shadow-xl rounded-[6px]">
-                  <div className="flex flex-col">
-                    <button className="px-4 py-2 text-secondary duration-200 hover:bg-main hover:text-secondary">
-                      Profile
+                <button className="p-2 hover:bg-main rounded-full  hover:text-secondary place-content-center duration-300">
+                  <PiBasket size={24} />
+                </button>
+                <div
+                  className="relative rounded "
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <Link href={'/login'}>
+                    <button className="p-2 hover:bg-main rounded-full  hover:text-secondary duration-300">
+                      <FiUser size={24} />
                     </button>
-                    <button className="px-4 py-2 text-secondary duration-200 hover:bg-main hover:text-secondary">
-                      Settings
-                    </button>
-                    <button className="px-4 py-2 text-secondary duration-200 hover:bg-main hover:text-secondary">
-                      Logout
-                    </button>
-                  </div>
-                </motion.div>
-              )}
-            </div>
-          </div>
+                  </Link>
+                  {isDropdownOpen && (
+                    <motion.div className="absolute right-0 mt-2 w-48 bg-main/30 backdrop-blur-sm border-[1px]  border-main shadow-xl rounded-[6px]">
+                      <div className="flex flex-col">
+                        <Link href={"/user"} className=" text-center px-4 py-2 text-secondary duration-200 hover:bg-main hover:text-secondary">
+                          Profile
+                        </Link>
+                        <button className="px-4 py-2 text-secondary duration-200 hover:bg-main hover:text-secondary">
+                          Settings
+                        </button>
+                        <button onClick={deleteCookie} className="px-4 py-2 text-secondary duration-200 hover:bg-main hover:text-secondary">
+                          Logout
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
+              </div>
+            )
+          }
         </div>
-        {isMenuOpen && (
-          <div className="absolute top-16 right-0 w-full bg-white shadow-lg md:hidden duration-300">
-            <div className="flex flex-col bg-main/30 backdrop-blur-sm border-[1px]  border-b-main ">
-              <div className='p-2 text-main duration-200 hover:bg-main hover:text-secondary'>
-                <button className="flex items-center gap-2 "><FiGift className="w-6 h-6" /><span className=''>Vouchers</span></button>
+        {
+          !token && (
+            isMenuOpen && (
+              <div className="absolute top-16 right-0 w-full bg-white shadow-lg md:hidden duration-300">
+                <div className="flex flex-col bg-main/30 backdrop-blur-sm border-[1px]  border-main ">
+                  <Link href={"/register"} className='p-2 text-main duration-200 hover:bg-main hover:text-secondary'>
+                    <button className="flex items-center gap-2"><PiSignInBold className="w-6 h-6" /><span>Register</span></button>
+                  </Link>
+                  <Link href={"/login"} className='p-2 text-main duration-200 hover:bg-main hover:text-secondary'>
+                    <button className="flex items-center gap-2"><FiUser className="w-6 h-6" /><span>Login</span></button>
+                  </Link>
+                </div>
               </div>
-              <div className='p-2 text-main duration-200 hover:bg-main hover:text-secondary'>
-                <button className="flex items-center gap-2"><FiShoppingCart className="w-6 h-6" /><span>Cart</span></button>
+            )
+          )
+        }
+        {
+          token && (
+            isMenuOpen && (
+              <div className="absolute top-16 right-0 w-full bg-white shadow-lg md:hidden duration-300">
+                <div className="flex flex-col bg-main/30 backdrop-blur-sm border-[1px]  border-b-main ">
+                  <div className='p-2 text-main duration-200 hover:bg-main hover:text-secondary'>
+                    <button className="flex items-center gap-2 "><FiGift className="w-6 h-6" /><span className=''>Vouchers</span></button>
+                  </div>
+                  <div className='p-2 text-main duration-200 hover:bg-main hover:text-secondary'>
+                    <button className="flex items-center gap-2"><FiShoppingCart className="w-6 h-6" /><span>Cart</span></button>
+                  </div>
+                  <div className='p-2 text-main duration-200 hover:bg-main hover:text-secondary'>
+                    <button className="flex items-center gap-2"><FiUser className="w-6 h-6" /><span>Profile</span></button>
+                  </div>
+                  <button onClick={deleteCookie} className="p-2 text-left text-secondary duration-200 hover:bg-main hover:text-secondary flex gap-2">
+                    <FiLogOut size={24} /> <span>Logout</span>
+                  </button>
+                </div>
               </div>
-              <div className='p-2 text-main duration-200 hover:bg-main hover:text-secondary'>
-                <button className="flex items-center gap-2"><FiUser className="w-6 h-6" /><span>Profile</span></button>
-              </div>
-            </div>
-          </div>
-        )}
+            )
+          )
+        }
       </nav>
       {isModalOpen && results && results.product && results.product.length > 0 && (
         <motion.div className=" flex flex-col gap-5 absolute top-16 sm:top-18 lg:top-24 w-full  z-10 bg-main/50 backdrop-blur-sm border-b-[1px] border-main"
@@ -265,8 +289,7 @@ export default function Navbar() {
           <div>
           </div>
         </motion.div>
-      )
-      }
+      )}
     </div >
   );
 }

@@ -86,10 +86,20 @@ export class CartController {
 
   async addToCartNav(req: Request, res: Response) {
     try {
+
+      const userCheck = await prisma.user.findUnique({
+        where: { user_id: req.user?.id }
+      })
       
+      if (userCheck?.role == "store_admin" || userCheck?.role == "super_admin") throw { msg: "You are not allowed to add item to cart" }
+
+      if (!userCheck?.user_id) {
+        return res.status(400).json({ msg: "User ID is required" });
+      }
+
       const addToCart = await prisma.cartItem.create({
         data: {
-          user_id: req.user?.id,
+          user_id: userCheck.user_id,
           product_id: req.body.product_id,
           quantity: req.body.quantity,
         }

@@ -10,6 +10,8 @@ import { RiDiscountPercentLine, RiSecurePaymentLine } from "react-icons/ri";
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import { IoMdMenu } from "react-icons/io";
+import { MdMenu } from 'react-icons/md';
 
 const sidebarVariants = {
   hidden: { x: '-100%' },
@@ -24,8 +26,10 @@ const submenuVariants = {
 export default function Sidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const router = useRouter()
+
 
   const deleteToken = () => {
     Cookies.remove('token');
@@ -46,6 +50,9 @@ export default function Sidebar() {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  const handleModal = () => { setIsModalOpen(!isModalOpen) }
+  const handleLogout = () => { deleteToken(); router.push("/login-as-super") }
 
   return (
     <div>
@@ -103,16 +110,32 @@ export default function Sidebar() {
       )}
 
       {isMobile && (
-        <nav className="fixed  bottom-0 left-0 right-0 bg-main z-50 flex justify-around items-center p-3 shadow-lg">
-          <Link href="/" className="text-white text-lg font-bold hover:text-darkgreen">
-            <VscAccount size={38} />
+        <nav className="fixed  bottom-0 left-0 right-0 backdrop-blur-sm border-t-[1px] border-main bg-secondary/50 z-50 flex justify-between items-center p-2 px-4 shadow-lg">
+          <Link href="/admin-stock-management" className="text-main text-lg font-bold hover:text-darkgreen">
+            Dashboard
           </Link>
           <Link href="/" className="text-white text-lg font-bold hover:text-darkgreen">
-            My Orders
+            <Image src="/logo/baskitgreen.svg" alt="About Us" width={100} height={100} className='' />
           </Link>
-          <Link href="/" className="text-white text-lg font-bold hover:text-darkgreen">
-            My Vouchers
-          </Link>
+          <MdMenu size={28} className='w-20' onClick={handleModal} />
+          {
+            isModalOpen && (
+              <div className='absolute bottom-14 left-0 w-full text-center backdrop-blur-sm border-t-[1px] border-main bg-secondary/80 flex flex-col gap-4 p-2 text-main '>
+                <Link href={"/"}>
+                  Homepage
+                </Link>
+                <Link href={"/assign-store"}>
+                  Assign Store
+                </Link>
+                <Link href={"store-list-by-super"}>
+                  Store List
+                </Link>
+                <button onClick={handleLogout} className='active:bg-main active:text-secondary duration-300'>
+                  Logout
+                </button>
+              </div>
+            )
+          }
         </nav>
       )}
     </div>

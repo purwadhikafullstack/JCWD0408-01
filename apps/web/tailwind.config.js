@@ -17,6 +17,9 @@ module.exports = {
         "accent": "#7993a0",
         "maroon" : "#5e0e0e"
       },
+      fontFamily: {
+        'neue-montreal': ['"Neue Montreal"', 'sans-serif'], 
+      },
     },
   },
   plugins: [],

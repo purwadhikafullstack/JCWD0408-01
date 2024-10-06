@@ -55,7 +55,6 @@ export default function CategoryProduct() {
         setPage(page + 1)
     }
 
-    console.log(data?.allCategories[0].category_id)
 
     return (
         <div className="flex flex-col justify-center items-center gap-2 ">

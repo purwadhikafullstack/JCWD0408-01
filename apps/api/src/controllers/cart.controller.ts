@@ -3,7 +3,7 @@ import prisma from "@/prisma";
 import { responseError } from "@/helpers/responseError";
 
 export class CartController {
-  
+
   async addToCart(req: Request, res: Response) {
     try {
       const { product_id, user_id, quantity = 1 } = req.body;
@@ -108,29 +108,59 @@ export class CartController {
     }
   }
 
-
-  async getCartCount(req: Request, res: Response) {
+  async addToCartNav(req: Request, res: Response) {
     try {
-      const { user_id } = req.params;
 
-      if (!user_id) {
-        return res
-          .status(400)
-          .json({ message: "User ID is required" });
+      const userCheck = await prisma.user.findUnique({
+        where: { user_id: req.user?.id }
+      })
+
+      if (userCheck?.role == "store_admin" || userCheck?.role == "super_admin") throw { msg: "You are not allowed to add item to cart" }
+
+      if (!userCheck?.user_id) {
+        return res.status(400).json({ msg: "User ID is required" });
       }
 
-      const userIdNumber = Number(user_id);
+      const addToCart = await prisma.cartItem.create({
+        data: {
+          user_id: userCheck.user_id,
+          product_id: req.body.product_id,
+          quantity: req.body.quantity,
+        }
+      })
 
-      const cartCount = await prisma.cartItem.count({
-        where: { user_id: userIdNumber }
-      });
-
-      return res.status(200).json({ cartCount });
+      return res.status(201).send({
+        status: 'success',
+        msg: 'Item added to cart',
+        addToCart
+      })
     } catch (error) {
-      console.error("Error getting cart count:", error);
+      console.error("Error adding to cart:", error);
       responseError(res, error);
     }
   }
-}
 
-export default new CartController();
+   async getCartCount(req: Request, res: Response) {
+        try {
+          const { user_id } = req.params;
+
+          if (!user_id) {
+            return res
+              .status(400)
+              .json({ message: "User ID is required" });
+          }
+
+          const userIdNumber = Number(user_id);
+
+          const cartCount = await prisma.cartItem.count({
+            where: { user_id: userIdNumber }
+          });
+
+          return res.status(200).json({ cartCount });
+        } catch (error) {
+          console.error("Error getting cart count:", error);
+          responseError(res, error);
+        }
+      }
+    }
+  

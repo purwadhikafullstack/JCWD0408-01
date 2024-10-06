@@ -23,6 +23,7 @@ import { DiscountRouter } from './routers/discount.router';
 import { InventoryRouter } from './routers/inventory.router';
 import { CartRouter } from './routers/cart.router';
 import { VoucherRouter } from './routers/voucher.router';
+import { TransactionRouter } from './routers/transaction.router';
 import { HomeProdRouter } from './routers/homeproduct.router';
 
 
@@ -82,6 +83,7 @@ export default class App {
     const inventoryRouter = new InventoryRouter()
     const cartRouter = new CartRouter()
     const voucherRouter = new VoucherRouter()
+    const transactionRouter = new TransactionRouter()
     const homeProdRouter = new HomeProdRouter()
 
 
@@ -101,6 +103,7 @@ export default class App {
     this.app.use('/api/inventory', inventoryRouter.getRouter())
     this.app.use('/api/cart', cartRouter.getRouter())
     this.app.use('/api/voucher', voucherRouter.getRouter())
+    this.app.use('/api/transaction', transactionRouter.getRouter())
     this.app.use('/api/homeprod', homeProdRouter.getRouter())
   }
 

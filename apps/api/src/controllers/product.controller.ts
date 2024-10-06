@@ -39,6 +39,8 @@ export class ProductController {
         }
     }
 
+
+
     async createProduct(req: Request, res: Response) {
         try {
             await prisma.$transaction(async (prisma) => {
@@ -173,6 +175,152 @@ export class ProductController {
                 totalPages: Math.ceil(totalProducts / limit),
                 currentPage: page,
             });
+        } catch (error) {
+            responseError(res, error);
+        }
+    }
+
+    async updateProduct(req: Request, res: Response) {
+        try {
+            const product_id = +req.params.product_id;
+
+            const updatedProduct = await prisma.$transaction(async (prismaTransaction) => {
+                const product = await prismaTransaction.product.findUnique({
+                    where: { product_id }
+                });
+
+                await prismaTransaction.productImage.deleteMany({
+                    where: { product_id: product?.product_id }
+                })
+
+                if (!product) {
+                    throw new Error('Product not found');
+                }
+
+                const files: Express.Multer.File[] = req.files as Express.Multer.File[];
+                const image = files.map((file) => `${baseUrl}/public/product/${file.filename}`);
+
+                const updateProduct = await prismaTransaction.product.update({
+                    where: { product_id: product.product_id },
+                    data: {
+                        name: req.body.name,
+                        description: req.body.description,
+                        price: +req.body.price,
+                        category_id: +req.body.category_id,
+                        updated_at: new Date(),
+                        ProductImage: {
+                            create: image.map((url) => ({
+                                url,
+                            })),
+                        },
+                        Inventory: {
+                            create: {
+                                qty: +req.body.qty,
+                                store_id: product.store_id,
+                                total_qty: +req.body.qty,
+                            },
+                        },
+                    },
+                });
+                return updateProduct;
+            });
+            return res.status(200).send({
+                status: 'ok',
+                msg: 'Product updated successfully',
+                updatedProduct,
+            });
+        } catch (error) {
+            if (error instanceof Error && error.message === 'Product not found') {
+                return res.status(404).send({
+                    status: 'error',
+                    msg: 'Product not found',
+                });
+            }
+            return responseError(res, error);
+        }
+    }
+
+    async deleteProduct(req: Request, res: Response) {
+        try {
+            const product_id = +req.params.product_id;
+
+            const deleteProductId = await prisma.$transaction(async (prismaTransaction) => {
+                const product = await prismaTransaction.product.findUnique({
+                    where: { product_id },
+                });
+
+                if (!product) {
+                    throw new Error('Product not found');
+                }
+
+                await prismaTransaction.productImage.deleteMany({
+                    where: { product_id: product.product_id },
+                });
+
+                await prismaTransaction.inventory.deleteMany({
+                    where: { product_id: product.product_id },
+                });
+
+                await prismaTransaction.cartItem.deleteMany({
+                    where: { product_id: product.product_id },
+                })
+
+                await prismaTransaction.orderItem.deleteMany({
+                    where: { product_id: product.product_id },
+                })
+
+                await prismaTransaction.discount.deleteMany({
+                    where: { product_id: product.product_id }
+                })
+
+                await prismaTransaction.product.delete({
+                    where: { product_id },
+                });
+
+                return product.product_id;
+            })
+            return res.status(200).send({
+                status: 'ok',
+                msg: 'Product deleted successfully',
+                deleteProductId,
+            })
+        } catch (error) {
+            responseError(res, error);
+        }
+    }
+
+    async getProductRandom(req: Request, res : Response){
+        try {
+            const product = await prisma.product.findMany({
+                include: {
+                    Inventory: true,
+                    category: true,
+                    ProductImage: true
+                }
+            })
+            
+            const randomProduct = product.sort(() => Math.random() - Math.random());
+
+            return res.status(200).send({
+                status: 'ok',
+                msg : 'Success get random product',
+                randomProduct
+
+            })
+        } catch (error) {
+            responseError(res, error);
+        }
+    }
+
+    async getAllProduct(req: Request, res: Response){
+        try {
+            const product = await prisma.product.findMany({})
+
+            return res.status(200).send({
+                status: 'ok',
+                msg: 'Success get all product',
+                product
+            })
         } catch (error) {
             responseError(res, error);
         }

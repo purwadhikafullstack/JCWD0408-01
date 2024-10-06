@@ -78,7 +78,7 @@ export default function CardItems({ name, price, qty, product_id, image }: { nam
                 <Image src={image} alt="Discount" width={200} height={300} className="h-48 rounded-[6px]" />
             </Link>
             <div className="border-[1px] mt-2"></div>
-            <Link href={`details-product/${product_id}`}>
+            <Link href={`/details-product/${product_id}`}>
                 <p className="font-bold">{name}</p>
                 <p className="text-[10px]">#product_code{product_id}</p>
             </Link>

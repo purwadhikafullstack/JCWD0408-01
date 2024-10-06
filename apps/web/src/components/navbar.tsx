@@ -77,7 +77,7 @@ export default function Navbar() {
     }
     typingTimeoutRef.current = setTimeout(() => {
       fetchDataProduct();
-    }, 300);
+    }, );
   };
 
   const handleResetSearch = () => {
@@ -255,7 +255,7 @@ export default function Navbar() {
         }
       </nav>
       {isModalOpen && results && results.product && results.product.length > 0 && (
-        <motion.div className=" flex flex-col gap-5 absolute top-16 sm:top-18 lg:top-24 w-full  z-10 bg-main/50 backdrop-blur-sm border-b-[1px] border-main"
+        <motion.div className=" flex flex-col gap-5 absolute z-30 top-16 sm:top-18 lg:top-24 w-full bg-main/50 backdrop-blur-sm border-b-[1px] border-main"
           initial={{ opacity: 0, translateY: -10 }}
           animate={{ opacity: 1, translateY: 0 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}

@@ -11,13 +11,13 @@ export class CartRouter {
         this.initializeRouter();
     }
 
+
     private initializeRouter() {
         this.router.post('/add', this.cartController.addToCart);
         this.router.put('/update', this.cartController.updateCart);
         this.router.delete('/remove', this.cartController.removeFromCart);
         this.router.get('/count/:user_id', this.cartController.getCartCount);
     }
-
     getRouter() {
         return this.router;
     }

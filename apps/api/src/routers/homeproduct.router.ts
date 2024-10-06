@@ -13,8 +13,9 @@ export class HomeProdRouter {
     }
 
     private initializeRouter() {
-        this.router.post('/', this.homeProdController.getClosestProduct)
         this.router.get('/disc', this.homeProdController.getDiscountedProduct)
+        this.router.get('/category', this.homeProdController.getCategoryHome)
+        this.router.post('/', this.homeProdController.getClosestProduct)
     }
 
     getRouter(){

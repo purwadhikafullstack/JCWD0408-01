@@ -2,14 +2,7 @@ import { ICreateProductBySuperAdmin } from '@/components/inputformik';
 import axios from 'axios';
 import { use } from 'chai';
 import { set } from 'cypress/types/lodash';
-import {
-  ErrorMessage,
-  Field,
-  Form,
-  Formik,
-  FormikHelpers,
-  FormikProps,
-} from 'formik';
+import { ErrorMessage, Field, Form, Formik, FormikHelpers, FormikProps } from 'formik';
 import { motion } from 'framer-motion';
 import { useParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
@@ -21,38 +14,36 @@ import ImagePreviewRoom from './imagePreview';
 import ImagePreviewProduct from './imagePreview';
 
 export default function CreateProduct() {
-  const initialValues: ICreateProductBySuperAdmin = {
-    name: '',
-    description: '',
-    price: '',
-    category_id: '',
-    qty: '',
-  };
 
-  const validationSchema = yup.object().shape({
-    name: yup.string().required('name is required'),
-    description: yup.string().required('description is required'),
-    price: yup.number().required('price is required'),
-    category_id: yup.string().required('category id is required'),
-    qty: yup.number().required('qty is required'),
-  });
+    const initialValues: ICreateProductBySuperAdmin = {
+        name: "",
+        description: "",
+        price: "",
+        category_id: "",
+        qty: ""
+    }
 
-  const params = useParams();
-  const store_id = params.id;
+    const validationSchema = yup.object().shape({
+        name: yup.string().required("name is required"),
+        description: yup.string().required("description is required"),
+        price: yup.number().required("price is required"),
+        category_id: yup.string().required("category id is required"),
+        qty: yup.number().required("qty is required")
+    })
 
-  const createProduct = async (
-    data: ICreateProductBySuperAdmin,
-    action: FormikHelpers<ICreateProductBySuperAdmin>,
-  ) => {
-    const formData = new FormData();
-    formData.append('name', data.name);
-    formData.append('description', data.description);
-    formData.append('price', data.price);
-    formData.append('category_id', data.category_id);
-    formData.append('qty', data.qty);
-    image.forEach((file) => {
-      formData.append('product', file);
-    });
+    const params = useParams();
+    const store_id = params.id
+
+    const createProduct = async (data: ICreateProductBySuperAdmin, action: FormikHelpers<ICreateProductBySuperAdmin>) => {
+        const formData = new FormData()
+        formData.append('name', data.name)
+        formData.append('description', data.description)
+        formData.append('price', data.price)
+        formData.append('category_id', data.category_id)
+        formData.append('qty', data.qty)
+        image.forEach((file) => {
+            formData.append('product', file)
+        })
 
         try {
             const res = await fetch(`http://localhost:8000/api/product/create/${store_id}`, {
@@ -68,22 +59,21 @@ export default function CreateProduct() {
             toast.error(error as string)
         }
     }
-  };
 
-  const [data, setData] = useState<ICategory>();
-  const [image, setImage] = useState<File[]>([]);
+    const [data, setData] = useState<ICategory>()
+    const [image, setImage] = useState<File[]>([])
 
-  interface ICategory {
-    status: string;
-    allCategories: [
-      {
-        category_id: number;
-        category_name: string;
-      },
-    ];
-  }
+    interface ICategory {
+        status: string,
+        allCategories: [
+            {
+                category_id: number,
+                category_name: string
+            }
+        ]
+    }
 
-  const mediaRef = useRef<HTMLInputElement | null>(null);
+    const mediaRef = useRef<HTMLInputElement | null>(null);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
@@ -117,16 +107,8 @@ export default function CreateProduct() {
         } catch (error) {
             toast.error(error as string)
         }
-        return true;
-      });
-      const total = image.length + filterSize.length;
-      if (total > 3) {
-        toast.error('Maksimal upload 5 gambar');
-        return;
-      }
-      setImage((prevFiles) => [...prevFiles, ...filterSize]);
     }
-  };
+
     useEffect(() => {
         getCategory()
     }, [])

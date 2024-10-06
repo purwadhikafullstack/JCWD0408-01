@@ -40,7 +40,7 @@ export class CategoryController {
 
             if (category) throw ("Category already exists");
 
-            const category_url = `${baseUrl}/public/event/${req.file?.filename}`
+            const category_url = `${baseUrl}/public/category_url/${req.file?.filename}`
 
 
             const newCategory = await prisma.category.create({

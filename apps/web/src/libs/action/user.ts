@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 
 export const onLogout = async () => {
   Cookies.remove('token')
+  localStorage.clear()
   navigate('/')
   toast.success("You've logged out")
 }

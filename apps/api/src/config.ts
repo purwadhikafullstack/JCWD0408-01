@@ -12,3 +12,7 @@ config({ path: resolve(__dirname, `../${envFile}.local`), override: true });
 
 export const PORT = process.env.PORT || 8000;
 export const DATABASE_URL = process.env.DATABASE_URL || '';
+export const SECRET_KEY = process.env.SECRET_KEY || ''
+console.log(SECRET_KEY);
+
+

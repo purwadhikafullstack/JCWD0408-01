@@ -71,22 +71,23 @@ export default function Home() {
     // '/Promo/promotionsnack.png',
     `/Promo/promotionultramilk.jpeg`,
     `/Promo/promotionsale.jpg`
-    
   ];
 
   return (
     <div className='mt-32'>
       <EmblaCarousel slides={slideImages} options={OPTIONS} />
-      <div className='flex items-center justify-center gap-10 pt-20 flex-wrap'>
+      <div className='flex items-center justify-center gap-10 pt-20 flex-wrap w-'>
         {category.length > 0 ? (
           category.map((cat, key) => (
-            <CategoryHome
-              key={key}
-              category_id={cat.category_id}
-              category_name={cat.category_name}
-              category_url={cat.category_url}
-              description={cat.description}
-            />
+            <div key={key} className=' w-[200px]'>
+              <CategoryHome
+                key={key}
+                category_id={cat.category_id}
+                category_name={cat.category_name}
+                category_url={cat.category_url}
+                description={cat.description}
+              />
+            </div>
           ))
         ) : (
           <p>No categories available.</p>

@@ -13,7 +13,7 @@ import ImagePreview from './imagePreview';
 import ImagePreviewRoom from './imagePreview';
 import ImagePreviewProduct from './imagePreview';
 
-export default function  CreateProduct() {
+export default function CreateProduct({ createModalProduct, handleModal }: { createModalProduct: boolean, handleModal: () => void }) {
 
     const initialValues: ICreateProductBySuperAdmin = {
         name: "",
@@ -46,15 +46,17 @@ export default function  CreateProduct() {
         })
 
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/product/create/${store_id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}product/create/${store_id}`, {
                 method: 'POST',
                 body: formData
             })
-            const { status ,msg  } = await res.json()
+            const { status, msg } = await res.json()
             if (status == "error") throw msg
             console.log(status)
             toast.success(msg)
             action.resetForm()
+            handleModal()
+
         } catch (error) {
             toast.error(error as string)
         }
@@ -214,7 +216,7 @@ export default function  CreateProduct() {
                                         className="p-4 rounded w-full" />
                                     <ErrorMessage
                                         name='description'
-                                        component='div'  className='text-[12px] absolute' />
+                                        component='div' className='text-[12px] absolute' />
                                 </div>
                                 <button type='submit' className='p-4 bg-main w-44 text-secondary rounded-[6px] hover:bg-secondary hover:text-main mb-4'>Submit</button>
                             </Form>

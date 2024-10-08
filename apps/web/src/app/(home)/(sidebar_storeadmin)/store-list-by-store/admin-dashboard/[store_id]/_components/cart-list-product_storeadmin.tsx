@@ -71,7 +71,7 @@ export default function CartListProductByStoreAdmin() {
     const splitter = (params.store_id).toString().split("%")[0]
 
     const fetchTransaction = async () => {
-        const res = await fetch(`http://localhost:8000/api/transaction/${params.store_id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/transaction/${params.store_id}`, {
             headers: {
                 'Content-Type': 'application/json',
             },

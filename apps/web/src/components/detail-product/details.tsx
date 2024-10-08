@@ -45,7 +45,7 @@ export default function DetailProductRightBar() {
 
 
     const fetchDetailProduct = async () => {
-        const res = await fetch(`http://localhost:8000/api/product/details/${params.id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}product/details/${params.id}`, {
             headers: {
                 'Content-Type': 'application/json',
             },

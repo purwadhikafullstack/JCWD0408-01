@@ -47,7 +47,7 @@ export default function AdminCartDetails({ store_admin, created_At, store, user_
 
     const handleDeleteAdmin = async () => {
         try {
-            const res = await fetch(`http://localhost:8000/api/admin/${user_id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}admin/${user_id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -65,7 +65,7 @@ export default function AdminCartDetails({ store_admin, created_At, store, user_
 
     const updateAdmin = async (data: IUpdateAccBySuperAdmin, action: FormikHelpers<IUpdateAccBySuperAdmin>) => {
         try {
-            const res = await fetch(`http://localhost:8000/api/admin/update/${user_id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}admin/update/${user_id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

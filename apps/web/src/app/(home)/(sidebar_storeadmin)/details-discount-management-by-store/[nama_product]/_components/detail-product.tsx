@@ -40,7 +40,7 @@ export default function DetailProductAdmin() {
     console.log((params.nama_product).toString().split("%")[0])
 
     const fetchDetailProduct = async () => {
-        const res = await fetch(`http://localhost:8000/api/product/details/${convertParams}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/product/details/${convertParams}`, {
             headers: {
                 'Content-Type': 'application/json',
             },

@@ -24,7 +24,7 @@ export default function InventoryHistory() {
 
     const fetchDataInventoryHistory = async () => {
         try {
-            const res = await fetch(`http://localhost:8000/api/inventory/summary/${params.nama_product}?page=${page}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/inventory/summary/${params.nama_product}?page=${page}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

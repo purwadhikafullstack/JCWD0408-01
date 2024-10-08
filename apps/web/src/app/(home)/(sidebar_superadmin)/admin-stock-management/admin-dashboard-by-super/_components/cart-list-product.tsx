@@ -58,7 +58,7 @@ export default function CartListProduct() {
     }
 
     const fetchProduct = async () => {
-        const res = await fetch(`http://localhost:8000/api/product/${params.id}?page=${page}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}product/${params.id}?page=${page}`, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -76,7 +76,7 @@ export default function CartListProduct() {
     }, [page]);
 
     const fetchTransaction = async () => {
-        const res = await fetch(`http://localhost:8000/api/transaction/${params.id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}transaction/${params.id}`, {
             headers: {
                 'Content-Type': 'application/json',
             },

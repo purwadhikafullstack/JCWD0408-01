@@ -34,7 +34,7 @@ export default function CategoryProductDetail({ nama, registered_product, catego
 
     const fetchDeleteCategory = async () => {
         try {
-            const res = await fetch(`http://localhost:8000/api/category/${category_id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}category/${category_id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -56,7 +56,7 @@ export default function CategoryProductDetail({ nama, registered_product, catego
         formData.append('description', data.description)
 
         try {
-            const res = await fetch(`http://localhost:8000/api/category/update/${category_id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}category/update/${category_id}`, {
                 method: `PATCH`,
                 body: formData
             })
@@ -77,7 +77,7 @@ export default function CategoryProductDetail({ nama, registered_product, catego
     const handleFileChange = (event: any, setFieldValue: any) => {
         const file = event.target.files[0]
         if (file) {
-            if (file.size > 1000000) { // 1 MB = 1048576 bytes
+            if (file.size > 1000000) { 
                 toast.error('File size should not exceed 1 MB');
                 return;
             }

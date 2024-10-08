@@ -64,7 +64,7 @@ export default function BuyerLoginForm() {
           )}
         </Formik>
         <p className="mt-4 text-sm text-center text-main-black">
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <Link href="/register" className="text-main hover:underline font-bold">
             Sign Up</Link>
         </p>

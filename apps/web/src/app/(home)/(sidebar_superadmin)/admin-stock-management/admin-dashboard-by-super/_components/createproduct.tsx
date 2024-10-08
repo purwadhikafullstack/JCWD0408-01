@@ -46,7 +46,7 @@ export default function  CreateProduct() {
         })
 
         try {
-            const res = await fetch(`http://localhost:8000/api/product/create/${store_id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/product/create/${store_id}`, {
                 method: 'POST',
                 body: formData
             })
@@ -97,7 +97,7 @@ export default function  CreateProduct() {
 
     const getCategory = async () => {
         try {
-            const res = await axios.get(`http://localhost:8000/api/category/all`, {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}category/all`, {
                 headers: {
                     'Content-Type': 'application/json'
                 },

@@ -24,7 +24,7 @@ export default function ActiveDiscount() {
 
     const fetchDataDiscount = async () => {
         try {
-            const res = await fetch(`http://localhost:8000/api/discount/${convertParams}?page=${page}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/discount/${convertParams}?page=${page}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

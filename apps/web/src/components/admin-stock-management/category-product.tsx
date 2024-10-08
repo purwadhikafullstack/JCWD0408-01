@@ -26,7 +26,7 @@ export default function CategoryProduct() {
     const [page, setPage] = useState(1);
 
     const fetchDataCategory = async () => {
-        const res = await fetch(`http://localhost:8000/api/category?page=${page}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}category?page=${page}`, {
             headers: {
                 'Content-Type': 'application/json',
                 

@@ -45,7 +45,7 @@ export default function RegisterForm({
         action: FormikHelpers<ICreateAccBySuperAdmin>,
     ) => {
         try {
-            const res = await fetch('http://localhost:8000/api/admin/create', {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}admin/create`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

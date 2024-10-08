@@ -62,7 +62,7 @@ export default function DaftarProductDetail({ nama, created_at, stocktotal_inven
         })
 
         try {
-            const res = await fetch(`http://localhost:8000/api/product/update/${product_id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}product/update/${product_id}`, {
                 method: 'PATCH',
                 body: formData
             })
@@ -111,7 +111,7 @@ export default function DaftarProductDetail({ nama, created_at, stocktotal_inven
 
     const getCategory = async () => {
         try {
-            const res = await axios.get(`http://localhost:8000/api/category/all`, {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}category/all`, {
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -128,7 +128,7 @@ export default function DaftarProductDetail({ nama, created_at, stocktotal_inven
 
     const deleteProduct = async () => {
         try {
-            const res = await fetch(`http://localhost:8000/api/product/delete/${product_id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}product/delete/${product_id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

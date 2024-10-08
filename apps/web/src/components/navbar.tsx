@@ -281,7 +281,12 @@ export default function Navbar() {
                   </button>
                 </Link>
                 <div className='hover:scale-110 duration-300'>
-                  <AddToCartNav item={item.Inventory[0].total_qty} product_id={item.product_id} />
+                  {
+                    token && (
+                      <AddToCartNav item={item.Inventory[0].total_qty} product_id={item.product_id} />
+                    )
+                  }
+                  
                 </div>
               </div>
             ))}

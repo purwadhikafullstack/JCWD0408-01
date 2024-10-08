@@ -1,6 +1,7 @@
 'use client'
 
 import { set } from "cypress/types/lodash";
+import Cookies from "js-cookie";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -35,6 +36,7 @@ export default function DetailProductRightBar() {
     const [quantity, setQuantity] = useState<number>()
     const [buyQuantity, setBuyQuantity] = useState<number>(0)
     const [originalQuantity, setOriginalQuantity] = useState<number>(0)
+    const token = Cookies.get('token')
 
     useEffect(() => {
         if (data && data.product.Inventory.length > 0) {
@@ -104,11 +106,14 @@ export default function DetailProductRightBar() {
                 </div>
                 <div className="flex flex-col gap-2">
                     <button className="border-main border-[1px] text-main rounded-[6px] p-2 duration-300 active:scale-95">Add to Cart</button>
-                    <button
-                        className="bg-main text-white rounded-[6px] p-2  duration-300 active:scale-95"
-                    >
-                        Checkout
-                    </button>
+                    {token ? (
+                        <>
+                            <button className="border-main border-[1px] text-main rounded-[6px] p-2 duration-300 active:scale-95">Add to Cart</button>
+                            <button className="bg-main text-white rounded-[6px] p-2  duration-300 active:scale-95">Checkout</button>
+                        </>
+                    ) : (
+                        <p className="text-red-500">Please login first to add to cart and checkout</p>
+                    )}
                 </div>
             </div>
         </div>

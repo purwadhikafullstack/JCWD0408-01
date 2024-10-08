@@ -42,10 +42,8 @@ export default function SummaryCart() {
     const [product, setProduct] = useState<any>(null);
 
     const fetchDataTransation = async (categoryId: Number | null = null, productId: Number | null = null) => {
-        // Base URL
-        let url = `http://localhost:8000/api/transaction?page=${page}`;
+        let url = `${process.env.NEXT_PUBLIC_BASE_API_URL}transaction?page=${page}`;
 
-        // Build query parameters dynamically
         if (categoryId) {
             url += `&category_id=${categoryId}`;
         }
@@ -105,7 +103,7 @@ export default function SummaryCart() {
 
     const getCategory = async () => {
         try {
-            const res = await axios.get(`http://localhost:8000/api/category/all`, {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}category/all`, {
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -118,7 +116,7 @@ export default function SummaryCart() {
     }
     const getProduct = async () => {
         try {
-            const res = await axios.get(`http://localhost:8000/api/product/products/all`, {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}product/products/all`, {
                 headers: {
                     'Content-Type': 'application/json'
                 },

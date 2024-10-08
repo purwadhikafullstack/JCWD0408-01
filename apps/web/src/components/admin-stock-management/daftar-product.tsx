@@ -27,7 +27,7 @@ export default function DaftarProduct() {
     const params = useParams()
 
     const fetchDataProduct = async () => {
-        const res = await fetch(`http://localhost:8000/api/superadmin/product?page=${page}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}superadmin/product?page=${page}`, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -60,7 +60,7 @@ export default function DaftarProduct() {
             {
                 data?.product.map((item: any, key: any) => {
                     return (
-                        <div className="w-full">
+                        <div className="w-full" key={key}>
                             <DaftarProductDetail nama={item.name} created_at={item.created_at} harga_product={item.price} stocktotal_inventory={item.Inventory[0].total_qty} product_id={item.product_id} key={key} />
                         </div>
                     )

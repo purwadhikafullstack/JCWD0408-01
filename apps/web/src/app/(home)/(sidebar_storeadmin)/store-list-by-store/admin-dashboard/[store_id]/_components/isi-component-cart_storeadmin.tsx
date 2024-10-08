@@ -26,7 +26,7 @@ export default function IsiComponentCartByStoreAdmin({ product_id,  name, stock,
 
     const updateInventory = async (data : InventoryUpdateData, action : FormikHelpers<InventoryUpdateData>) => {
         try {
-            const res = await fetch(`http://localhost:8000/api/inventory/update/${product_id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/inventory/update/${product_id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

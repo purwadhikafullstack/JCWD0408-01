@@ -43,7 +43,7 @@ export default function Navbar() {
       return;
     }
     try {
-      const res = await fetch(`http://localhost:8000/api/product/products-catalogue/?search=${search}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}product/products-catalogue/?search=${search}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -264,9 +264,9 @@ export default function Navbar() {
             <button onClick={handleResetSearch}><IoMdCloseCircleOutline size={32} className='text-secondary hover:scale-110 active:scale-95 duration-300 hover:bg-main hover:text-secondary rounded-full' /></button>
           </div>
           <div className='flex flex-wrap justify-center gap-5 '>
-            {results.product.slice().map((item, index) => (
-              <div className='w-[165px]  hover:scale-105 hover:bg-secondary rounded-[6px] hover:text-main duration-300'>
-                <Link href={`/details-product/${item.product_id}`} className="" key={index}>
+            {results.product.slice().map((item, key) => (
+              <div className='w-[165px]  hover:scale-105 hover:bg-secondary rounded-[6px] hover:text-main duration-300' key={key}>
+                <Link href={`/details-product/${item.product_id}`} className="" key={key}>
                   <button onClick={handleResetSearch}>
                     <div className='w-full py-4 px-5 text-[14px] text-secondary text-left flex flex-col gap-2 items-center justify-between hover:text-main'>
                       <div className='h-[150px] flex items-center'>
@@ -281,7 +281,12 @@ export default function Navbar() {
                   </button>
                 </Link>
                 <div className='hover:scale-110 duration-300'>
-                  <AddToCartNav item={item.Inventory[0].total_qty} product_id={item.product_id} />
+                  {
+                    token && (
+                      <AddToCartNav item={item.Inventory[0].total_qty} product_id={item.product_id} />
+                    )
+                  }
+                  
                 </div>
               </div>
             ))}

@@ -33,7 +33,7 @@ export default function BaskitAdmin() {
     }
 
     const fetchDataUser = async () => {
-        const res = await fetch(`http://localhost:8000/api/superadmin/?role=store_admin&page=${page}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}superadmin/?role=store_admin&page=${page}`, {
             headers: {
                 'Content-Type': 'application/json',
             },

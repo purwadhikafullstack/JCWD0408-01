@@ -1,5 +1,5 @@
 export const nearProducts = async (latitude: number, longitude: number) => {
-    const res = await fetch('http://localhost:8000/api/homeprod', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}homeprod`, {
         headers: {
             'Content-Type' : 'application/json'
         },

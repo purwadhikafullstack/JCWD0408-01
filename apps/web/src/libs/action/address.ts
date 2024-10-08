@@ -4,7 +4,7 @@ import Cookies from "js-cookie"
 
 export const getAddrList = async () => {
     const token = Cookies.get('token')
-    const res = await fetch('http://localhost:8000/api/address/user', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}address/user`, {
         headers: {
             'Content-Type' : 'application/json',
             Authorization: `Bearer ${token}`
@@ -17,7 +17,7 @@ export const getAddrList = async () => {
 
 export const addAddress = async (data: addressForm) => {
     const token = Cookies.get('token')
-    const res = await fetch('http://localhost:8000/api/address/user', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}address/user`, {
         headers: {
             'Content-Type' : 'application/json',
             Authorization : `Bearer ${token}`
@@ -31,7 +31,7 @@ export const addAddress = async (data: addressForm) => {
 
 export const editAddress = async (data: addressForm) => {
     const token = Cookies.get('token')
-    const res = await fetch('http://localhost:8000/api/address/user', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}address/user`, {
         headers: {
             'Content-Type' : 'application/json',
             Authorization : `Bearer ${token}`
@@ -45,7 +45,7 @@ export const editAddress = async (data: addressForm) => {
 
 export const deleteAddress = async (address_id: number) => {
     const token = Cookies.get('token')
-    const res = await fetch('http://localhost:8000/api/address/user', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}address/user`, {
         headers: {
             'Content-Type' : 'application/json',
             Authorization : `Bearer ${token}`
@@ -59,7 +59,7 @@ export const deleteAddress = async (address_id: number) => {
 
 export const setDefaultAddr = async (address_id: number) => {
     const token = Cookies.get('token')
-    const res = await fetch('http://localhost:8000/api/address/userdef', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}address/userdef`, {
         headers: {
             'Content-Type' : 'application/json',
             Authorization : `Bearer ${token}`
@@ -85,7 +85,7 @@ export const provinceList = async () => {
     }
 
     const token = Cookies.get('token');
-    const res = await fetch('http://localhost:8000/api/address/prov', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}address/prov`, {
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
@@ -120,7 +120,7 @@ export const cityList = async (provinceId: string) => {
     }
 
     const token = Cookies.get('token');
-    const res = await fetch('http://localhost:8000/api/address/city', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}address/city`, {
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,

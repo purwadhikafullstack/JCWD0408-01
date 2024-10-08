@@ -28,7 +28,7 @@ export default function RegisterCategory({ toggleModalCategory }: { toggleModalC
         formData.append('description', data.description)
 
         try {
-            const res = await fetch('http://localhost:8000/api/category/create', {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}category/create`, {
                 method: 'POST',
                 body: formData,
             })
@@ -48,7 +48,7 @@ export default function RegisterCategory({ toggleModalCategory }: { toggleModalC
     const handleFileChange = (event: any, setFieldValue: any) => {
         const file = event.target.files[0]
         if (file) {
-            if (file.size > 1000000) { // 1 MB = 1048576 bytes
+            if (file.size > 1000000) { 
                 toast.error('File size should not exceed 1 MB');
                 return;
             }

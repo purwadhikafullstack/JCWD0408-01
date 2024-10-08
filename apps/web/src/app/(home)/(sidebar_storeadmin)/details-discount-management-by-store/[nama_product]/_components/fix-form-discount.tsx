@@ -22,7 +22,7 @@ export default function NominalFormDiscount() {
 
     const createNominalDiscount = async (data: CreateDiscount, action: FormikHelpers<CreateDiscount>) => {
         try {
-            const res = await fetch(`http://localhost:8000/api/discount/create`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/discount/create`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

@@ -53,7 +53,7 @@ export default function AdminDashboard() {
 
     const fetchTransaction = async () => {
         try {
-            const res = await fetch(`http://localhost:8000/api/transaction/${params.id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}transaction/${params.id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

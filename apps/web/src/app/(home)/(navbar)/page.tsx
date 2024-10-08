@@ -68,7 +68,10 @@ export default function Home() {
     '/Promo/promodeo2.png',
     '/Promo/promooil.jpeg',
     '/Promo/promotiondeodorant.png',
-    '/Promo/promotionsnack.png'
+    // '/Promo/promotionsnack.png',
+    `/Promo/promotionultramilk.jpeg`,
+    `/Promo/promotionsale.jpg`
+    
   ];
 
   return (

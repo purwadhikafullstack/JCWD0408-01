@@ -68,7 +68,7 @@ export default function SummaryCart() {
     }
 
     useEffect(() => {
-        fetchDataTransation();;
+        fetchDataTransation();
     }, [page])
 
     const handleSubmitFilter = () => {

@@ -41,7 +41,6 @@ export default function AdminDashboard() {
     const [createModalProduct, setCreateModalProduct] = useState(false);
     const params = useParams();
     const [transaction, setTransaction] = useState<TransactionResponse | null>(null);
-    console.log(params);
 
     const handleCreateProduct = () => {
         setCreateModalProduct(!createModalProduct);
@@ -92,7 +91,7 @@ export default function AdminDashboard() {
                     </button>
                     {createModalProduct && (
                         <div>
-                            <CreateProduct />
+                            <CreateProduct createModalProduct={createModalProduct} handleModal={handleCreateProduct} />
                         </div>
                     )}
                 </div>

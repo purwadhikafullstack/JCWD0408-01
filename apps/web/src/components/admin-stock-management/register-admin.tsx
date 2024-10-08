@@ -52,11 +52,9 @@ export default function RegisterForm({
                 method: 'POST',
                 body: JSON.stringify(data),
             });
-            const { result, ok } = await res.json();
-            if (!ok) throw result.msg;
-            console.log(result);
-            console.log(ok);
-            toast.success(result.msg);
+            const { status , msg } = await res.json();
+            if (status == "error") throw toast.error(msg);
+            toast.success(status);
             action.resetForm();
         } catch (error) {
             toast.error(error as string);

@@ -38,6 +38,7 @@ export class CategoryController {
                 where: { category_name: req.body.category_name }
             })
 
+            if (category?.category_name && category.category_name.length > 30) throw ("Category name is too long");
             if (category) throw ("Category already exists");
 
             const category_url = `${baseUrl}/public/category_url/${req.file?.filename}`
@@ -103,6 +104,10 @@ export class CategoryController {
                 where: { category_id: +req.params.id },
                 data: { ...req.body , category_url: category_url}
             })
+
+            if (!category) throw ("Category not found");
+            if (category?.category_name && category.category_name.length > 30) throw ("Category name is too long");
+
             return res.status(200).send({
                 status: 'ok',
                 msg: 'Category updated successfully',

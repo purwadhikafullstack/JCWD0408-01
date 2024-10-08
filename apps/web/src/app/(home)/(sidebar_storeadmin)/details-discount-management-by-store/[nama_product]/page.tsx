@@ -11,6 +11,7 @@ import ActiveDiscount from "./_components/active-discount";
 import DetailProductAdmin from "./_components/detail-product";
 import NominalFormDiscount from "./_components/fix-form-discount";
 import InventoryHistory from "./_components/inventory-history";
+import SummaryProduct from "@/app/(home)/(sidebar_superadmin)/details-discount-management-by-super/[nama_product]/_components/summary-product";
 
 export default function DiscountManagementPage() {
     const params = useParams()
@@ -63,8 +64,8 @@ export default function DiscountManagementPage() {
                         <p>Summary</p>
                     </div>
                     <div className="flex flex-col justify-around items-center gap-5  ">
-                        <div className="flex flex-row justify-center items-center h-96 rounded-[10px] border-[1px] w-full">
-                            <p>GRAPH</p>
+                    <div className="flex flex-row  h-96 rounded-[10px] border-[1px] w-full">
+                            <SummaryProduct />
                         </div>
                     </div>
                     <div className="border-[1px] w-full border-accent"></div>

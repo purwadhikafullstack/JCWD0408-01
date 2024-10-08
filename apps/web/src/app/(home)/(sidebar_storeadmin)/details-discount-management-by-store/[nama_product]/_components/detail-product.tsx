@@ -40,7 +40,7 @@ export default function DetailProductAdmin() {
     console.log((params.nama_product).toString().split("%")[0])
 
     const fetchDetailProduct = async () => {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/product/details/${convertParams}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}product/details/${convertParams}`, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -50,17 +50,14 @@ export default function DetailProductAdmin() {
         setData(fetchData)
         console.log(fetchData)
     }
+
     console.log(data)
-    // console.log(data)
-    console.log(params.nama_product)
 
     useEffect(() => {
         fetchDetailProduct()
     }, [])
 
     const priceMap = data?.product.price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-
-    console.log(data)
 
     return (
         <div className="flex justify-start gap-10  ">

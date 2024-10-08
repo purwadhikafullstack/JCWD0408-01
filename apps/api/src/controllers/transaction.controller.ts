@@ -31,8 +31,10 @@ export class TransactionController {
                     select: {
                         user_id: true,
                         total_price: true,
+                        created_at: true,
                         OrderItem: {
                             select: {
+                                qty: true,
                                 product: {
                                     select: {
                                         product_id: true,
@@ -76,6 +78,7 @@ export class TransactionController {
                     },
                     select: {
                         user_id: true,
+                        created_at: true,
                         user: {
                             select: {
                                 email: true,
@@ -87,6 +90,7 @@ export class TransactionController {
                         total_price: true,
                         OrderItem: {
                             select: {
+                                qty: true,
                                 product: {
                                     select: {
                                         product_id: true,
@@ -131,8 +135,10 @@ export class TransactionController {
                     select: {
                         user_id: true,
                         total_price: true,
+                        created_at: true,
                         OrderItem: {
                             select: {
+                                qty: true,
                                 product: {
                                     select: {
                                         product_id: true,
@@ -187,6 +193,7 @@ export class TransactionController {
                 select: {
                     user_id: true,
                     total_price: true,
+                    created_at: true,
                     user :{
                         select: {
                             email: true,
@@ -197,11 +204,13 @@ export class TransactionController {
                     },
                     OrderItem: {
                         select: {
+                            qty: true,
                             product: {
                                 select: {
                                     product_id: true,
                                     name: true,
                                     category_id: true,
+                                
                                 },
                             },
                         },

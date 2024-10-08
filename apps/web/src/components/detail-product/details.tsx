@@ -105,7 +105,7 @@ export default function DetailProductRightBar() {
                     </div>
                 </div>
                 <div className="flex flex-col gap-2">
-                    <button className="border-main border-[1px] text-main rounded-[6px] p-2 duration-300 active:scale-95">Add to Cart</button>
+                
                     {token ? (
                         <>
                             <button className="border-main border-[1px] text-main rounded-[6px] p-2 duration-300 active:scale-95">Add to Cart</button>

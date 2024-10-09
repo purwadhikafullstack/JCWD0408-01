@@ -96,10 +96,8 @@ export default function AdminDashboard() {
                     )}
                 </div>
                 <CartListProduct />
-                <div className="flex flex-col px-10 text-[20px] font-medium">Performance</div>
+                <div className="flex flex-col px-10 text-[20px] font-medium">Recent Performance</div>
                 <div className="flex flex-col justify-around items-center gap-5 p-10 pt-5">
-                    <div className="flex flex-col justify-center items-center h-96 rounded-[10px] border-[1px] p-2  w-full">
-                        <div className="mb-5">LAST 5 TRANSACTION</div>
                         {
                             transaction?.order?.length ? (
                                 transaction.order.slice(0, 5).map((item: Order, key: number) => (
@@ -114,7 +112,6 @@ export default function AdminDashboard() {
                                 <p>No transactions available</p>
                             )
                         }
-                    </div>
                 </div>
             </div>
         </div>

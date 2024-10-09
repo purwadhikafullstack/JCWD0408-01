@@ -31,7 +31,7 @@ export default function StoreListByStore() {
     const fetchStoreList = async () => {
         try {
             const token = Cookies.get("token");
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/admin/authorizestore`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}admin/authorizestore`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

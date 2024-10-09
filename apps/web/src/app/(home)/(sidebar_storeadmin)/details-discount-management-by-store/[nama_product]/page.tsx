@@ -64,10 +64,11 @@ export default function DiscountManagementPage() {
                         <p>Summary</p>
                     </div>
                     <div className="flex flex-col justify-around items-center gap-5  ">
-                    <div className="flex flex-row  h-96 rounded-[10px] border-[1px] w-full">
+                        <div className="flex flex-row  h-96 rounded-[10px] border-[1px] w-full">
                             <SummaryProduct />
                         </div>
                     </div>
+
                     <div className="border-[1px] w-full border-accent"></div>
                     <div className="border-[1px] w-full"></div>
                 </div>

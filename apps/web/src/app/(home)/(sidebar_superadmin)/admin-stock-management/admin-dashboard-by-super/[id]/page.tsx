@@ -97,7 +97,7 @@ export default function AdminDashboard() {
                 </div>
                 <CartListProduct />
                 <div className="flex flex-col px-10 text-[20px] font-medium">Recent Performance</div>
-                <div className="flex flex-col justify-around items-center gap-5 p-10 pt-5">
+                <div className="flex flex-col justify-around items-center gap-2 p-10 pt-5">
                         {
                             transaction?.order?.length ? (
                                 transaction.order.slice(0, 5).map((item: Order, key: number) => (

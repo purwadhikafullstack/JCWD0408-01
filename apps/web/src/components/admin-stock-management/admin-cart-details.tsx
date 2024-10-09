@@ -88,7 +88,7 @@ export default function AdminCartDetails({ store_admin, created_At, store, user_
             <p className="w-[100px]">{created_At.split('T')[0]}</p>
             <p className="w-[250px]">Store : {store}</p>
             <div className="flex gap-2">
-                <p className="w-[150px]">{pendapatan_bulanini}</p>
+                <p className="w-[150px]">{pendapatan_bulanini}/{new Date().toLocaleString('default', { month: 'long' }).slice(0, 4)}</p>
             </div>
             <button type="button" className="" onClick={toggleModal}>
                 <IoIosMore size={32} className="text-main hover:text-secondary duration-300 hover:bg-main hover:rounded-full md:mr-10" />

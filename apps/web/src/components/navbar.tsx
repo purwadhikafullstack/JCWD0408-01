@@ -16,13 +16,11 @@ import { toast } from 'react-toastify';
 import { FiLogOut } from "react-icons/fi";
 import { ProductResult } from './navbar/type';
 
-
-
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [dropdownTimeout, setDropdownTimeout] = useState<NodeJS.Timeout | null>(null,);
+  const [dropdownTimeout, setDropdownTimeout] = useState<NodeJS.Timeout | null>(null);
   const [search, setSearch] = useState('');
   const [results, setResults] = useState<ProductResult | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,7 +35,7 @@ export default function Navbar() {
   }, []);
 
   const fetchDataProduct = async () => {
-    if (search === ' ' || search === '') {
+    if (search.trim() === '') {
       setResults(null);
       setIsModalOpen(false);
       return;
@@ -55,7 +53,7 @@ export default function Navbar() {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-  }
+  };
 
   const handleMouseEnter = useCallback(() => {
     if (dropdownTimeout) {
@@ -63,7 +61,7 @@ export default function Navbar() {
       setDropdownTimeout(null);
     }
     setIsDropdownOpen(true);
-  }, [dropdownTimeout, setDropdownTimeout]);
+  }, [dropdownTimeout]);
 
   const handleMouseLeave = useCallback(() => {
     const timeoutId = setTimeout(() => setIsDropdownOpen(false), 200);
@@ -72,19 +70,13 @@ export default function Navbar() {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
-    if (typingTimeoutRef.current) {
-      clearTimeout(typingTimeoutRef.current);
-    }
-    typingTimeoutRef.current = setTimeout(() => {
-      fetchDataProduct();
-    }, );
   };
 
   const handleResetSearch = () => {
     setSearch('');
     setResults(null);
     setIsModalOpen(false);
-  }
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -92,9 +84,30 @@ export default function Navbar() {
         clearTimeout(typingTimeoutRef.current);
       }
       setData(search);
-      console.log(` data : ${data}`);
+      console.log(`data: ${data}`);
     }
   };
+
+  useEffect(() => {
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    typingTimeoutRef.current = setTimeout(() => {
+      if (search.trim() !== '') {
+        fetchDataProduct();
+      } else {
+        setResults(null);
+        setIsModalOpen(false);
+      }
+    }, 300);
+
+    return () => {
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current);
+      }
+    };
+  }, [search]);
 
   const toIDR = (number: number) => {
     return new Intl.NumberFormat('id-ID', {
@@ -105,14 +118,13 @@ export default function Navbar() {
 
   const deleteCookie = () => {
     Cookies.remove('token');
-    router.push('/login')
-    toast.success('Logout Success')
-  }
+    router.push('/login');
+    toast.success('Logout Success');
+  };
 
   if (!isMounted) {
     return null;
   }
-
   return (
     <div className='w-full'>
       <nav className="w-full z-20 fixed top-0 lg:h-24 h-16 px-2 md:px-8 flex items-center justify-between shadow-md bg-secondary">

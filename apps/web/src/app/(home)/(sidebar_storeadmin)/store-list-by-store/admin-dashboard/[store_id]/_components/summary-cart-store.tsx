@@ -25,8 +25,9 @@ interface ITransaction {
             user: {
                 first_name: string;
                 last_name: string;
-            }
-        }
+            },
+            created_at: string;
+        } 
     ]
     currentPage: number;
     totalRavenue: number;
@@ -194,6 +195,7 @@ export default function SummaryCartStore() {
                                                 <p> Category : {item.OrderItem.length > 0 ? item.OrderItem[0].product.category_id : "No Category"}</p>
                                                 <p> Qty : {item.OrderItem.length > 0 ? item.OrderItem[0].qty : "No Category"}</p>
                                             </div>
+                                            <p> {new Date(new Date(item.created_at).setDate(new Date().getDate() - 30)).toLocaleString("en-US", { timeZone: "Asia/Bangkok" })}</p>
                                             <p className="p-2">Total price : {convertPrice(item.total_price)}</p>
                                         </div >
                                     </div>

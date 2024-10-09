@@ -97,14 +97,14 @@ export default function AdminDashboard() {
                 </div>
                 <CartListProduct />
                 <div className="flex flex-col px-10 text-[20px] font-medium">Recent Performance</div>
-                <div className="flex flex-col justify-around items-center gap-5 p-10 pt-5">
+                <div className="flex flex-col justify-around items-center gap-2 p-10 pt-5">
                         {
                             transaction?.order?.length ? (
                                 transaction.order.slice(0, 5).map((item: Order, key: number) => (
                                     <div key={key} className="flex border-[1px] rounded-[10px] justify-between  p-2 m-2 gap-5 w-full">
                                         <p>User ID: {item.user_id}</p>
                                         <p>Total Qty: {item.OrderItem.reduce((total, orderItem) => total + orderItem.qty, 0)}</p>
-                                        <p>Transaction : {item.created_at.split("T")[0].replace("T", " ")}</p>
+                                        <p>Transaction : {new Date(new Date(item.created_at).setDate(new Date().getDate() - 30)).toLocaleString("en-US", { timeZone: "Asia/Bangkok" })}</p>
                                         <p>Total Price: {convertIdr(item.total_price)}</p>
                                     </div>
                                 ))

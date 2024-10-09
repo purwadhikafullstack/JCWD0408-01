@@ -24,7 +24,7 @@ export default function ActiveDiscount() {
 
     const fetchDataDiscount = async () => {
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/discount/${convertParams}?page=${page}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}discount/${convertParams}?page=${page}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -70,7 +70,7 @@ export default function ActiveDiscount() {
             </div>
             <div className="w-full border-[1px] border-secondary mb-2"></div>
             {
-                data?.data.map((item: Data, key: any) => {
+                data?.data?.map((item: Data, key: any) => {
                     return (
                         <ActiveDetailsDiscount nama={item.discount_code} type={item.discount_type} value={item.discount_value} minimum_order={item.minimum_order} expires_at={item.expires_at} key={key} />
                     )
@@ -78,10 +78,10 @@ export default function ActiveDiscount() {
             }
             <div className="w-full flex justify-center">
                 <div className="flex border-[1px] w-24 justify-center items-center rounded-[24px] gap-5 h-10">
-                    <button onClick={handlePrev}><GrFormPrevious size={32} className="text-main hover:text-secondary duration-300 hover:bg-main hover:rounded-full" /></button>
+                    <button onClick={handlePrev}><GrFormPrevious size={32} className="w-full text-main hover:text-secondary duration-300 hover:bg-main hover:rounded-full " /></button>
                     <button onClick={handleNext}><GrFormNext size={32} className="text-main hover:text-secondary duration-300 hover:bg-main hover:rounded-full" /></button>
                 </div>
-            </div>
+            </div>      
         </div>
     )
 }

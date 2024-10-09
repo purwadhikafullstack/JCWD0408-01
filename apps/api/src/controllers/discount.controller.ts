@@ -69,4 +69,23 @@ export class DiscountController {
             responseError(res, error)   
         }
     }
+
+    async deleteDiscount(req: Request, res: Response){
+        try {
+            const deleteDiscount = await prisma.discount.delete({
+                where : {
+                    discount_code: req.params.discount_code
+                }
+            })
+
+            return res.status(200).send({
+                status: 'success',
+                message: 'Discount deleted successfully',
+                deleteDiscount
+            })
+
+        } catch (error) {
+            responseError(res, error)
+        }
+    }
 }

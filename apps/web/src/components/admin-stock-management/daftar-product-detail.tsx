@@ -146,7 +146,7 @@ export default function DaftarProductDetail({ nama, created_at, stocktotal_inven
     return (
         <div className="flex lg:flex-row flex-wrap lg:justify-between justify-center text-[14px] items-center lg:h-10 h-60 rounded-[10px] hover:bg-secondary hover:border-secondary duration-200 border-[1px] w-full">
             <Link href={`/details-discount-management-by-super/${product_id}`} className="p-2 lg:pl-10 sm:w-[325px]">{nama} <span className="text-[10px] text-slate-400">#p.code{product_id}</span></Link>
-            <p className="w-[100px]">{created_at.split("T")[0]}</p>
+            <p className="w-[150px]">{new Date(new Date(created_at).setDate(new Date().getDate() - 30)).toLocaleString("en-US", { timeZone: "Asia/Bangkok" })}</p>
             <div className="flex gap-5 w-[300px]">
                 <p className="w-[105px]">Qty : {stocktotal_inventory}</p>
                 <p className=""> Price : {formattedHargaProduct}</p>

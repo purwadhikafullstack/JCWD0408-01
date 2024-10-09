@@ -70,7 +70,7 @@ export default function ActiveDiscount() {
             </div>
             <div className="w-full border-[1px] border-secondary mb-2"></div>
             {
-                data?.data.map((item: Data, key: any) => {
+                data?.data?.map((item: Data, key: any) => {
                     return (
                         <ActiveDetailsDiscount nama={item.discount_code} type={item.discount_type} value={item.discount_value} minimum_order={item.minimum_order} expires_at={item.expires_at} key={key} />
                     )

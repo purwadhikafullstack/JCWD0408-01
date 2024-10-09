@@ -17,7 +17,7 @@ export class TransactionController {
                     where: {
                         order_status: 'completed',
                         created_at: {
-                            gte: new Date(new Date().setDate(new Date().getDate() - 30))
+                            gte: new Date(new Date().setDate(new Date().getDate() - 30)).toLocaleString("en-US", { timeZone: "Asia/Bangkok" })
                         },
                         OrderItem: {
                             some: {
@@ -46,7 +46,10 @@ export class TransactionController {
                         },
                     },
                     take: limit,
-                    skip: offset
+                    skip: offset,
+                    orderBy : {
+                        created_at: 'desc'
+                    }
                 });
 
                 const totalRavenue = transaction.reduce((acc, curr) => acc + curr.total_price, 0)
@@ -102,7 +105,10 @@ export class TransactionController {
                         },
                     },
                     take: limit,
-                    skip: offset
+                    skip: offset,
+                    orderBy : {
+                        created_at: 'desc'
+                    }
                 });
 
                 const totalRavenue = transaction.reduce((acc, curr) => acc + curr.total_price, 0)
@@ -158,7 +164,10 @@ export class TransactionController {
                             },
                         },
                         take: limit,
-                        skip: offset
+                        skip: offset,
+                        orderBy : {
+                            created_at: 'desc'
+                        }
                     });
                 const totalRavenue = transaction.reduce((acc, curr) => acc + curr.total_price, 0)
                 const totalItem = await prisma.order.count({
@@ -210,14 +219,16 @@ export class TransactionController {
                                     product_id: true,
                                     name: true,
                                     category_id: true,
-                                
                                 },
                             },
                         },
                     },
                 },
                 take: limit,
-                skip: offset
+                skip: offset,
+                orderBy: {
+                    created_at: 'desc'
+                }
             })
 
             const totalRavenue = order.reduce((acc, curr) => acc + curr.total_price, 0)
@@ -338,7 +349,10 @@ export class TransactionController {
                         },
                     },
                     take: limit,
-                    skip: offset
+                    skip: offset,
+                    orderBy : {
+                        created_at: 'desc'
+                    }
                 });
 
                 const totalRavenue = transaction.reduce((acc, curr) => acc + curr.total_price, 0)
@@ -395,7 +409,10 @@ export class TransactionController {
                         },
                     },
                     take: limit,
-                    skip: offset
+                    skip: offset,
+                    orderBy : {
+                        created_at: 'desc'
+                    }
                 });
 
                 const totalRavenue = transaction.reduce((acc, curr) => acc + curr.total_price, 0)
@@ -452,7 +469,10 @@ export class TransactionController {
                             },
                         },
                         take: limit,
-                        skip: offset
+                        skip: offset,
+                        orderBy : {
+                            created_at: 'desc'
+                        }
                     });
                 const totalRavenue = transaction.reduce((acc, curr) => acc + curr.total_price, 0)
                 const totalItem = await prisma.order.count({
@@ -512,7 +532,10 @@ export class TransactionController {
                     },
                 },
                 take: limit,
-                skip: offset
+                skip: offset,
+                orderBy : {
+                    created_at: 'desc'
+                }
             })
 
             const totalRavenue = order.reduce((acc, curr) => acc + curr.total_price, 0)

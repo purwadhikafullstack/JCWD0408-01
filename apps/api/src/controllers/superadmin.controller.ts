@@ -21,7 +21,18 @@ export class SuperAdminController {
                 skip: offset,
                 take: limit,
                 include: {
-                    Store: true
+                    Store: {
+                        select: {
+                            store_id: true,
+                            store_name: true,
+                            Order : {
+                              select: {
+                                total_price: true
+                              }
+                            }
+                        }
+                    }
+
                 }
             });
 

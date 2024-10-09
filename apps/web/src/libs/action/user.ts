@@ -11,7 +11,7 @@ export const onLogout = async () => {
 }
 
 export const verificationProcess = async (token: string, data: UserFirstVerification) => {
-  const res = await fetch('http://localhost:8000/api/auth/verification', {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}auth/verification`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,

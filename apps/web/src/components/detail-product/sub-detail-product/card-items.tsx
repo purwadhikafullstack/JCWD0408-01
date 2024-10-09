@@ -53,7 +53,7 @@ export default function CardItems({ name, price, qty, product_id, image }: { nam
 
     const addToCartNav = async (initialValues : IAddCartNav) => {
         try {
-            const res = await fetch('http://localhost:8000/api/cart/addnav', {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}cart/addnav`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

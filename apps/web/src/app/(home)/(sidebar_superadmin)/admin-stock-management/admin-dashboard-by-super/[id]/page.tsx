@@ -41,7 +41,6 @@ export default function AdminDashboard() {
     const [createModalProduct, setCreateModalProduct] = useState(false);
     const params = useParams();
     const [transaction, setTransaction] = useState<TransactionResponse | null>(null);
-    console.log(params);
 
     const handleCreateProduct = () => {
         setCreateModalProduct(!createModalProduct);
@@ -53,7 +52,7 @@ export default function AdminDashboard() {
 
     const fetchTransaction = async () => {
         try {
-            const res = await fetch(`http://localhost:8000/api/transaction/${params.id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}transaction/${params.id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -92,22 +91,20 @@ export default function AdminDashboard() {
                     </button>
                     {createModalProduct && (
                         <div>
-                            <CreateProduct />
+                            <CreateProduct createModalProduct={createModalProduct} handleModal={handleCreateProduct} />
                         </div>
                     )}
                 </div>
                 <CartListProduct />
-                <div className="flex flex-col px-10 text-[20px] font-medium">Performance</div>
-                <div className="flex flex-col justify-around items-center gap-5 p-10 pt-5">
-                    <div className="flex flex-col justify-center items-center h-96 rounded-[10px] border-[1px] p-2  w-full">
-                        <div className="mb-5">LAST 5 TRANSACTION</div>
+                <div className="flex flex-col px-10 text-[20px] font-medium">Recent Performance</div>
+                <div className="flex flex-col justify-around items-center gap-2 p-10 pt-5">
                         {
                             transaction?.order?.length ? (
                                 transaction.order.slice(0, 5).map((item: Order, key: number) => (
                                     <div key={key} className="flex border-[1px] rounded-[10px] justify-between  p-2 m-2 gap-5 w-full">
                                         <p>User ID: {item.user_id}</p>
                                         <p>Total Qty: {item.OrderItem.reduce((total, orderItem) => total + orderItem.qty, 0)}</p>
-                                        <p>Transaction : {item.created_at.split("T")[0].replace("T", " ")}</p>
+                                        <p>Transaction : {new Date(new Date(item.created_at).setDate(new Date().getDate() - 30)).toLocaleString("en-US", { timeZone: "Asia/Bangkok" })}</p>
                                         <p>Total Price: {convertIdr(item.total_price)}</p>
                                     </div>
                                 ))
@@ -115,7 +112,6 @@ export default function AdminDashboard() {
                                 <p>No transactions available</p>
                             )
                         }
-                    </div>
                 </div>
             </div>
         </div>

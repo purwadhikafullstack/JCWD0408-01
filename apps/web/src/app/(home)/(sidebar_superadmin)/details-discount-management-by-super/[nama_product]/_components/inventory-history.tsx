@@ -24,7 +24,7 @@ export default function InventoryHistory() {
 
     const fetchDataInventoryHistory = async () => {
         try {
-            const res = await fetch(`http://localhost:8000/api/inventory/summary/${params.nama_product}?page=${page}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}inventory/summary/${params.nama_product}?page=${page}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -72,7 +72,7 @@ export default function InventoryHistory() {
                         <div className="flex lg:flex-row flex-wrap font-normal text-[14px] lg:justify-between justify-between items-center lg:h-10 h-60 rounded-[10px] border-[1px] w-full mb-2 ">
                             <p className="p-2 lg:pl-10 w-[125px] lg:w-[350px] font-bold text-[16px] text-center lg:text-left">{item.total_qty}</p>
                             <p className="lg:w-[250px] w-[125px] text-center"> {item.qty}</p>
-                            <p className="mr-10 lg:w-[300px] w-[100px] text-right"> {item.updated_at.split("T")[0]}</p>
+                            <p className="mr-10 lg:w-[300px] w-[100px] text-right"> {new Date(new Date(item.updated_at).setDate(new Date().getDate() - 30)).toLocaleString("en-US", { timeZone: "Asia/Bangkok" })}</p>
                         </div>
                     </div>
                 ))

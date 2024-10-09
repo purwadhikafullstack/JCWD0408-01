@@ -8,7 +8,7 @@ export default function CategoryHome({category_id, category_name, category_url, 
   
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col  items-center h-[250px]">
       <motion.div
         initial={{ scale: 0, rotate: -180 }}
         animate={{ scale: 1, rotate: 0 }}
@@ -37,7 +37,7 @@ export default function CategoryHome({category_id, category_name, category_url, 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="mt-6 text-lg font-bold text-gray-800"
+        className="mt-6 text-lg font-bold text-center text-gray-800"
       >
         {category_name}
       </motion.h2>

@@ -22,16 +22,16 @@ export default function NominalFormDiscount() {
 
     const createNominalDiscount = async (data: CreateDiscount, action: FormikHelpers<CreateDiscount>) => {
         try {
-            const res = await fetch(`http://localhost:8000/api/discount/create`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}discount/create`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 method: 'POST',
                 body: JSON.stringify(data)
             })
-            const result = await res.json();
-            if (!result) throw result
-            toast.success(result)
+            const { status, msg } = await res.json();
+            if (status == "error") throw toast.error(msg)
+            toast.success(msg)
             action.resetForm()
         } catch (error) {
             toast.error(error as string)
@@ -52,56 +52,64 @@ export default function NominalFormDiscount() {
             {(props: FormikProps<CreateDiscount>) => {
                 return (
                     <Form>
-                        <div className="flex flex-col gap-2 text-[16px]">
+                        <div className="flex flex-col gap-3 text-[16px]">
                             <p className="font-medium">Nominal Discount</p>
                             <div className="border-[1px] w-full "></div>
                             <div className="flex items-center justify-between gap-5 mt-2">
                                 <p>Name</p>
-                                <Field
-                                    name="discount_code"
-                                    type="text"
-                                    className=" w-[150px] p-2 rounded-[6px] border-[1px]"
-                                />
-                                <ErrorMessage
-                                    name="discount_code"
-                                    component="div"
-                                    className=" absolute text-red-500 text-[12px] mt-1 " />
+                                <div>
+                                    <Field
+                                        name="discount_code"
+                                        type="text"
+                                        className=" w-[150px] p-2 rounded-[6px] border-[1px]"
+                                    />
+                                    <ErrorMessage
+                                        name="discount_code"
+                                        component="div"
+                                        className="  text-red-500 text-[12px] left-16 mt-1 " />
+                                </div>
                             </div>
                             <div className="flex justify-between gap-5 items-center">
                                 <p>Cuts (-)</p>
-                                <Field
-                                    name="discount_value"
-                                    type="number"
-                                    className="w-[150px] p-2 rounded-[6px] border-[1px]"
-                                />
-                                <ErrorMessage
-                                    name="discount_value"
-                                    component="div"
-                                    className="absolute text-red-500 text-[12px] mt-1" />
+                                <div>
+                                    <Field
+                                        name="discount_value"
+                                        type="number"
+                                        className="w-[150px] p-2 rounded-[6px] border-[1px]"
+                                    />
+                                    <ErrorMessage
+                                        name="discount_value"
+                                        component="div"
+                                        className=" text-red-500 text-[12px] mt-1" />
+                                </div>
                             </div>
                             <div className="flex justify-between gap-5 items-center">
                                 <p>Min. Order</p>
-                                <Field
-                                    name="minimum_order"
-                                    type="number"
-                                    className="w-[150px] p-2 rounded-[6px] border-[1px]"
-                                />
-                                <ErrorMessage
-                                    name="minimum_order"
-                                    component="div"
-                                    className="absolute text-red-500 text-[12px] mt-1" />
+                                <div>
+                                    <Field
+                                        name="minimum_order"
+                                        type="number"
+                                        className="w-[150px] p-2 rounded-[6px] border-[1px]"
+                                    />
+                                    <ErrorMessage
+                                        name="minimum_order"
+                                        component="div"
+                                        className=" text-red-500 text-[12px] mt-1" />
+                                </div>
                             </div>
                             <div className="flex justify-between gap-5 items-center">
                                 <p className="text-gray-300">Expire Date</p>
-                                <Field
-                                    name="expires_at"
-                                    type="date"
-                                    className="w-[150px] p-2 rounded-[6px] border-[1px]"
-                                />
-                                <ErrorMessage
-                                    name="expires_at"
-                                    component="div"
-                                    className="absolute text-red-500 text-[12px] mt-1" />
+                                <div>
+                                    <Field
+                                        name="expires_at"
+                                        type="date"
+                                        className="w-[150px] p-2 rounded-[6px] border-[1px]"
+                                    />
+                                    <ErrorMessage
+                                        name="expires_at"
+                                        component="div"
+                                        className=" text-red-500 text-[12px] mt-1" />
+                                </div>
                             </div>
                             <button type="submit" className=" text-main hover:text-secondary duration-300 hover:bg-main rounded-full w-72 h-10 m-2 mt-4 bg-secondary font-normal">Apply Discount</button>
                         </div>

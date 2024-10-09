@@ -16,8 +16,10 @@ interface ITransaction {
                         name: string;
                         product_id: number;
                     }
+                    qty: number;
                 }
             ]
+            created_at: string;
             total_price: number;
             user_id: number;
             user: {
@@ -42,10 +44,8 @@ export default function SummaryCart() {
     const [product, setProduct] = useState<any>(null);
 
     const fetchDataTransation = async (categoryId: Number | null = null, productId: Number | null = null) => {
-        // Base URL
-        let url = `http://localhost:8000/api/transaction?page=${page}`;
+        let url = `${process.env.NEXT_PUBLIC_BASE_API_URL}transaction?page=${page}`;
 
-        // Build query parameters dynamically
         if (categoryId) {
             url += `&category_id=${categoryId}`;
         }
@@ -70,7 +70,7 @@ export default function SummaryCart() {
     }
 
     useEffect(() => {
-        fetchDataTransation();;
+        fetchDataTransation();
     }, [page])
 
     const handleSubmitFilter = () => {
@@ -105,7 +105,7 @@ export default function SummaryCart() {
 
     const getCategory = async () => {
         try {
-            const res = await axios.get(`http://localhost:8000/api/category/all`, {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}category/all`, {
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -118,7 +118,7 @@ export default function SummaryCart() {
     }
     const getProduct = async () => {
         try {
-            const res = await axios.get(`http://localhost:8000/api/product/products/all`, {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}product/products/all`, {
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -175,7 +175,7 @@ export default function SummaryCart() {
                     }} className="w-20 h-6 text-center text-[16px] bg-main text-white rounded-[10px]">Reset</button>
                 </div>
             </div>
-            <div className="px-5">
+            <div className="px-2">
                 {
                     data?.order && data.order.length > 0 ?
                         data?.order.map((item, key: number) => {
@@ -186,13 +186,15 @@ export default function SummaryCart() {
                                             {/* <p className="lg:w-1/3 w-full">{item.OrderItem}</p> */}
                                             <div className="flex flex-wrap justify-center items-center w-[150px]">
                                                 <p className="p-2">{item.user.first_name ? item.user.first_name : "No Firstname"}</p>
-                                                <p className="p-2 text-[10px] text-main">#{item.user_id ? item.user.first_name : "No Item Id"}</p>
+                                                <p className="p-2 text-[10px] text-main">#{item.user_id ? item.user_id : "No Item Id"}</p>
                                             </div>
-                                            <div className="flex flex-wrap justify-center gap-2 items-center w-[250px]">
-                                                <p>{item.OrderItem.length > 0 ? item.OrderItem[0].product.name : "No Order Item"}</p>
-                                                <p>{item.OrderItem.length > 0 ? item.OrderItem[0].product.category_id : "No Category"}</p>
+                                            <div className="flex flex-wrap justify-center gap-2 items-center sm:w-[275px]">
+                                                <p>{item.OrderItem.length > 0 ? `${item.OrderItem[0].product.name.substring(0, 10)}.` : "No Order Item"}</p>
+                                                <p>Category : {item.OrderItem.length > 0 ? item.OrderItem[0].product.category_id : "No Category"}</p>
+                                                <p>Qty : {item.OrderItem.length > 0 ? item.OrderItem[0].qty : "No Category"}</p>
                                             </div>
-                                            <p className="p-2">{convertPrice(item.total_price)}</p>
+                                            <p> {new Date(new Date(item.created_at).setDate(new Date().getDate() - 30)).toLocaleString("en-US", { timeZone: "Asia/Bangkok" })}</p>
+                                            <p className="p-2">Total price : {convertPrice(item.total_price)}</p>
                                         </div >
                                     </div>
                                 </div>

@@ -33,7 +33,7 @@ export default function BaskitAdmin() {
     }
 
     const fetchDataUser = async () => {
-        const res = await fetch(`http://localhost:8000/api/superadmin/?role=store_admin&page=${page}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}superadmin/?role=store_admin&page=${page}`, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -43,6 +43,7 @@ export default function BaskitAdmin() {
         setData(dataFetch)
     }
 
+    console.log(data)
     // console.log(data?.data[0].user_id)
     
     useEffect(() => {
@@ -53,12 +54,14 @@ export default function BaskitAdmin() {
         <div className="flex flex-col justify-center items-center gap-2 ">
             {
                 data?.data.map((item, key) => {
+                    const totalPrice = item.Store.Order.reduce((acc, order) => acc + order.total_price, 0);
+                    const convertIdr = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(totalPrice);
                     return(         
                         <AdminCartDetails 
                             store_admin={item.first_name || ''} 
                             created_At={item.created_at || ''} 
                             stocktotal_inventory="stocktotal_inventory" 
-                            pendapatan_bulanini="pendapatan_bulanini" 
+                            pendapatan_bulanini={convertIdr} 
                             store={item.Store && item.Store.store_name ? item.Store.store_name : 'Unsigned'} 
                             user_id={item.user_id}
                             key={key} admin_email={item.email}

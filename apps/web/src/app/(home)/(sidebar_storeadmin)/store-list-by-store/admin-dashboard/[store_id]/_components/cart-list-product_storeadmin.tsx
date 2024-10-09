@@ -51,7 +51,7 @@ export default function CartListProductByStoreAdmin() {
     }
 
     const fetchProduct = async () => {
-        const res = await fetch(`http://localhost:8000/api/product/${params.store_id}?page=${page}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}product/${params.store_id}?page=${page}`, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -71,7 +71,7 @@ export default function CartListProductByStoreAdmin() {
     const splitter = (params.store_id).toString().split("%")[0]
 
     const fetchTransaction = async () => {
-        const res = await fetch(`http://localhost:8000/api/transaction/${params.store_id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}transaction/${params.store_id}`, {
             headers: {
                 'Content-Type': 'application/json',
             },

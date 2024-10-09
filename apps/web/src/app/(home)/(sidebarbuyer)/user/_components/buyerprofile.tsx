@@ -13,7 +13,7 @@ export default function BuyerProfile() {
   const token = Cookies.get('token');
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch('http://localhost:8000/api/user/details', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}user/details`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -33,7 +33,7 @@ export default function BuyerProfile() {
 
   useEffect(() => {
     const fetchRefCode = async () => {
-      const rcode = await fetch('http://localhost:8000/api/user/code', {
+      const rcode = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}user/code`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,

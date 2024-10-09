@@ -45,18 +45,16 @@ export default function RegisterForm({
         action: FormikHelpers<ICreateAccBySuperAdmin>,
     ) => {
         try {
-            const res = await fetch('http://localhost:8000/api/admin/create', {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}admin/create`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 method: 'POST',
                 body: JSON.stringify(data),
             });
-            const { result, ok } = await res.json();
-            if (!ok) throw result.msg;
-            console.log(result);
-            console.log(ok);
-            toast.success(result.msg);
+            const { status , msg } = await res.json();
+            if (status == "error") throw toast.error(msg);
+            toast.success(status);
             action.resetForm();
         } catch (error) {
             toast.error(error as string);

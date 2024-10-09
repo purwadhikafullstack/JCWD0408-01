@@ -1,7 +1,7 @@
 import { ICreateCategoryBySuperAdmin } from '@/components/inputformik';
 
 export const createCategory = async (data: ICreateCategoryBySuperAdmin) => {
-  const res = await fetch('http://localhost:8000/api/category/create', {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}category/create`, {
     headers: {
       'Content-Type': 'application/json',
     },
@@ -13,7 +13,7 @@ export const createCategory = async (data: ICreateCategoryBySuperAdmin) => {
 };
 
 export const getHomeCategory = async () => {
-  const res = await fetch('http://localhost:8000/api/homeprod/category', {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}homeprod/category`, {
     headers: {
       'Content-Type': 'application/json',
     },

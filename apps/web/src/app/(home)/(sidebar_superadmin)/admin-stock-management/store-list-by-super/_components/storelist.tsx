@@ -34,7 +34,7 @@ export default function StoreList() {
   const fetchStoreList = async () => {
     try {
       const res = await fetch(
-        `http://localhost:8000/api/superadmin/store?page=${page}`,
+        `${process.env.NEXT_PUBLIC_BASE_API_URL}superadmin/store?page=${page}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ export default function StoreList() {
             return (
               <Link
                 href={`/admin-stock-management/admin-dashboard-by-super/${item.store_id}`}
-              >
+              key={key} >
                 <CartStore
                   key={key}
                   store_name={item.store_name}

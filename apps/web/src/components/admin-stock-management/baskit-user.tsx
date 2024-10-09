@@ -24,6 +24,11 @@ export interface UserData {
                     store_name: string,
                     created_at: string,
                     updated_at: string,
+                    Order : [
+                        {
+                            total_price: number,
+                        }
+                    ]
                 }
             
         }
@@ -66,7 +71,7 @@ export default function BaskitUser() {
     }
 
     const fetchDataUser = async () => {
-        const res = await fetch(`http://localhost:8000/api/superadmin/?role=buyer&page=${page}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}superadmin/?role=buyer&page=${page}`, {
             headers: {
                 'Content-Type': 'application/json',
             },

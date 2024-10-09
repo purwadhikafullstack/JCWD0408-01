@@ -14,6 +14,7 @@ export class DiscountRouter {
     private initializeRouter() {
         this.router.get(`/:id`, this.discountRouter.getDiscountByProduct)
         this.router.post('/create', this.discountRouter.createDiscount)
+        this.router.delete('/delete/:discount_code', this.discountRouter.deleteDiscount)
     }
 
     getRouter() {

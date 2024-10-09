@@ -88,7 +88,7 @@ export default function DetailAdminDashboard() {
                                     <div key={key} className="flex border-[1px] rounded-[10px] justify-between  p-2 m-2 gap-5 w-full">
                                         <p>User ID: {item.user_id}</p>
                                         <p>Total Qty: {item.OrderItem.reduce((total, orderItem) => total + orderItem.qty, 0)}</p>
-                                        <p>Transaction : {item.created_at.split(".")[0].replace("T", " ")}</p>
+                                        <p>Transaction : {new Date(new Date(item.created_at).setDate(new Date().getDate() - 30)).toLocaleString("en-US", { timeZone: "Asia/Bangkok" })}</p>
                                         <p>Total Price: {convertIdr(item.total_price)}</p>
                                     </div>
                                 ))

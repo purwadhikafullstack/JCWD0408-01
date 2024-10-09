@@ -85,7 +85,7 @@ export default function AdminCartDetails({ store_admin, created_At, store, user_
     return (
         <div className="flex lg:flex-row flex-wrap lg:justify-between justify-center text-[14px] items-center lg:h-10 h-60 rounded-[10px] hover:bg-secondary duration-200 hover:border-secondary border-[1px] w-full text-center">
             <p className="p-2 lg:pl-10 w-[100px]">{store_admin}</p>
-            <p className="w-[100px]">{created_At.split('T')[0]}</p>
+            <p className="w-[150px]">{new Date(new Date(created_At).setDate(new Date().getDate() - 30)).toLocaleString("en-US", { timeZone: "Asia/Bangkok" })}</p>
             <p className="w-[250px]">Store : {store}</p>
             <div className="flex gap-2">
                 <p className="w-[150px]">{pendapatan_bulanini}/{new Date().toLocaleString('default', { month: 'long' }).slice(0, 4)}</p>

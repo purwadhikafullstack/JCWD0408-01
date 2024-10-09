@@ -193,7 +193,7 @@ export default function SummaryCart() {
                                                 <p>Category : {item.OrderItem.length > 0 ? item.OrderItem[0].product.category_id : "No Category"}</p>
                                                 <p>Qty : {item.OrderItem.length > 0 ? item.OrderItem[0].qty : "No Category"}</p>
                                             </div>
-                                            <p> {item.created_at.split(".")[0].replace("T", " ")}</p>
+                                            <p> {new Date(new Date(item.created_at).setDate(new Date().getDate() - 30)).toLocaleString("en-US", { timeZone: "Asia/Bangkok" })}</p>
                                             <p className="p-2">Total price : {convertPrice(item.total_price)}</p>
                                         </div >
                                     </div>

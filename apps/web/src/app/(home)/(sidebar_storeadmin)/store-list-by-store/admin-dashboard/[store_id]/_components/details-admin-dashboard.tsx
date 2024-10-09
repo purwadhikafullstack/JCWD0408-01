@@ -5,6 +5,8 @@ import CartListProductByStoreAdmin from "./cart-list-product_storeadmin";
 import SidebarStoreAdmin from "@/components/sidebar/sidebarStoreAdmin";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import CartStorebyStore from "../../../_components/cart-store";
+import SummaryCartStore from "./summary-cart-store";
 
 interface Product {
     product_id: number;
@@ -43,7 +45,7 @@ export default function DetailAdminDashboard() {
 
     const fetchTransaction = async () => {
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/transaction/${params.store_id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}transaction/${params.store_id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -77,10 +79,9 @@ export default function DetailAdminDashboard() {
                     </div>
                 </div>
                 <CartListProductByStoreAdmin />
-                <div className="flex flex-col px-10  text-[20px] font-medium">Performance</div>
-                <div className="flex flex-col justify-around items-center gap-5 p-10 pt-5 ">
-                    <div className="flex flex-col justify-center items-center h-96 rounded-[10px] border-[1px] p-2  w-full">
-                        <div className="mb-5">LAST 5 TRANSACTION</div>
+                <div className="flex flex-col px-10  text-[20px] font-medium">Recent Performance</div>
+                <div className="flex flex-col justify-around items-center gap-2 p-10 pt-5 ">
+
                         {
                             transaction?.order?.length ? (
                                 transaction.order.slice(0, 5).map((item: Order, key: number) => (
@@ -95,6 +96,12 @@ export default function DetailAdminDashboard() {
                                 <p>No transactions available</p>
                             )
                         }
+
+                </div>
+                <div className="flex flex-col px-10  text-[20px] font-medium">Performance</div>
+                <div className="flex flex-col justify-around items-center gap-5 p-10 pt-5 ">
+                    <div className="flex flex-col justify-center items-center h-96 rounded-[10px] border-[1px] p-2  w-full">
+                        <SummaryCartStore />
                     </div>
                 </div>
             </div>

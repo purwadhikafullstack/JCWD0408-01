@@ -100,7 +100,7 @@ export default function SummaryProduct() {
                 </div>
                 </div>
             ) : (
-                <p>No transactions available</p>
+                <p className="p-2">No transactions available</p>
             )
             }
         </div>

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { get } from "cypress/types/lodash";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { toast } from "react-toastify";
@@ -34,16 +35,17 @@ interface ITransaction {
 }
 
 
-export default function SummaryCart() {
+export default function SummaryCartStore() {
     const [page, setPage] = useState(1);
     const [productId, setProductId] = useState<Number | null>(null);
     const [categoryId, setCategoryId] = useState<Number | null>(null);
     const [data, setData] = useState<ITransaction>();
     const [category, setCategory] = useState<any>(null);
     const [product, setProduct] = useState<any>(null);
+    const params = useParams()
 
     const fetchDataTransation = async (categoryId: Number | null = null, productId: Number | null = null) => {
-        let url = `${process.env.NEXT_PUBLIC_BASE_API_URL}transaction?page=${page}`;
+        let url = `${process.env.NEXT_PUBLIC_BASE_API_URL}transaction/store/${params.store_id}?page=${page}`;
 
         if (categoryId) {
             url += `&category_id=${categoryId}`;
@@ -184,13 +186,13 @@ export default function SummaryCart() {
                                         <div className="flex flex-col flex-wrap lg:flex-row sm:justify-between justify-center items-center w-full">
                                             {/* <p className="lg:w-1/3 w-full">{item.OrderItem}</p> */}
                                             <div className="flex flex-wrap justify-center items-center w-[150px]">
-                                                <p className="p-2">{item.user.first_name ? item.user.first_name : "No Firstname"}</p>
+                                                <p className="p-2">{item.user?.first_name ? item.user.first_name : "No Firstname"}</p>
                                                 <p className="p-2 text-[10px] text-main">#{item.user_id ? item.user_id : "No Item Id"}</p>
                                             </div>
                                             <div className="flex flex-wrap justify-center gap-2 items-center sm:w-[375px]">
-                                                <p>{item.OrderItem.length > 0 ? item.OrderItem[0].product.name : "No Order Item"}</p>
-                                                <p>Category : {item.OrderItem.length > 0 ? item.OrderItem[0].product.category_id : "No Category"}</p>
-                                                <p>Qty : {item.OrderItem.length > 0 ? item.OrderItem[0].qty : "No Category"}</p>
+                                                <p> {item.OrderItem.length > 0 ? item.OrderItem[0].product.name : "No Order Item"}</p>
+                                                <p> Category : {item.OrderItem.length > 0 ? item.OrderItem[0].product.category_id : "No Category"}</p>
+                                                <p> Qty : {item.OrderItem.length > 0 ? item.OrderItem[0].qty : "No Category"}</p>
                                             </div>
                                             <p className="p-2">Total price : {convertPrice(item.total_price)}</p>
                                         </div >

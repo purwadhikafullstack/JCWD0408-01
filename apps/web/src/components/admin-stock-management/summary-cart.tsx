@@ -188,8 +188,8 @@ export default function SummaryCart() {
                                                 <p className="p-2">{item.user.first_name ? item.user.first_name : "No Firstname"}</p>
                                                 <p className="p-2 text-[10px] text-main">#{item.user_id ? item.user_id : "No Item Id"}</p>
                                             </div>
-                                            <div className="flex flex-wrap justify-center gap-2 items-center sm:w-[255px]">
-                                                <p>{item.OrderItem.length > 0 ? item.OrderItem[0].product.name : "No Order Item"}</p>
+                                            <div className="flex flex-wrap justify-center gap-2 items-center sm:w-[275px]">
+                                                <p>{item.OrderItem.length > 0 ? `${item.OrderItem[0].product.name.substring(0, 10)}.` : "No Order Item"}</p>
                                                 <p>Category : {item.OrderItem.length > 0 ? item.OrderItem[0].product.category_id : "No Category"}</p>
                                                 <p>Qty : {item.OrderItem.length > 0 ? item.OrderItem[0].qty : "No Category"}</p>
                                             </div>

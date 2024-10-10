@@ -3,10 +3,12 @@ import Cookies from "js-cookie";
 import { navigate } from "./server";
 import { toast } from "react-toastify";
 
+const url = '/'
+
 export const onLogout = async () => {
   Cookies.remove('token')
   localStorage.clear()
-  navigate('/')
+  window.location.href = url
   toast.success("You've logged out")
 }
 

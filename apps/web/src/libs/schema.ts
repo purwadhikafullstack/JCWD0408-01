@@ -66,11 +66,13 @@ export const createProductbySuperAdmin = yup.object().shape({
 })
 
 export const validationSchemaDiscount = Yup.object({
-  product_id: yup.number().required('Required'),
-  discount_code: yup.string().required('Required'),
-  discount_type: yup.string().required('Required'),
-  discount_value: yup.number().required('Required'),
-  expires_at: yup.string().required('Required')
+  product_id: yup.number().required('Product ID is required'),
+  discount_code: yup.string()
+    .matches(/^[a-zA-Z0-9]+$/, 'Only letters and numbers')
+    .required('Discount code is required'),
+  discount_type: yup.string().required('Discount type is required'),
+  discount_value: yup.number().moreThan(0, 'Must be greater than 0').required('Discount value is required'),
+  expires_at: yup.string().required('Expiration date is required')
 })
 
 export const resetPasswordSchema = yup.object({

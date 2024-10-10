@@ -16,13 +16,11 @@ import { toast } from 'react-toastify';
 import { FiLogOut } from "react-icons/fi";
 import { ProductResult } from './navbar/type';
 
-
-
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [dropdownTimeout, setDropdownTimeout] = useState<NodeJS.Timeout | null>(null,);
+  const [dropdownTimeout, setDropdownTimeout] = useState<NodeJS.Timeout | null>(null);
   const [search, setSearch] = useState('');
   const [results, setResults] = useState<ProductResult | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,13 +35,13 @@ export default function Navbar() {
   }, []);
 
   const fetchDataProduct = async () => {
-    if (search === ' ' || search === '') {
+    if (search.trim() === '') {
       setResults(null);
       setIsModalOpen(false);
       return;
     }
     try {
-      const res = await fetch(`http://localhost:8000/api/product/products-catalogue/?search=${search}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}product/products-catalogue/?search=${search}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -55,7 +53,7 @@ export default function Navbar() {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-  }
+  };
 
   const handleMouseEnter = useCallback(() => {
     if (dropdownTimeout) {
@@ -63,7 +61,7 @@ export default function Navbar() {
       setDropdownTimeout(null);
     }
     setIsDropdownOpen(true);
-  }, [dropdownTimeout, setDropdownTimeout]);
+  }, [dropdownTimeout]);
 
   const handleMouseLeave = useCallback(() => {
     const timeoutId = setTimeout(() => setIsDropdownOpen(false), 200);
@@ -72,19 +70,13 @@ export default function Navbar() {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
-    if (typingTimeoutRef.current) {
-      clearTimeout(typingTimeoutRef.current);
-    }
-    typingTimeoutRef.current = setTimeout(() => {
-      fetchDataProduct();
-    }, 300);
   };
 
   const handleResetSearch = () => {
     setSearch('');
     setResults(null);
     setIsModalOpen(false);
-  }
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -92,9 +84,30 @@ export default function Navbar() {
         clearTimeout(typingTimeoutRef.current);
       }
       setData(search);
-      console.log(` data : ${data}`);
+      console.log(`data: ${data}`);
     }
   };
+
+  useEffect(() => {
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    typingTimeoutRef.current = setTimeout(() => {
+      if (search.trim() !== '') {
+        fetchDataProduct();
+      } else {
+        setResults(null);
+        setIsModalOpen(false);
+      }
+    }, 300);
+
+    return () => {
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current);
+      }
+    };
+  }, [search]);
 
   const toIDR = (number: number) => {
     return new Intl.NumberFormat('id-ID', {
@@ -105,20 +118,19 @@ export default function Navbar() {
 
   const deleteCookie = () => {
     Cookies.remove('token');
-    router.push('/login')
-    toast.success('Logout Success')
-  }
+    router.push('/login');
+    toast.success('Logout Success');
+  };
 
   if (!isMounted) {
     return null;
   }
-
   return (
     <div className='w-full'>
       <nav className="w-full z-20 fixed top-0 lg:h-24 h-16 px-2 md:px-8 flex items-center justify-between shadow-md bg-secondary">
         <button onClick={handleResetSearch}>
           <Link href={"/"} className="flex items-center w-[75px] md:w-[175px] lg:w-[250px]">
-            <Image src={'/logo/baskit.svg'} width={175} height={100} alt='' />
+            <Image src={'/logo/baskitgreen.svg'} width={175} height={100} alt='' />
           </Link>
         </button>
         <div
@@ -255,7 +267,7 @@ export default function Navbar() {
         }
       </nav>
       {isModalOpen && results && results.product && results.product.length > 0 && (
-        <motion.div className=" flex flex-col gap-5 absolute top-16 sm:top-18 lg:top-24 w-full  z-10 bg-main/50 backdrop-blur-sm border-b-[1px] border-main"
+        <motion.div className=" flex flex-col gap-5 fixed z-30 top-16 sm:top-18 lg:top-24 w-full bg-main/50 backdrop-blur-sm border-b-[1px] border-main"
           initial={{ opacity: 0, translateY: -10 }}
           animate={{ opacity: 1, translateY: 0 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
@@ -264,9 +276,9 @@ export default function Navbar() {
             <button onClick={handleResetSearch}><IoMdCloseCircleOutline size={32} className='text-secondary hover:scale-110 active:scale-95 duration-300 hover:bg-main hover:text-secondary rounded-full' /></button>
           </div>
           <div className='flex flex-wrap justify-center gap-5 '>
-            {results.product.slice().map((item, index) => (
-              <div className='w-[165px]  hover:scale-105 hover:bg-secondary rounded-[6px] hover:text-main duration-300'>
-                <Link href={`/details-product/${item.product_id}`} className="" key={index}>
+            {results.product.slice().map((item, key) => (
+              <div className='w-[165px]  hover:scale-105 hover:bg-secondary rounded-[6px] hover:text-main duration-300' key={key}>
+                <Link href={`/details-product/${item.product_id}`} className="" key={key}>
                   <button onClick={handleResetSearch}>
                     <div className='w-full py-4 px-5 text-[14px] text-secondary text-left flex flex-col gap-2 items-center justify-between hover:text-main'>
                       <div className='h-[150px] flex items-center'>
@@ -281,7 +293,11 @@ export default function Navbar() {
                   </button>
                 </Link>
                 <div className='hover:scale-110 duration-300'>
-                  <AddToCartNav item={item.Inventory[0].total_qty} product_id={item.product_id} />
+                  {
+                    token && (
+                      <AddToCartNav item={item.Inventory[0].total_qty} product_id={item.product_id} />
+                    )
+                  }
                 </div>
               </div>
             ))}

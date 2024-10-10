@@ -2,20 +2,72 @@
 
 import Sidebar from '@/components/sidebar/sidebar';
 import { VscAccount } from 'react-icons/vsc';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoMdAdd, IoMdRemove } from 'react-icons/io';
 import CreateProduct from '../_components/createproduct';
 import { useParams } from 'next/navigation';
 import CartListProduct from '../_components/cart-list-product';
 import { motion } from 'framer-motion';
 
+
+interface Product {
+    product_id: number;
+    name: string;
+    category_id: number;
+}
+
+interface OrderItem {
+    product: Product;
+    qty: number;
+}
+
+interface Order {
+    user_id: number;
+    total_price: number;
+    OrderItem: OrderItem[];
+    created_at: string;
+}
+
+interface TransactionResponse {
+    status: string;
+    msg: string;
+    order: Order[];
+    totalRavenue: number;
+    totalItem: number;
+    totalQty: number;
+}
+
 export default function AdminDashboard() {
     const [createModalProduct, setCreateModalProduct] = useState(false);
     const params = useParams();
-    console.log(params);
+    const [transaction, setTransaction] = useState<TransactionResponse | null>(null);
 
     const handleCreateProduct = () => {
         setCreateModalProduct(!createModalProduct);
+    };
+
+    useEffect(() => {
+        fetchTransaction();
+    }, []);
+
+    const fetchTransaction = async () => {
+        try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}transaction/${params.id}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                method: 'GET',
+            });
+            const data = await res.json();
+            setTransaction(data);
+            console.log(data);
+        } catch (error) {
+            console.error('Failed to fetch transaction', error);
+        }
+    };
+
+    const convertIdr = (price: number) => {
+        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(price);
     };
 
     return (
@@ -39,18 +91,28 @@ export default function AdminDashboard() {
                     </button>
                     {createModalProduct && (
                         <div>
-                            <CreateProduct />
+                            <CreateProduct createModalProduct={createModalProduct} handleModal={handleCreateProduct} />
                         </div>
                     )}
                 </div>
                 <CartListProduct />
-                <div className="flex flex-col px-10 text-[20px] font-medium">Performance</div>
-                <div className="flex flex-col justify-around items-center gap-5 p-10 pt-5">
-                    <div className="flex flex-row justify-center items-center h-96 rounded-[10px] border-[1px] w-full">
-                        <p>GRAPH</p>
-                    </div>
+                <div className="flex flex-col px-10 text-[20px] font-medium">Recent Performance</div>
+                <div className="flex flex-col justify-around items-center gap-2 p-10 pt-5">
+                        {
+                            transaction?.order?.length ? (
+                                transaction.order.slice(0, 5).map((item: Order, key: number) => (
+                                    <div key={key} className="flex border-[1px] rounded-[10px] justify-between  p-2 m-2 gap-5 w-full">
+                                        <p>User ID: {item.user_id}</p>
+                                        <p>Total Qty: {item.OrderItem.reduce((total, orderItem) => total + orderItem.qty, 0)}</p>
+                                        <p>Transaction : {new Date(new Date(item.created_at).setDate(new Date().getDate() - 30)).toLocaleString("en-US", { timeZone: "Asia/Bangkok" })}</p>
+                                        <p>Total Price: {convertIdr(item.total_price)}</p>
+                                    </div>
+                                ))
+                            ) : (
+                                <p>No transactions available</p>
+                            )
+                        }
                 </div>
-             
             </div>
         </div>
     );

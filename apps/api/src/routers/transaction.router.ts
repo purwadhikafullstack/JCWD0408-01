@@ -13,6 +13,8 @@ export class TransactionRouter {
 
     private initializeRouter(){
         this.router.get('/', this.transactionController.findTransaction);
+        this.router.get(`/store/:store_id`, this.transactionController.getAllTransactionByStoreId)
+        this.router.get('/:store_id', this.transactionController.findTransactionByStore);
     }
 
     getRouter(){

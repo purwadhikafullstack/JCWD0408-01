@@ -36,7 +36,7 @@ export default function RecomendedItemsBottom() {
 
 
     const fetchData = async () => {
-        const res = await fetch('http://localhost:8000/api/product/products/random', {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}product/products/random`, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -56,7 +56,7 @@ export default function RecomendedItemsBottom() {
         <div className="flex flex-col justify-center items-center gap-5 px-10 ">
             <div className="border-[1px] w-full border-accent "></div>
             <h1 className="text-[28px] font-bold">You Might Need These!!</h1>
-            <div className="flex flex-wrap justify-center gap-10 mx-40">
+            <div className="flex flex-wrap justify-center gap-10 sm:mx-40">
                 {
                     data?.randomProduct.slice(0, 8).map((item) => {
                         return (

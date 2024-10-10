@@ -21,10 +21,16 @@ export class StoreAdminController {
 
     async createStoreAdmin(req : Request, res : Response){
         try {
-            const storeAdminEmail = await prisma.user.findUnique({
-                where: {email: req.body.email}
+            const storeAdminEmail = await prisma.user.findFirst({
+                where: {
+                    OR: [
+                        { email: req.body.email },
+                        { last_name: req.body.last_name }
+                    ]
+                }
             })
-            if (storeAdminEmail) throw ("Email address has already been used");
+            if (storeAdminEmail) throw ("Email/Name address has already been used");
+
 
             const password = await hashPass(req.body.password);
 

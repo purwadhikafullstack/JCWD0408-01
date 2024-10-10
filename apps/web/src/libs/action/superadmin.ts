@@ -3,7 +3,7 @@ import Cookies from "js-cookie"
 
 export const createStore = async (data: StoreData) => {
     const token = Cookies.get('token')
-    const res = await fetch('http://localhost:8000/api/superadmin/store', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}superadmin/store`, {
         headers: {
             'Content-Type' : 'application/json',
             Authorization : `Bearer ${token}`
@@ -17,7 +17,7 @@ export const createStore = async (data: StoreData) => {
 
 export const editStore = async (data: StoreData) => {
     const token = Cookies.get('token')
-    const res = await fetch('http://localhost:8000/api/superadmin/store', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}superadmin/store`, {
         headers: {
             'Content-Type' : 'application/json',
             Authorization: `Bearer ${token}`
@@ -31,7 +31,7 @@ export const editStore = async (data: StoreData) => {
 
 export const deleteStore = async (store_id: number) => {
     const token = Cookies.get('token')
-    const res = await fetch('http://localhost:8000/api/superadmin/store', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}superadmin/store`, {
         headers: {
             'Content-Type' : 'application/json',
             Authorization: `Bearer ${token}`

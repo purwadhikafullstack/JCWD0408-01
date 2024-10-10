@@ -25,7 +25,7 @@ export const sendVerificationEmail = async (
     const compiledTemplate = handlebars.compile(templateSource);
     const html = compiledTemplate({
     
-      link: `http://localhost:3000/verification/${token}`,
+      link: `${process.env.BASE_URL_FRONTEND}/verification/${token}`,
     });
 
     await transporter.sendMail({
@@ -53,7 +53,7 @@ export const sendResetPassEmail = async (
     const compiledTemplate = handlebars.compile(templateSource);
     const html = compiledTemplate({
     
-      link: `http://localhost:3000/resetpassword/${token}`,
+      link: `${process.env.BASE_URL_FRONTEND}/resetpassword/${token}`,
     });
 
     await transporter.sendMail({
@@ -81,7 +81,7 @@ export const sendReverificationEmail = async (
     const compiledTemplate = handlebars.compile(templateSource);
     const html = compiledTemplate({
     
-      link: `http://localhost:3000/reverify/${token}`,
+      link: `${process.env.BASE_URL_FRONTEND}/reverify/${token}`,
     });
 
     await transporter.sendMail({

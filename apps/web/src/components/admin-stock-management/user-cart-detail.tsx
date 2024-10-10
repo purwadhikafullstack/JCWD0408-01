@@ -2,7 +2,7 @@ export default function UserCartDetails({ nama, created_at, email }: { nama: str
     return (
         <div className="flex lg:flex-row flex-wrap lg:justify-between justify-center text-[14px] items-center lg:h-10 h-60 rounded-[10px] hover:bg-secondary hover:border-secondary duration-200 border-[1px] w-full gap-2">
             <p className="p-2 lg:pl-10 md:w-[250px]">{nama}</p>
-            <p className="md:w-[250px]">Created : {created_at.split("T")[0]}</p>
+            <p className="md:w-[250px]">Created : {new Date(new Date(created_at).setDate(new Date().getDate() - 30)).toLocaleString("en-US", { timeZone: "Asia/Bangkok" })}</p>
             <p className="md:w-[200px] text-right">{email}</p>
             <div>
 

@@ -53,7 +53,7 @@ export default function CardItems({ name, price, qty, product_id, image }: { nam
 
     const addToCartNav = async (initialValues : IAddCartNav) => {
         try {
-            const res = await fetch('http://localhost:8000/api/cart/addnav', {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}cart/addnav`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -78,7 +78,7 @@ export default function CardItems({ name, price, qty, product_id, image }: { nam
                 <Image src={image} alt="Discount" width={200} height={300} className="h-48 rounded-[6px]" />
             </Link>
             <div className="border-[1px] mt-2"></div>
-            <Link href={`details-product/${product_id}`}>
+            <Link href={`/details-product/${product_id}`}>
                 <p className="font-bold">{name}</p>
                 <p className="text-[10px]">#product_code{product_id}</p>
             </Link>
@@ -86,47 +86,52 @@ export default function CardItems({ name, price, qty, product_id, image }: { nam
                 <p className="text-[14px]">{convertPrice}</p>
                 <p className="text-[12px]">Qty : {qty}</p>
             </div>
-            <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchemaAddCartNav}
-            onSubmit={(values, action) => {
-                console.log(values);
-                addToCartNav(values);
-                action.resetForm()
-            }}
-        >
-            {({ setFieldValue }) => (
-                <Form>
-                    <div className="  bg-secondary/50 rounded-[10px] border-[1px] border-main">
-                        <div className="flex justify-between items-center place-content-center px-6">
-                            <button
-                                type="button"
-                                onClick={() => removeFromCart(setFieldValue)}
-                                className="w-5"
-                            >
-                                <AiOutlineMinus />
-                            </button>
-                            <Field name="quantity">
-                                {() => <p className="w-4">{cart}</p>}
-                            </Field>
-                            <button
-                                type="button"
-                                onClick={() => addToCart(setFieldValue)}
-                                className="w-5"
-                            >
-                                <AiOutlinePlus />
-                            </button>
-                        </div>
-                        <button
-                            type="submit"
-                            className="bg-main border-main border-[1px] p-2 rounded-[6px] w-full text-secondary hover:text-secondary active:scale-95 duration-200"
-                        >
-                            Add to cart
-                        </button>
-                    </div>
-                </Form>
-            )}
-        </Formik>
+            {
+                token && (
+                    <Formik
+                    initialValues={initialValues}
+                    validationSchema={validationSchemaAddCartNav}
+                    onSubmit={(values, action) => {
+                        console.log(values);
+                        addToCartNav(values);
+                        action.resetForm()
+                    }}
+                >
+                    {({ setFieldValue }) => (
+                        <Form>
+                            <div className="  bg-secondary/50 rounded-[10px] border-[1px] border-main">
+                                <div className="flex justify-between items-center place-content-center px-6">
+                                    <button
+                                        type="button"
+                                        onClick={() => removeFromCart(setFieldValue)}
+                                        className="w-5"
+                                    >
+                                        <AiOutlineMinus />
+                                    </button>
+                                    <Field name="quantity">
+                                        {() => <p className="w-4">{cart}</p>}
+                                    </Field>
+                                    <button
+                                        type="button"
+                                        onClick={() => addToCart(setFieldValue)}
+                                        className="w-5"
+                                    >
+                                        <AiOutlinePlus />
+                                    </button>
+                                </div>
+                                <button
+                                    type="submit"
+                                    className="bg-main border-main border-[1px] p-2 rounded-[6px] w-full text-secondary hover:text-secondary active:scale-95 duration-200"
+                                >
+                                    Add to cart
+                                </button>
+                            </div>
+                        </Form>
+                    )}
+                </Formik>
+                )
+            }
+          
         </div>
     )
 }

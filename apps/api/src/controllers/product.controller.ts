@@ -3,7 +3,7 @@ import prisma from "@/prisma";
 import { Request, response, Response } from "express";
 import { create } from "handlebars";
 
-const baseUrl = 'http://localhost:8000/api'
+const baseUrl = process.env.BASE_URL;
 
 export class ProductController {
     async getProductbyStoreId(req: Request, res: Response) {

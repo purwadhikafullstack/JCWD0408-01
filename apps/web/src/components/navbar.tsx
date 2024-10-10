@@ -299,20 +299,6 @@ export default function Navbar() {
                     )
                   }
                 </div>
-                <p className='h-[40px]'>{item.name}</p>
-                <p className='text-left'>{toIDR(item.price)}</p>
-                <p className='text-[10px]'>{item.category.category_name}</p>
-                <p>Qty: {item.Inventory[0].total_qty}</p>
-              </div>
-            </button>
-          </Link>
-          <div className='hover:scale-110 duration-300'>
-            {
-              token && (
-                <AddToCartNav item={item.Inventory[0].total_qty} product_id={item.product_id} />
-              )
-            }
-          </div>
               </div>
             ))}
           </div>

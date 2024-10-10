@@ -278,27 +278,27 @@ export default function Navbar() {
           <div className='flex flex-wrap justify-center gap-5 '>
             {results.product.slice().map((item, key) => (
               <div className='w-[165px]  hover:scale-105 hover:bg-secondary rounded-[6px] hover:text-main duration-300' key={key}>
-          <Link href={`/details-product/${item.product_id}`} className="" key={key}>
-            <button onClick={handleResetSearch}>
-              <div className='w-full py-4 px-5 text-[14px] text-secondary text-left flex flex-col gap-2 items-center justify-between hover:text-main'>
-                <div className='h-[150px] flex items-center'>
-            <Image src={item.ProductImage && item.ProductImage.length > 0 ? item.ProductImage[0].url : '/dummy-image.jpg'
-            } width={150} height={150} alt='Product' className='rounded-[6px] ' />
+                <Link href={`/details-product/${item.product_id}`} className="" key={key}>
+                  <button onClick={handleResetSearch}>
+                    <div className='w-full py-4 px-5 text-[14px] text-secondary text-left flex flex-col gap-2 items-center justify-between hover:text-main'>
+                      <div className='h-[150px] flex items-center'>
+                        <Image src={item.ProductImage && item.ProductImage.length > 0 ? item.ProductImage[0].url : '/dummy-image.jpg'
+                        } width={150} height={150} alt='Product' className='rounded-[6px] ' />
+                      </div>
+                      <p className='h-[40px]'>{item.name}</p>
+                      <p className='text-left'>{toIDR(item.price)}</p>
+                      <p className='text-[10px]'>{item.category.category_name}</p>
+                      <p>Qty: {item.Inventory[0].total_qty}</p>
+                    </div>
+                  </button>
+                </Link>
+                <div className='hover:scale-110 duration-300'>
+                  {
+                    token && (
+                      <AddToCartNav item={item.Inventory[0].total_qty} product_id={item.product_id} />
+                    )
+                  }
                 </div>
-                <p className='h-[40px]'>{item.name}</p>
-                <p className='text-left'>{toIDR(item.price)}</p>
-                <p className='text-[10px]'>{item.category.category_name}</p>
-                <p>Qty: {item.Inventory[0].total_qty}</p>
-              </div>
-            </button>
-          </Link>
-          <div className='hover:scale-110 duration-300'>
-            {
-              token && (
-                <AddToCartNav item={item.Inventory[0].total_qty} product_id={item.product_id} />
-              )
-            }
-          </div>
               </div>
             ))}
           </div>

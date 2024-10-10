@@ -98,7 +98,7 @@ export class CategoryController {
             })
             if (!updateCategory) throw ("Category not found");
 
-            const category_url = `${baseUrl}/public/event/${req.file?.filename}`
+            const category_url = `${baseUrl}/public/category_url/${req.file?.filename}`
 
             const category = await prisma.category.update({
                 where: { category_id: +req.params.id },
